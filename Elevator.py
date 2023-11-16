@@ -10,7 +10,7 @@ class Elevator:
         self.decision = Action.Wait
         self.passengerList = []
         self.policy = policy
-        self.buttonsPressed = []
+        self.buttonsPressed = [False] * (maxFloor+1)
 
     def getCurrentFloor(self):
         return self.currentHeight // 100
@@ -22,16 +22,12 @@ class Elevator:
             self.currentHeight = round(self.currentHeight / 100.0) * 100
             self.decision = Action.Wait
 
+        currentFloor = self.getCurrentFloor()
 
-        if(self.decision == Action.MoveDown):
-            self.currentHeight -= self.fps
-        elif(self.decision == Action.MoveUp):
-            self.currentHeight += self.fps
-        elif(self.decision == Action.Wait):
-            self.decision = self.policy.getAction(building.floors, self.buttonsPressed)
-
-        else:
-            currentFloor = self.getCurrentFloor()
+        if(self.decision == Action.Wait):
+            result = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)
+            self.decision = result
+        elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):
             for p in self.passengerList:
                 if(p.targetFloor == currentFloor):
                     # Call remove
@@ -54,7 +50,13 @@ class Elevator:
                         floor.buttonPressed.moveUp = False
                     return
                 
-            self.decision = self.policy.getAction(building.floors, self.buttonsPressed)
+            self.decision = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)
+
+        # Finally move
+        if(self.decision == Action.MoveDown):
+            self.currentHeight = max(0, self.currentHeight - self.fps)
+        elif(self.decision == Action.MoveUp):
+            self.currentHeight = min(self.maxFloor*100, self.currentHeight + self.fps)
 
 
 
