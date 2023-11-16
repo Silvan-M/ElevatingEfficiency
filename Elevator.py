@@ -1,8 +1,13 @@
 from Policy import Action
+from EventListener import EventListener
+
 
 
 class Elevator:
     def __init__(self, minFloor, maxFloor, policy):
+        self.passengerEnteredElevatorListener = EventListener() 
+        self.passengerExitedElevatorListener = EventListener() 
+
         self.maxFloor = maxFloor
         self.minFloor = minFloor
         self.currentHeight = 0
@@ -36,6 +41,7 @@ class Elevator:
                 if(p.targetFloor == currentFloor):
                     # Call remove
                     self.passengerList.remove(p)
+                    passengerExitedElevatorListener.notify_all(p)
                     return
             self.buttonsPressed[currentFloor] = False
                 
@@ -52,6 +58,7 @@ class Elevator:
                         floor.buttonPressed.moveDown = False
                     else:
                         floor.buttonPressed.moveUp = False
+                    passengerEnteredElevatorListener.notify_all(p)
                     return
                 
             self.decision = self.policy.getAction(building.floors, self.buttonsPressed)

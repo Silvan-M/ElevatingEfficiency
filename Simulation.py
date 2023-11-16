@@ -1,12 +1,14 @@
+from Statistics import Statistics
 
 import time
 
 class Simulation():
-    time = 0
-    building = None
 
     def __init__(self, building):
+        self.time = 0
         self.building = building
+        self.statistics = Statistics(self)
+
 
     def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
         stepAmount = (days * 24 * 60 * 60        

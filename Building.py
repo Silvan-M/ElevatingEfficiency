@@ -1,10 +1,12 @@
 from Elevator import Elevator
 from Floor import Floor
 from Passenger import Passenger
+from EventListener import EventListener
 
 class Building():
 
     def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution):
+        self.passengerCreatedListener = EventListener()
         self.elevators = elevators
         self.spawnDistribution = spawnDistribution
         self.targetDistribution = targetDistribution
@@ -31,11 +33,14 @@ class Building():
         while target == spawn:
             target = self.targetDistribution.getRandomIndex(self)
 
-        self.floors[spawn].spawnPassenger(Passenger(time, spawn, target))
+        passenger = Passenger(time, spawn, target)
+        self.floors[spawn].spawnPassenger(passenger)
         if(target > spawn):
             self.floors[spawn].buttonPressed.moveUp = True
         else:
             self.floors[spawn].buttonPressed.moveDown = True
+
+        self.passengerCreatedListener.notify_all(passenger, time)
 
     def __str__(self) -> str:
         return "Building with " + str(self.floorAmount) + " floors and " + str(len(self.elevators)) + " elevators."

@@ -17,4 +17,4 @@ simulation = Simulation(
         )
 )
 
-simulation.run(days=1)
+simulation.run(minutes=1)
