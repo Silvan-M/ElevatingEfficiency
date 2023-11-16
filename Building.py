@@ -16,7 +16,6 @@ class Building():
             self.floors.append(Floor(i))
 
     def step(self, time):
-        print(len(self.floors[0].passengerList))
         # Spawn new passengers
         spawnedPeople = 10
         for i in range(spawnedPeople):
