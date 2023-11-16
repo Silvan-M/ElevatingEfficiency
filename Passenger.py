@@ -1,6 +1,7 @@
 import random
 import sys
 
+from Debug import Debug as DB
 
 class Passenger():
     def __init__(self, startTime, startLevel, endLevel):
@@ -10,4 +11,7 @@ class Passenger():
         self.endLevel = endLevel
         self.startTime = startTime
 
-        
+
+    def __str__(self) -> str:
+        return DB.str("File","Passenger",kwargs=[self.startLevel,self.currentLevel,self.endLevel,self.startTime,self.id],desc=["starting level","current level","target level", "start time","id"])
+    
