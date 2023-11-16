@@ -26,10 +26,18 @@ class Distribution():
         
 
 class TimeDistribution:
-    def __init__(self, maxPassengers):
+    def __init__(self, maxPassengers, timeType, data):
         self.data = []
         self.probabilities = None
         self.maxPassengers = maxPassengers
+
+        for (time, people) in data:
+            if timeType == "m":
+                time = time * 60
+            elif timeType == "h":
+                time = time * 60 * 60
+            self.data.append((time, people))
+        self.addData(self.data)
 
     def addData(self, data):
         self.data.extend(data)

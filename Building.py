@@ -19,7 +19,8 @@ class Building():
 
     def step(self, time):
         # Spawn new passengers
-        spawnedPeople = 1
+        spawnedPeople = int(self.timeDistribution.getInterpolatedProb(time))
+        
         for i in range(spawnedPeople):
             self.spawnPassenger(time)
 

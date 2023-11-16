@@ -2,7 +2,7 @@ from Simulation import Simulation
 from Building import Building
 from Elevator import Elevator
 from Policy import BasicPolicy
-from Distribution import Distribution, DistrType
+from Distribution import Distribution, DistrType, TimeDistribution
 
 floorAmount = 10
 simulation = Simulation(
@@ -13,8 +13,8 @@ simulation = Simulation(
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             targetDistribution = Distribution(floorAmount, DistrType.UNIFORM),
-            timeDistribution = None
+            timeDistribution = TimeDistribution(2, "h", [(0, 0), (8,100), (10,20), (12, 100), (14, 20), (18, 100), (22, 0)])
         )
 )
 
-simulation.run(minutes=10)
+simulation.run(hours=24)
