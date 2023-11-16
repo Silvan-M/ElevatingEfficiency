@@ -21,9 +21,10 @@ class Elevator:
         return self.currentHeight // 100
 
 
-    def step(self, building):
+    def step(self, time, building):
         # Check if we are at a floor, approximate if error occurred
-        if ((self.currentHeight + self.fps/2) % 100 <= self.fps):
+        if (((self.currentHeight + self.fps/2) % 100 <= self.fps) and 
+            (self.decision == Action.MoveUp or self.decision == Action.MoveDown)):
             self.currentHeight = round(self.currentHeight / 100.0) * 100
             self.decision = Action.Wait
 
@@ -34,28 +35,28 @@ class Elevator:
             self.decision = result
         elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):
             for p in self.passengerList:
-                if(p.targetFloor == currentFloor):
+                if(p.endLevel == currentFloor):
                     # Call remove
                     self.passengerList.remove(p)
-                    self.passengerExitedElevatorListener.notify_all(p)
+                    self.passengerExitedElevatorListener.notify_all(p, time)
                     return
             self.buttonsPressed[currentFloor] = False
             
             floor = building.floors[currentFloor]
             for p in floor.passengerList:
                 # Call add
-                if((p.targetFloor < currentFloor and self.decision == Action.WaitDown) or
-                   (p.targetFloor > currentFloor and self.decision == Action.WaitUp)):
+                if((p.endLevel < currentFloor and self.decision == Action.WaitDown) or
+                   (p.endLevel > currentFloor and self.decision == Action.WaitUp)):
                     floor.passengerList.remove(p)
                     self.passengerList.append(p)
-                    self.buttonsPressed[p.target] = True
+                    self.buttonsPressed[p.endLevel] = True
                     
                     if(self.decision == Action.WaitDown):
                         floor.buttonPressed.moveDown = False
                     else:
                         floor.buttonPressed.moveUp = False
 
-                    self.passengerEnteredElevatorListener.notify_all(p)
+                    self.passengerEnteredElevatorListener.notify_all(p, time)
                     return
                 
             self.decision = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)

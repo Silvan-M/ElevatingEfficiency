@@ -19,12 +19,12 @@ class Building():
 
     def step(self, time):
         # Spawn new passengers
-        spawnedPeople = 10
+        spawnedPeople = 1
         for i in range(spawnedPeople):
             self.spawnPassenger(time)
 
         for elevator in self.elevators:
-            elevator.step(self)
+            elevator.step(time, self)
 
 
     def spawnPassenger(self, time):

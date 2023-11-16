@@ -57,6 +57,5 @@ class BasicPolicy(Policy):
             else:
                 action = Action.MoveDown
 
-        print(action)
         self.prevAction = action
         return action
