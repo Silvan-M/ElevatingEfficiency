@@ -2,6 +2,7 @@ import random
 import sys
 
 from Debug import Debug as DB
+
 class Passenger():
     def __init__(self, startTime, startLevel, endLevel):
         self.id = random.randint(0, sys.maxsize)

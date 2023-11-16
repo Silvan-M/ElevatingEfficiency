@@ -41,13 +41,9 @@ class Building():
         target = spawn
         while target == spawn:
             target = self.targetDistribution.getRandomIndex(self)
-        passenger = Passenger(time, spawn, target)
-        self.floors[spawn].spawnPassenger(passenger)
-        if (DB.bldSpawnPassenger and ((time % int(DB.bldSpawnPassengerStepsSkip))==0)):
-            DB.pr("Func","spawnPassenger",message="passenger has spawned",kwargs=[passenger],desc=["spawned"],t=time)
-
 
         passenger = Passenger(time, spawn, target)
+        self.passengerCreatedListener.notify_all(passenger, time)
         self.floors[spawn].spawnPassenger(passenger)
         if(target > spawn):
             self.floors[spawn].buttonPressed.moveUp = True
@@ -58,7 +54,6 @@ class Building():
             if ((DB.bldPressesFloorButtonDown and ((time % int(DB.bldPressesFloorButtonDownStepsSkip))==0))or (DB.bldPressesFloorButton and ((time % int(DB.bldPressesFloorButtonStepsSkip))==0))):
                 DB.pr("Func","spawnPassenger",message="passenger pressed button down",kwargs=[spawn],desc=["floor"],t=time)
 
-        self.passengerCreatedListener.notify_all(passenger, time)
 
 
 
