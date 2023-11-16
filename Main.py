@@ -1,14 +1,14 @@
 from Simulation import Simulation
 from Building import Building
 from Elevator import Elevator
-from Policy import Policy
+from Policy import BasicPolicy
 from Distribution import Distribution, DistrType
 
 floorAmount = 10
 simulation = Simulation(
     Building(
             elevators = [
-                Elevator(0, floorAmount, Policy())
+                Elevator(0, floorAmount, BasicPolicy())
             ],
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
