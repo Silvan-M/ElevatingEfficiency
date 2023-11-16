@@ -1,6 +1,7 @@
 from Policy import Action
 from EventListener import EventListener
 
+import random
 
 
 class Elevator:
@@ -10,7 +11,7 @@ class Elevator:
 
         self.maxFloor = maxFloor
         self.minFloor = minFloor
-        self.currentHeight = 0
+        self.currentHeight = random.randint(minFloor*100, (maxFloor-1)*100)
         self.fps = 10  # floors per second (in Percent)
         self.decision = Action.Wait
         self.passengerList = []
@@ -65,7 +66,7 @@ class Elevator:
         if(self.decision == Action.MoveDown):
             self.currentHeight = max(0, self.currentHeight - self.fps)
         elif(self.decision == Action.MoveUp):
-            self.currentHeight = min(self.maxFloor*100, self.currentHeight + self.fps)
+            self.currentHeight = min((self.maxFloor-1)*100, self.currentHeight + self.fps)
 
 
 

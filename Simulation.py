@@ -22,6 +22,7 @@ class Simulation():
             if(timeScale > 0):
                 time.sleep(timeScale)
         self.statistics.writeToFile("results.txt")
+        print("Average waiting time: " + str(self.statistics.calculateAverageWaitingTime()))
 
     def step(self):
         self.building.step(self.time)
