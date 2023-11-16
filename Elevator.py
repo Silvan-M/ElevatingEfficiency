@@ -37,7 +37,7 @@ class Elevator:
                 if(p.targetFloor == currentFloor):
                     # Call remove
                     self.passengerList.remove(p)
-                    passengerExitedElevatorListener.notify_all(p)
+                    self.passengerExitedElevatorListener.notify_all(p)
                     return
             self.buttonsPressed[currentFloor] = False
                 
@@ -54,7 +54,7 @@ class Elevator:
                         floor.buttonPressed.moveDown = False
                     else:
                         floor.buttonPressed.moveUp = False
-                    passengerEnteredElevatorListener.notify_all(p)
+                    self.passengerEnteredElevatorListener.notify_all(p)
                     return
                 
             self.decision = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)

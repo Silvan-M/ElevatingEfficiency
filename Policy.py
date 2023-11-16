@@ -35,7 +35,6 @@ class BasicPolicy(Policy):
         self.goingUp = True
 
     def _decide(self, currentFloor, floorButtons, elevatorButtons):
-        print("Current floor: " + str(currentFloor))
         action = Action.Wait
         if (self.goingUp):
             if (currentFloor == len(floorButtons) - 1):
