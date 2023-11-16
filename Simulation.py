@@ -21,6 +21,7 @@ class Simulation():
 
             if(timeScale > 0):
                 time.sleep(timeScale)
+        self.statistics.writeToFile("test.txt")
 
     def step(self):
         self.building.step(self.time)
