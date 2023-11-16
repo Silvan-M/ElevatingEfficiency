@@ -11,6 +11,6 @@ class Passenger():
         self.startTime = startTime
 
 
-        def __str__(self) -> str:
-            return DB.str("File","Passenger",kwargs=[self.startLevel,self.currentLevel,self.endLevel,self.startTime],desc=["starting level","current level","target level", "start time"])
-        
+    def __str__(self) -> str:
+        return DB.str("File","Passenger",kwargs=[self.startLevel,self.currentLevel,self.endLevel,self.startTime,self.id],desc=["starting level","current level","target level", "start time","id"])
+    

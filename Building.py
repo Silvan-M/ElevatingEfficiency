@@ -60,8 +60,7 @@ class Building():
 
         self.passengerCreatedListener.notify_all(passenger, time)
 
-    def __str__(self) -> str:
-        return "Building with " + str(self.floorAmount) + " floors and " + str(len(self.elevators)) + " elevators."
+
 
 
 
