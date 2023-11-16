@@ -1,3 +1,4 @@
+from Debug import Debug as DB
 
 import random
 import numpy as np
@@ -14,15 +15,28 @@ class Distribution():
         self.distribution = []
         for i in range(amountFloors):
             self.distribution.append(1.0/amountFloors)
+    def __str__(self) -> str:
+        return DB.str("Class","Distribution",kwargs=[self.distribution],desc=["distribution"])
+
 
     def isChosen(self, index):
-        return self.getRandomIndex(index) > random.random()
+        out = self.getRandomIndex(index) > random.random()
+        if (DB.dsrFctIsChosen):
+            DB.pr("Func","isChosen",message="function called",kwargs=[out],desc=["return value"])
+        return out
 
     def getIndexProb(self, index):
-        return self.distribution[index]
+        out = self.distribution[index]
+        if (DB.dsrFctgetIndexProb):
+            DB.pr("Func","getIndexProb",message="function called",kwargs=[out],desc=["return value"])
+        return out
     
     def getRandomIndex(self, building):
-        return random.choices(building.floors, weights=self.distribution, k=1)[0].number
+        out = random.choices(building.floors, weights=self.distribution, k=1)[0].number
+        if (DB.dsrFctRandomIndex):
+            DB.pr("Func","getRandomIndex",message="function called",kwargs=[out],desc=["return value"])
+
+        return out
         
 
 class TimeDistribution:
@@ -47,7 +61,10 @@ class TimeDistribution:
     def getInterpolatedProb(self, time):
         times, _ = zip(*self.data)
         interpolated_probability = np.interp(time, times, self.probabilities)
-        return interpolated_probability*self.maxPassengers
+        out = interpolated_probability*self.maxPassengers
+        if (DB.tdsrFctInterpolatedProb):
+            DB.pr("Func","getInterpolatedProb",message="function called",kwargs=[out],desc=["return value"])
+        return out
     
     class CustomDistribution(Distribution):
         def __init__(self, distribution: list):

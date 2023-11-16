@@ -17,7 +17,7 @@ class Building():
 
         for i in range(floorAmount):
             self.floors.append(Floor(i))
-    def __str__(self,) -> str:
+    def __str__(self) -> str:
         return DB.str("Class","Building",kwargs=[self.elevators,self.spawnDistribution,self.targetDistribution,self.floorAmount,self.timeDistribution,self.floors],desc=["elevators","spawn distribution","target distribution","floor amount","time distribution","floors"])
 
     def step(self, time):

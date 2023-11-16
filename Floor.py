@@ -4,6 +4,9 @@ class ButtonPressed():
     def __init__(self):
         self.moveUp = False
         self.moveDown = False
+    def __str__(self) -> str:
+        return DB.str("Class","ButtonPressed",kwargs=[self.moveDown,self.moveUp],desc=["moveDown","moveUp"])
+
         
 
 class Floor():

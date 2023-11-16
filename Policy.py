@@ -1,11 +1,12 @@
+from Debug import Debug as DB
 
 from enum import Enum
 
 class Action(Enum):
     MoveDown = -2
-    WaitUp = -1
+    WaitDown = -1
     Wait = 0
-    WaitDown = 1
+    WaitUp = 1
     MoveUp = 2
 
 
@@ -13,13 +14,24 @@ class Policy():
     def __init__(self):
         self.prevAction = Action.Wait
         pass
+    def __str__(self) -> str:
+        return DB.str("Class","Policy",kwargs=[self.prevAction],desc=["prevAction"])
+
 
     def getAction(self, currentFloor, floorList, elevatorButtons):
         floorButtons = []
         for floor in floorList:
             floorButtons.append(floor.buttonPressed)
 
-        return self._decide(currentFloor, floorButtons, elevatorButtons)
+        out = self._decide(currentFloor, floorButtons, elevatorButtons)
+
+        if (DB.pcyActionUpdate):
+            DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
+        if ((not DB.pcyActionUpdate) and DB.pcyActionUpdateSelect and (out.value in DB.pcyActionUpdateSelection)):
+            DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
+
+          
+        return out
     
     def _decide(self, currentFloor, floorButtons, elevatorButtons):
         action = Action.Wait
