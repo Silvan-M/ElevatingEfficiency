@@ -25,7 +25,7 @@ class Building():
             DB.pr("Func","step",message="function was called")
 
         # Spawn new passengers
-        spawnedPeople = 1
+        spawnedPeople = int(self.timeDistribution.getInterpolatedProb(time))
         if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
             DB.pr("Func","spawnPassenger",message="function was called",t=time)
         for i in range(spawnedPeople):
