@@ -40,7 +40,7 @@ class Elevator:
                     self.passengerExitedElevatorListener.notify_all(p)
                     return
             self.buttonsPressed[currentFloor] = False
-                
+            
             floor = building.floors[currentFloor]
             for p in floor.passengerList:
                 # Call add
@@ -54,6 +54,7 @@ class Elevator:
                         floor.buttonPressed.moveDown = False
                     else:
                         floor.buttonPressed.moveUp = False
+
                     self.passengerEnteredElevatorListener.notify_all(p)
                     return
                 
