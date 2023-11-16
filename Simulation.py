@@ -11,8 +11,10 @@ class Simulation():
         self.statistics = Statistics(self)
 
 
-    def __str__(self) -> str:
-        return DB.str("Class","Simulation",kwargs=[self.time,self.building],desc=["time","building"])
+    def __str__(self,level=0) -> str:
+        out = DB.str("Class","Simulation",kwargs=[self.time,self.building],desc=["time","building"])
+        return out
+
 
     def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
         stepAmount = (days * 24 * 60 * 60        

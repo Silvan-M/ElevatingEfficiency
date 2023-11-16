@@ -1,4 +1,6 @@
 class Debug():
+    def __init__(self,lvl) -> None:
+        self.lvl=lvl
 
     allTrue = False
     allFalse = False
@@ -93,30 +95,22 @@ class Debug():
         if (t ==-1):
             timeStr=""
         arg="[{}:{} {}]".format(type,name,timeStr)
-        arg=format(arg, ' <20')
-        filler = format("",' <20')*(level+1)
+        arg=format(arg, ' <5')
+        filler = format("",' <5')*(level+1)
         out=arg+" "+message
         for i in range(len(kwargs)):
-            out+=("\n {}{}: {}").format(filler,desc[i],kwargs[i])
+            out+=("\n {}{}: {} ").format(filler,desc[i],kwargs[i])
         print(out)
 
     def str(type, name, message="",kwargs=[],desc=[]):
         arg="[{}:{}]".format(type,name)
-        arg=format(arg, ' <20')
-        filler = format("",' <20')
+        arg=format(arg, ' <5')
+        filler = format("",' <5')
         out=arg+" "+message
         for i in range(len(kwargs)):
-            out+=("\n {}{}: {}").format(filler,desc[i],kwargs[i])
+            out+=("\n {}{}: {} ").format(filler,desc[i],kwargs[i])
         return out
     
-    def recStr(type, name, message="",kwargs=[],desc=[],level=0):
-        arg="[{}:{}]".format(type,name)
-        arg=format(arg, ' <20')
-        filler = format("",' <20')*(level+1)
-        out=arg+" "+message
-        for i in range(len(kwargs)):
-            out+=("\n {}{}: {}").format(filler,desc[i],kwargs[i])
-        return out
 
         
 
