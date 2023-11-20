@@ -19,6 +19,7 @@ class Elevator:
         self.policy = policy
         self.buttonsPressed = [False] * (maxFloor+1)
         self.elevatorIndex = elevatorIndex
+        self.target = -1
     def __str__(self) -> str:
         return DB.str("Class","Elevator",kwargs=[self.maxFloor,self.minFloor,self.currentHeight,self.fps,self.decision,self.passengerList,self.policy,self.buttonsPressed],\
                                            desc=["max floor","min floor"," current height","fps","decision","passengerlist","policy","buttons pressed"])
