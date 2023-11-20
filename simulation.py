@@ -1,4 +1,4 @@
-from simulationStatistics import SimulationStatistics
+from simulation_statistics import SimulationStatistics
 from debug import Debug as DB
 
 import time
