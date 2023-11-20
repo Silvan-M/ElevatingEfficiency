@@ -7,8 +7,8 @@ import random
 
 class Elevator:
     def __init__(self, minFloor, maxFloor, policy):
-        self.passengerEnteredElevatorListener = Delegate() 
-        self.passengerExitedElevatorListener = Delegate() 
+        self.onPassengerEntered = Delegate() 
+        self.onPassengerExited = Delegate() 
 
         self.maxFloor = maxFloor
         self.minFloor = minFloor
@@ -47,7 +47,7 @@ class Elevator:
                     if (DB.elvPassengerLeavesElevator and ((time % int(DB.elvPassengerLeavesElevatorSkips))==0)):
                         DB.pr("Func","step",message="passenger left elevator",t=time,kwargs=[p],desc=["passenger"])
                     self.passengerList.remove(p)
-                    self.passengerExitedElevatorListener.notify_all(p, time)
+                    self.onPassengerExited.notify_all(p, time)
                     return
             self.buttonsPressed[currentFloor] = False
             
@@ -69,7 +69,7 @@ class Elevator:
                     else:
                         floor.buttonPressed.moveUp = False
 
-                    self.passengerEnteredElevatorListener.notify_all(p, time)
+                    self.onPassengerEntered.notify_all(p, time)
                     return
                 
             self.decision = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)

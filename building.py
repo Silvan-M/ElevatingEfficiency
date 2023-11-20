@@ -7,7 +7,7 @@ from debug import Debug as DB
 class Building():
 
     def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution):
-        self.passengerCreatedListener = Delegate()
+        self.onPassengerCreated = Delegate()
         self.elevators = elevators
         self.spawnDistribution = spawnDistribution
         self.targetDistribution = targetDistribution
@@ -44,7 +44,7 @@ class Building():
             target = self.targetDistribution.getRandomIndex(self)
 
         passenger = Passenger(time, spawn, target)
-        self.passengerCreatedListener.notify_all(passenger, time)
+        self.onPassengerCreated.notify_all(passenger, time)
         self.floors[spawn].spawnPassenger(passenger)
         if(target > spawn):
             self.floors[spawn].buttonPressed.moveUp = True

@@ -1,4 +1,5 @@
 from simulation_statistics import SimulationStatistics
+from delegate import Delegate
 from debug import Debug as DB
 
 import time
@@ -9,6 +10,7 @@ class Simulation():
         self.time = 0
         self.building = building
         self.statistics = SimulationStatistics(self)
+        self.onStepEnd = Delegate()
 
 
     def __str__(self,level=0) -> str:
@@ -37,6 +39,7 @@ class Simulation():
         self.building.step(self.time)
         self.time += 1
 
+        self.onStepEnd.notify_all(self)
         if (DB.simTimeSteps and ((self.time % int(DB.simFctStepSkip))==0)):
             DB.pr("Func","step",kwargs=[self.time],desc=["time incremented to "],t=self.time)
         
