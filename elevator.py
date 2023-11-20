@@ -6,7 +6,7 @@ import random
 
 
 class Elevator:
-    def __init__(self, minFloor, maxFloor, policy, elevatorNumber):
+    def __init__(self, minFloor, maxFloor, policy, elevatorIndex):
         self.onPassengerEntered = Delegate() 
         self.onPassengerExited = Delegate() 
 
@@ -18,7 +18,7 @@ class Elevator:
         self.passengerList = []
         self.policy = policy
         self.buttonsPressed = [False] * (maxFloor+1)
-        self.elevatorNumber = elevatorNumber
+        self.elevatorIndex = elevatorIndex
     def __str__(self) -> str:
         return DB.str("Class","Elevator",kwargs=[self.maxFloor,self.minFloor,self.currentHeight,self.fps,self.decision,self.passengerList,self.policy,self.buttonsPressed],\
                                            desc=["max floor","min floor"," current height","fps","decision","passengerlist","policy","buttons pressed"])
@@ -39,7 +39,7 @@ class Elevator:
         currentFloor = self.getCurrentFloor()
 
         if(self.decision == Action.Wait):
-            result = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)
+            result = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed, building.elevators, self.elevatorIndex)
             self.decision = result
         elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):
             for p in self.passengerList:
@@ -73,7 +73,7 @@ class Elevator:
                     self.onPassengerEntered.notify_all(p, time)
                     return
                 
-            self.decision = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed)
+            self.decision = self.policy.getAction(currentFloor, building.floors, self.buttonsPressed, building.elevators, self.elevatorIndex)
             if (DB.elvDecisionUpdate and ((time % int(DB.elvDecisionUpdateSkips))==0) ):
                 DB.pr("Func","step",message="decision was updated",t=time,kwargs=[self.decision],desc=["decision"])
                   

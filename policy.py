@@ -18,12 +18,12 @@ class Policy():
         return DB.str("Class","Policy",kwargs=[self.prevAction],desc=["prevAction"])
 
 
-    def getAction(self, currentFloor, floorList, elevatorButtons):
+    def getAction(self, currentFloor, floorList, elevatorButtons, elevatorList, elevatorIndex):
         floorButtons = []
         for floor in floorList:
             floorButtons.append(floor.buttonPressed)
 
-        out = self._decide(currentFloor, floorButtons, elevatorButtons)
+        out = self._decide(currentFloor, floorButtons, elevatorButtons, elevatorList, elevatorIndex)
 
         if (DB.pcyActionUpdate):
             DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
@@ -33,7 +33,7 @@ class Policy():
           
         return out
     
-    def _decide(self, currentFloor, floorButtons, elevatorButtons):
+    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevatorList, elevatorIndex):
         action = Action.Wait
         
         # Policy logic goes here
@@ -46,7 +46,7 @@ class BasicPolicy(Policy):
         self.prevAction = Action.Wait
         self.goingUp = True
 
-    def _decide(self, currentFloor, floorButtons, elevatorButtons):
+    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevatorList, elevatorIndex):
         action = Action.Wait
         if (self.goingUp):
             if (currentFloor == len(floorButtons) - 1):
