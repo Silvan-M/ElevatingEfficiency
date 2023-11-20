@@ -1,14 +1,14 @@
-from Policy import Action
-from EventListener import EventListener
-from Debug import Debug as DB
+from policy import Action
+from delegate import Delegate
+from debug import Debug as DB
 
 import random
 
 
 class Elevator:
     def __init__(self, minFloor, maxFloor, policy):
-        self.passengerEnteredElevatorListener = EventListener() 
-        self.passengerExitedElevatorListener = EventListener() 
+        self.passengerEnteredElevatorListener = Delegate() 
+        self.passengerExitedElevatorListener = Delegate() 
 
         self.maxFloor = maxFloor
         self.minFloor = minFloor

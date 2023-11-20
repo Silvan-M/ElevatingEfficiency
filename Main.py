@@ -1,9 +1,9 @@
-from Simulation import Simulation
-from Building import Building
-from Elevator import Elevator
-from Policy import BasicPolicy
-from Distribution import Distribution, DistrType, TimeDistribution
-from Debug import Debug as DB
+from simulation import Simulation
+from building import Building
+from elevator import Elevator
+from policy import BasicPolicy
+from distribution import Distribution, DistrType, TimeDistribution
+from debug import Debug as DB
 
 floorAmount = 10
 if (DB.mnStart):
@@ -26,5 +26,6 @@ if (DB.mnSetup):
 
 simulation.run(hours=24)
 
+    
 if (DB.mnEnd):
     DB.pr("File","Main",message="Simulation ended")

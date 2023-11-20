@@ -1,10 +1,10 @@
-from Debug import Debug as DB
+from debug import Debug as DB
 
-class EventListener:
+class Delegate:
     def __init__(self):
         self.listeners = []
     def __str__(self) -> str:
-        return DB.str("Class","EventListener",kwargs=[self.listeners],desc=["listeners"])
+        return DB.str("Class","Delegate",kwargs=[self.listeners],desc=["listeners"])
 
 
     def add_listener(self, listener):

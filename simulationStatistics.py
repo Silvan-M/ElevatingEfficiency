@@ -1,7 +1,7 @@
 import csv
 import statistics
 
-class Statistics():
+class SimulationStatistics():
     
     def __init__(self, simulation):
         self.finishedTasks = {}

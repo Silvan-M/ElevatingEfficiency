@@ -1,4 +1,4 @@
-from Debug import Debug as DB
+from debug import Debug as DB
 
 class ButtonPressed():
     def __init__(self):

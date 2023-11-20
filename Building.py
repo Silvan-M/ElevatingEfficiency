@@ -1,13 +1,13 @@
-from Elevator import Elevator
-from Floor import Floor
-from Passenger import Passenger
-from EventListener import EventListener
-from Debug import Debug as DB
+from elevator import Elevator
+from floor import Floor
+from passenger import Passenger
+from delegate import Delegate
+from debug import Debug as DB
 
 class Building():
 
     def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution):
-        self.passengerCreatedListener = EventListener()
+        self.passengerCreatedListener = Delegate()
         self.elevators = elevators
         self.spawnDistribution = spawnDistribution
         self.targetDistribution = targetDistribution

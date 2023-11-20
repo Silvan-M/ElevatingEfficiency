@@ -1,4 +1,4 @@
-from Debug import Debug as DB
+from debug import Debug as DB
 
 import random
 import numpy as np

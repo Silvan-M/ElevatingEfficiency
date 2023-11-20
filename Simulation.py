@@ -1,5 +1,5 @@
-from Statistics import Statistics
-from Debug import Debug as DB
+from simulationStatistics import SimulationStatistics
+from debug import Debug as DB
 
 import time
 
@@ -8,7 +8,7 @@ class Simulation():
     def __init__(self, building):
         self.time = 0
         self.building = building
-        self.statistics = Statistics(self)
+        self.statistics = SimulationStatistics(self)
 
 
     def __str__(self,level=0) -> str:
