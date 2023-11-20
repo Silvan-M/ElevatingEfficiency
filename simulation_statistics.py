@@ -6,18 +6,18 @@ class SimulationStatistics():
     def __init__(self, simulation):
         self.finishedTasks = {}
 
-        simulation.building.passengerCreatedListener.add_listener(self.passengerCreated)
+        simulation.building.onPassengerCreated.add_listener(self.onPassengerCreated)
         for e in simulation.building.elevators:
-            e.passengerEnteredElevatorListener.add_listener(self.passengerEnteredElevator)
-            e.passengerExitedElevatorListener.add_listener(self.passengerExitedElevator)
+            e.onPassengerEntered.add_listener(self.onPassengerEntered)
+            e.onPassengerExited.add_listener(self.onPassengerExited)
 
-    def passengerCreated(self, passenger, time):
+    def onPassengerCreated(self, passenger, time):
         self.finishedTasks[passenger.id] = FinishInfo(passenger.id, passenger.startLevel, passenger.endLevel, passenger.startTime)
 
-    def passengerEnteredElevator(self, passenger, time):
+    def onPassengerEntered(self, passenger, time):
         self.finishedTasks[passenger.id].waitingTime = time - passenger.startTime
 
-    def passengerExitedElevator(self, passenger, time):
+    def onPassengerExited(self, passenger, time):
         self.finishedTasks[passenger.id].totalTime = time - passenger.startTime
     
     def writeToFile(self, filename):
