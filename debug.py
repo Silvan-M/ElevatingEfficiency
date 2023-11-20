@@ -56,6 +56,8 @@ class Debug():
 
     elvFctStep = bool(Q[13])
     elvFctStepsSkips = 10000 * skipFactor
+    if (skipFactor == 0):
+        elvFctStepsSkips = 1
     elvPassengerLeavesElevator = bool(Q[14])
     elvPassengerLeavesElevatorSkips = 10000 * skipFactor
     elvPassengerEntersElevator = bool(Q[15]) 

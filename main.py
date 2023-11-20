@@ -12,7 +12,7 @@ if (DB.mnStart):
 simulation = Simulation(
     Building(
             elevators = [
-                Elevator(0, floorAmount, BasicPolicy()),
+                Elevator(0, floorAmount, BasicPolicy(), 0),
             ],
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),

@@ -6,7 +6,7 @@ import random
 
 
 class Elevator:
-    def __init__(self, minFloor, maxFloor, policy):
+    def __init__(self, minFloor, maxFloor, policy, elevatorNumber):
         self.onPassengerEntered = Delegate() 
         self.onPassengerExited = Delegate() 
 
@@ -18,6 +18,7 @@ class Elevator:
         self.passengerList = []
         self.policy = policy
         self.buttonsPressed = [False] * (maxFloor+1)
+        self.elevatorNumber = elevatorNumber
     def __str__(self) -> str:
         return DB.str("Class","Elevator",kwargs=[self.maxFloor,self.minFloor,self.currentHeight,self.fps,self.decision,self.passengerList,self.policy,self.buttonsPressed],\
                                            desc=["max floor","min floor"," current height","fps","decision","passengerlist","policy","buttons pressed"])
