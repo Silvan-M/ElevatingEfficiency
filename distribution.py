@@ -15,6 +15,8 @@ class Distribution():
         self.distribution = []
         for i in range(amountFloors):
             self.distribution.append(1.0/amountFloors)
+        self.maxTime = 0
+
     def __str__(self) -> str:
         return DB.str("Class","Distribution",kwargs=[self.distribution],desc=["distribution"])
 
@@ -57,10 +59,11 @@ class TimeDistribution:
         self.data.extend(data)
         times, people = zip(*self.data)
         self.probabilities = [p / max(people) for p in people]
+        self.maxTime = max(times)
 
     def getInterpolatedProb(self, time):
         times, _ = zip(*self.data)
-        interpolated_probability = np.interp(time, times, self.probabilities)
+        interpolated_probability = np.interp(time%self.maxTime, times, self.probabilities)
         out = interpolated_probability*self.maxPassengers
         if (DB.tdsrFctInterpolatedProb):
             DB.pr("Func","getInterpolatedProb",message="function called",kwargs=[out],desc=["return value"])
