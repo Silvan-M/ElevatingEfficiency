@@ -6,7 +6,7 @@ from debug import Debug as DB
 
 class Building():
 
-    def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution):
+    def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution, spawnEvery=1):
         self.onPassengerCreated = Delegate()
         self.elevators = elevators
         self.spawnDistribution = spawnDistribution
@@ -14,6 +14,7 @@ class Building():
         self.floorAmount = floorAmount
         self.timeDistribution = timeDistribution
         self.floors = []
+        self.spawnEvery = spawnEvery
 
         for i in range(floorAmount):
             self.floors.append(Floor(i))
@@ -26,11 +27,12 @@ class Building():
             DB.pr("Func","step",message="function was called")
 
         # Spawn new passengers
-        spawnedPeople = int(self.timeDistribution.getInterpolatedProb(time))
-        if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
-            DB.pr("Func","spawnPassenger",message="function was called",t=time)
-        for i in range(spawnedPeople):
-            self.spawnPassenger(time)
+        if (time % self.spawnEvery == 0):
+            spawnedPeople = int(self.timeDistribution.getInterpolatedProb(time))
+            if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
+                DB.pr("Func","spawnPassenger",message="function was called",t=time)
+            for i in range(spawnedPeople):
+                self.spawnPassenger(time)
 
         for elevator in self.elevators:
             elevator.step(time, self)
@@ -47,11 +49,11 @@ class Building():
         self.onPassengerCreated.notify_all(passenger, time)
         self.floors[spawn].spawnPassenger(passenger)
         if(target > spawn):
-            self.floors[spawn].buttonPressed.moveUp = True
+            self.floors[spawn].buttonPressed.setMoveUp(True, time)
             if ((DB.bldPressesFloorButtonUp and ((time % int(DB.bldPressesFloorButtonUpStepsSkip))==0))or (DB.bldPressesFloorButton and ((time % int(DB.bldPressesFloorButtonStepsSkip))==0))):
                 DB.pr("Func","spawnPassenger",message="passenger pressed button up",kwargs=[spawn],desc=["floor"],t=time)
         else:
-            self.floors[spawn].buttonPressed.moveDown = True
+            self.floors[spawn].buttonPressed.setMoveDown(True, time)
             if ((DB.bldPressesFloorButtonDown and ((time % int(DB.bldPressesFloorButtonDownStepsSkip))==0))or (DB.bldPressesFloorButton and ((time % int(DB.bldPressesFloorButtonStepsSkip))==0))):
                 DB.pr("Func","spawnPassenger",message="passenger pressed button down",kwargs=[spawn],desc=["floor"],t=time)
 

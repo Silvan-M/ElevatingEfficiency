@@ -4,10 +4,26 @@ class ButtonPressed():
     def __init__(self):
         self.moveUp = False
         self.moveDown = False
+        self.lastPressedUp = -1
+        self.lastPressedDown = -1
+
     def __str__(self) -> str:
         return DB.str("Class","ButtonPressed",kwargs=[self.moveDown,self.moveUp],desc=["moveDown","moveUp"])
+    
+    def setMoveUp(self, value, time):
+        self.moveUp = value
+        if (value):
+            self.lastPressedUp = time
+        else:
+            self.lastPressedUp = -1
 
-        
+    def setMoveDown(self, value, time):
+        self.moveDown = value
+        if (value):
+            self.lastPressedDown = time
+        else:
+            self.lastPressedDown = -1
+
 
 class Floor():
     def __init__(self, number):
