@@ -18,13 +18,11 @@ class FCFSPolicy(Policy):
 
         if (self.prevAction in (Action.WaitUp, Action.WaitDown, Action.WaitOpen, Action.Wait)):
             # Get new decision if elevator leaves a target or is idle
-            target, direction = self._setNextTarget(floorButtons, elevatorButtons, elevator, currentFloor)
+            target, targetDirection = self._setNextTarget(floorButtons, elevatorButtons, elevator, currentFloor)
             elevator.target = target
-            elevator.targetDirection = direction
+            elevator.targetDirection = targetDirection
 
-            action = self.prevAction
-
-            if (target != -1 and direction != 0):
+            if (target != -1 and targetDirection != 0):
                 # New target in different floor, move
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
             else:
@@ -66,32 +64,32 @@ class FCFSPolicy(Policy):
     
     def _setNextTarget(self, floorButtons, elevatorButtons, elevator, currentFloor):
         """
-        Set next target for elevator, returns [target, direction]
+        Set next target for elevator, returns `[target, targetDirection]`
         """
         target = -1
-        direction = 0
+        targetDirection = 0
 
         # Process newly pressed elevatorButtons
         self._updateFutureTargets(elevatorButtons, elevator, currentFloor)
         
         # Check if there are still future targets (of passengers in elevator)
         if (len(self.futureTargets) > 0):
-            target, direction = self.futureTargets[0]
+            target, targetDirection = self.futureTargets[0]
             self.futureTargets = self.futureTargets[1:]
 
             # If no future targets left, advertise no direction at arrival
             if (len(self.futureTargets) == 0):
-                direction = 0
+                targetDirection = 0
         else:
             # Check if there are passengers (outside of elevator) waiting
             for i, button in enumerate(floorButtons):
                 if (button.moveUp or button.moveDown):
                     target = i
-                    direction = 1 if button.moveUp else -1
+                    targetDirection = 1 if button.moveUp else -1
                     break
         
         self.target = target
-        return [target, direction]
+        return target, targetDirection
     
     def _checkTarget(self, target):
         """
