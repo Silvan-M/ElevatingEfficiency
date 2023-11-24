@@ -4,12 +4,11 @@ from enum import Enum
 
 class Action(Enum):
     MoveDown = -2   # Move down
-    WaitDown = -1   # Let passengers enter, which want to go down   
+    WaitDown = -1   # Advertise down: Let passengers enter which want to go down enter
     Wait = 0        # Doors closed, wait for policy to make a decision
-    WaitUp = 1      # Let passengers enter, which want to go up
+    WaitUp = 1      # Advertise up: Let passengers which want to go up enter
     MoveUp = 2      # Move up
-    WaitOpen = 3    # Open doors, let passengers enter/exit no matter the direction
-
+    WaitOpen = 3    # Advertise no direction: Open doors, let passengers enter/exit no matter the direction
 
 class Policy():
     """
@@ -37,8 +36,8 @@ class Policy():
         if ((not DB.pcyActionUpdate) and DB.pcyActionUpdateSelect and (out.value in DB.pcyActionUpdateSelection)):
             DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
 
-        ''' TODO: Move this to debug.py
-        str = f"Elevator {elevator.elevatorIndex} on \033[93mFloor: {currentFloor}\033[0m with {len(elevator.passengerList)} passengers, pAction: {elevator.decision}, Target: {elevator.target} \n  Floors: ["
+        ''' TODO: Move this to debug.py'''
+        str = f"Elevator {elevator.elevatorIndex} on \033[93mFloor: {currentFloor}\033[0m with {len(elevator.passengerList)} passengers, pAction: {out}, Target: {elevator.target} \n  Floors: ["
         for floor in floorList:
             suffix = ""
             if len(floor.passengerList) > 0:
@@ -57,7 +56,7 @@ class Policy():
                 suffix = "0/0"
             str += f"{floor.number}:"+suffix+", "
         print(str[0:-2] + "]")
-        '''
+        
 
         return out
     

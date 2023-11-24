@@ -11,11 +11,11 @@ class SCANPolicy(Policy):
         self.goingUp = True
 
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator):
-        action = Action.WaitOpen
+        action = Action.Wait
         
         if (not self._hasRequests(floorButtons, elevatorButtons)):
             # No requests, wait
-            action = Action.WaitOpen
+            action = Action.Wait
         elif (self.goingUp):
             # Going up
             if (currentFloor == elevator.maxFloor):

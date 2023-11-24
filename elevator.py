@@ -19,7 +19,8 @@ class Elevator:
         self.policy = policy
         self.elevatorButtons = [False] * (maxFloor+1)
         self.elevatorIndex = elevatorIndex
-        self.target = -1
+        self.target = -1            # Target floor
+        self.targetDirection = 0    # Direction that will be taken once reached target (-1 = down, 0 = undefined, 1 = up)
     def __str__(self) -> str:
         return DB.str("Class","Elevator",kwargs=[self.maxFloor,self.minFloor,self.currentHeight,self.fps,self.decision,self.passengerList,self.policy,self.elevatorButtons],\
                                            desc=["max floor","min floor"," current height","fps","decision","passengerlist","policy","buttons pressed"])
@@ -43,7 +44,7 @@ class Elevator:
         if(self.decision == Action.Wait):
             # Waiting, get decision from policy
             self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self)
-        elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown or self.decision == Action.WaitOpen):
+        elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):
             # Waiting to go up or down, ask passengers to enter if they go in same direction
 
             # Check if any passenger wants to leave
@@ -63,12 +64,12 @@ class Elevator:
             # Check if any passenger wants to enter
             floor = building.floors[currentFloor]
             for p in floor.passengerList:
-                # Check if passenger wants to go in same direction, if WaitOpen, we let everyone enter
-                if((p.endLevel < currentFloor and self.decision == Action.WaitDown) or
-                   (p.endLevel > currentFloor and self.decision == Action.WaitUp) or self.decision == Action.WaitOpen):
+                # Check if passenger wants to go in same direction
+                if ((p.endLevel < currentFloor and self.decision == Action.WaitDown) or
+                   (p.endLevel > currentFloor and self.decision == Action.WaitUp)):
                     # Passenger wants to enter, thus leaves floor
                     floor.passengerList.remove(p)
-
+                    
                     if (DB.elvPassengerEntersElevator and ((time % int(DB.elvPassengerEntersElevatorSkips))==0) ):
                         DB.pr("Func","step",message="passenger entered elevator",t=time,kwargs=[p],desc=["passenger"])
 

@@ -18,7 +18,7 @@ class LOOKPolicy(Policy):
         
         if (not (hasRequestsAbove or hasRequestsBelow)):
             # No requests, wait
-            action = Action.WaitOpen
+            action = Action.Wait
         elif (self.goingUp):
             # Going up
             if ((not hasRequestsAbove) and hasRequestsBelow):

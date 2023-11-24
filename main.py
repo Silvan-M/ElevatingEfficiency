@@ -1,7 +1,7 @@
 from simulation import Simulation
 from building import Building
 from elevator import Elevator
-from policies import LOOKPolicy, SCANPolicy, FCFSPolicy
+from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy
 from distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
 
@@ -12,8 +12,7 @@ if (DB.mnStart):
 simulation = Simulation(
     Building(
             elevators = [
-                Elevator(0, floorAmount-1, LOOKPolicy(), 0),
-                Elevator(0, floorAmount-1, LOOKPolicy(), 1),
+                Elevator(0, floorAmount-1, FCFSPolicy(), 0),
             ],
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),

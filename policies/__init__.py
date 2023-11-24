@@ -7,3 +7,4 @@ from .policy import Policy, Action
 from .scan_policy import SCANPolicy
 from .fcfs_policy import FCFSPolicy
 from .look_policy import LOOKPolicy
+from .sstf_policy import SSTFPolicy
