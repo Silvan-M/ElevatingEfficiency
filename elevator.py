@@ -6,7 +6,7 @@ import random
 
 
 class Elevator:
-    def __init__(self, minFloor, maxFloor, policy, elevatorIndex):
+    def __init__(self, minFloor, maxFloor, policy, elevatorIndex, capacity):
         self.onPassengerEntered = Delegate() 
         self.onPassengerExited = Delegate() 
 
@@ -21,6 +21,8 @@ class Elevator:
         self.elevatorIndex = elevatorIndex
         self.target = -1            # Target floor
         self.targetDirection = 0    # Direction that will be taken once reached target (-1 = down, 0 = undefined, 1 = up)
+        self.capacity = capacity
+    
     def __str__(self) -> str:
         return DB.str("Class","Elevator",kwargs=[self.maxFloor,self.minFloor,self.currentHeight,self.fps,self.decision,self.passengerList,self.policy,self.elevatorButtons],\
                                            desc=["max floor","min floor"," current height","fps","decision","passengerlist","policy","buttons pressed"])
@@ -66,8 +68,8 @@ class Elevator:
             for p in floor.passengerList:
                 # Check if passenger wants to go in same direction
                 if ((p.endLevel < currentFloor and self.decision == Action.WaitDown) or
-                   (p.endLevel > currentFloor and self.decision == Action.WaitUp)):
-                    # Passenger wants to enter, thus leaves floor
+                   (p.endLevel > currentFloor and self.decision == Action.WaitUp) and self.capacity > len(self.passengerList)):
+                    # Elevator still has capacity and a passenger wants to enter, thus passenger leaves floor
                     floor.passengerList.remove(p)
                     
                     if (DB.elvPassengerEntersElevator and ((time % int(DB.elvPassengerEntersElevatorSkips))==0) ):
