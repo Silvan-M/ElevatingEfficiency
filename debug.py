@@ -2,9 +2,13 @@ class Debug():
     def __init__(self,lvl) -> None:
         self.lvl=lvl
 
-    allTrue = False
+    allTrue = True
     allFalse = False
     skipFactor = 0
+
+    if (skipFactor==0):
+        print("Warning! Cannot set skipFactor to 0. Automatically set to 1")
+        skipFactor=1
 
     # Quick init
       #  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28
@@ -92,13 +96,13 @@ class Debug():
     
 
 
-    def pr(level,type, name, message="",kwargs=[],desc=[],t=-1):
+    def pr(level,type, name="", message="",kwargs=[],desc=[],t=-1):
         timeStr=",t = {}".format(t)
         if (t ==-1):
-            timeStr=""
+            timeStr="Time Undefined"
         arg="[{}:{} {}]".format(type,name,timeStr)
         arg=format(arg, ' <5')
-        filler = format("",' <5')*(level+1)
+        filler = format("",' <5')
         out=arg+" "+message
         for i in range(len(kwargs)):
             out+=("\n {}{}: {} ").format(filler,desc[i],kwargs[i])
