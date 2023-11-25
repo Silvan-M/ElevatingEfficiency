@@ -1,5 +1,11 @@
 import csv
 import statistics
+from enum import Enum
+
+class Objective(Enum):
+    AWT = 0 # average waiting time
+    AWTSD = 1 # average waiting time's standard deviation
+    ACE = 2 # average crowdedness in elevator
 
 class SimulationStatistics():
     
@@ -40,6 +46,17 @@ class SimulationStatistics():
     def calculateStdDevWaitingTime(self):
         waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.waitingTime >= 0]
         return statistics.stdev(waiting_times) if len(waiting_times) > 1 else None
+    
+    def getObjective(self,obj : Objective):
+        
+        if (obj == Objective.AWT):
+            return self.calculateAverageWaitingTime
+        elif (obj == Objective.AWTSD):
+            return self.calculateStdDevWaitingTime
+    
+    def clearHistory(self):
+        self.finishedTasks={}
+
 
 class FinishInfo():
     def __init__(self, id, start, target, startTime):

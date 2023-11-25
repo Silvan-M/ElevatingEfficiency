@@ -1,13 +1,15 @@
+from color import Colors as C
+
 class Debug():
     def __init__(self,lvl) -> None:
         self.lvl=lvl
 
     allTrue = False
-    allFalse = False
+    allFalse = True
     skipFactor = 0
 
     if (skipFactor==0):
-        print("Warning! Cannot set skipFactor to 0. Automatically set to 1")
+        print(C.warning("[DEBUG] WARNING: Cannot set skipFactor to 0. Automatically set to 1"))
         skipFactor=1
 
     # Quick init
