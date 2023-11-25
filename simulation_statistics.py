@@ -3,17 +3,17 @@ import statistics
 from enum import Enum
 
 class Objective(Enum):
-    AWT = 0 # average waiting time
-    AWTSD = 1 # average waiting time's standard deviation
-    ACE = 2 # average crowdedness in elevator
+    AWT = "average waiting time" # average waiting time
+    AWTSD = "standard deviation of waiting time" # average waiting time's standard deviation
+    ACE = "average crowededness" # average crowdedness in elevator
 
 class SimulationStatistics():
     
-    def __init__(self, simulation):
+    def __init__(self, building):
         self.finishedTasks = {}
 
-        simulation.building.onPassengerCreated.add_listener(self.onPassengerCreated)
-        for e in simulation.building.elevators:
+        building.onPassengerCreated.add_listener(self.onPassengerCreated)
+        for e in building.elevators:
             e.onPassengerEntered.add_listener(self.onPassengerEntered)
             e.onPassengerExited.add_listener(self.onPassengerExited)
 
@@ -22,6 +22,7 @@ class SimulationStatistics():
 
     def onPassengerEntered(self, passenger, time):
         self.finishedTasks[passenger.id].waitingTime = time - passenger.startTime
+        
 
     def onPassengerExited(self, passenger, time):
         self.finishedTasks[passenger.id].totalTime = time - passenger.startTime
@@ -50,12 +51,9 @@ class SimulationStatistics():
     def getObjective(self,obj : Objective):
         
         if (obj == Objective.AWT):
-            return self.calculateAverageWaitingTime
+            return self.calculateAverageWaitingTime()
         elif (obj == Objective.AWTSD):
-            return self.calculateStdDevWaitingTime
-    
-    def clearHistory(self):
-        self.finishedTasks={}
+            return self.calculateStdDevWaitingTime()
 
 
 class FinishInfo():

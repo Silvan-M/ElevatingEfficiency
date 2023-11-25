@@ -10,19 +10,18 @@ from color import Colors as C
 floorAmount = 10
 if (DB.mnStart):
     DB.pr("File","Main",message="Simulation started")
-simulation = Simulation(
-    Building(
-            elevators = [
-                Elevator(0, floorAmount-1, LOOKPolicy(), 0, 10),
+simulation = Simulation( 
+    [
+             [
+                [0, floorAmount-1, LOOKPolicy(), 0, 10]
             ],
-            floorAmount = floorAmount,
-            spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
-            targetDistribution = Distribution(floorAmount, DistrType.UNIFORM),
-            timeDistribution = TimeDistribution(1, "h", [(1, 1), (1, 1)]),
-            spawnEvery = 10  
-        )
-        ,SimType.COMPARATIVE2D,Objective.AWT,[[Parameter.DISTANCEWEIGHT,0.0,1.0,0.05]]
-)
+            floorAmount,
+            [floorAmount, DistrType.UNIFORM],
+            [floorAmount, DistrType.UNIFORM],
+            [1, "h", [(1, 1), (1, 1)]],
+            10  
+    ]
+        ,SimType.COMPARATIVE2D,Objective.AWT,[[Parameter.ELEVCAPACITY,0.0,10.0,1.0]])
 if (DB.mnSetup):
     print(simulation)
 

@@ -29,6 +29,8 @@ class Elevator:
 
     def getCurrentFloor(self):
         return self.currentHeight // 100
+    def getElevatorIndex(self):
+        return self.elevatorIndex
 
     def step(self, time, building):
         if (DB.elvFctStep and ((time % int(DB.elvFctStepsSkips))==0)):
@@ -107,6 +109,7 @@ class Elevator:
 
         if (DB.elvMovementUpdate and ((time % int(DB.elvMovementUpdateSkips))==0) ):
             DB.pr("Func","step",message="elevator moved",t=time,kwargs=[self.currentHeight],desc=["height"])
+        
 
 
 
