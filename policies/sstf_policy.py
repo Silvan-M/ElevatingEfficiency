@@ -13,9 +13,9 @@ class SSTFPolicy(Policy):
         # If true, elevator buttons are preferred over external buttons
         self.prefersElevatorButtons = prefersElevatorButtons
 
-    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator):
+    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """
-        Internal implementation of how the policy decides what action to take
+        Choose action based on advertised direction and closest target
         """
         action = Action.Wait
 

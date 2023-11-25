@@ -10,7 +10,7 @@ class LOOKPolicy(Policy):
         self.prevAction = Action.Wait
         self.goingUp = True
 
-    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator):
+    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         action = Action.Wait
 
         hasRequestsAbove = self._hasRequestsAbove(currentFloor, floorButtons, elevatorButtons, elevator)

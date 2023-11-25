@@ -45,7 +45,7 @@ class Elevator:
 
         if(self.decision == Action.Wait):
             # Waiting, get decision from policy
-            self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self)
+            self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self, time)
         elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):
             # Waiting to go up or down, ask passengers to enter if they go in same direction
 
@@ -94,7 +94,7 @@ class Elevator:
                     return
 
             # Now that we let all passengers enter, get new decision from policy
-            self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self)
+            self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self, time)
             
             if (DB.elvDecisionUpdate and ((time % int(DB.elvDecisionUpdateSkips))==0) ):
                 DB.pr("Func","step",message="decision was updated",t=time,kwargs=[self.decision],desc=["decision"])

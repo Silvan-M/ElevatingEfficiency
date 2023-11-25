@@ -8,3 +8,5 @@ from .scan_policy import SCANPolicy
 from .fcfs_policy import FCFSPolicy
 from .look_policy import LOOKPolicy
 from .sstf_policy import SSTFPolicy
+from .pwdp_policy import PWDPPolicy
+from .pwdp_policy_Enhanced import PWDPPolicyEnhanced

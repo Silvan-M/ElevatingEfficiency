@@ -20,7 +20,7 @@ class Policy():
     def __str__(self) -> str:
         return DB.str("Class","Policy",kwargs=[self.prevAction],desc=["prevAction"])
 
-    def getAction(self, currentFloor, floorList, elevatorButtons, elevators, elevator):
+    def getAction(self, currentFloor, floorList, elevatorButtons, elevators, elevator, time):
         """
         Returns the action the elevator should take
         """
@@ -28,7 +28,11 @@ class Policy():
         for floor in floorList:
             floorButtons.append(floor.buttonPressed)
 
-        out = self._decide(currentFloor, floorButtons, elevatorButtons, elevators, elevator)
+        # Should only be accessed if policy is allowed to see amount of people and where they are going
+        # Such policies are marked by "_Enhanced"
+        self._floorList = floorList
+
+        out = self._decide(currentFloor, floorButtons, elevatorButtons, elevators, elevator, time)
 
         if (DB.pcyActionUpdate):
             DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
@@ -59,7 +63,7 @@ class Policy():
 
         return out
     
-    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator):
+    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """
         Internal implementation of how the policy decides what action to take
         """
