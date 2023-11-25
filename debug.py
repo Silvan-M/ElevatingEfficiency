@@ -2,7 +2,7 @@ class Debug():
     def __init__(self,lvl) -> None:
         self.lvl=lvl
 
-    allTrue = True
+    allTrue = False
     allFalse = False
     skipFactor = 0
 
