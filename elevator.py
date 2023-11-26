@@ -6,7 +6,7 @@ import random
 
 
 class Elevator:
-    def __init__(self, minFloor, maxFloor, policy, elevatorIndex, capacity):
+    def __init__(self, minFloor, maxFloor, policy, capacity):
         self.onPassengerEntered = Delegate() 
         self.onPassengerExited = Delegate() 
 
@@ -18,17 +18,22 @@ class Elevator:
         self.passengerList = []
         self.policy = policy
         self.elevatorButtons = [False] * (maxFloor+1)
-        self.elevatorIndex = elevatorIndex
+        self.elevatorIndex = 0
         self.target = -1            # Target floor
         self.targetDirection = 0    # Direction that will be taken once reached target (-1 = down, 0 = undefined, 1 = up)
         self.capacity = capacity
+
     
     def __str__(self) -> str:
         return DB.str("Class","Elevator",kwargs=[self.maxFloor,self.minFloor,self.currentHeight,self.fps,self.decision,self.passengerList,self.policy,self.elevatorButtons],\
                                            desc=["max floor","min floor"," current height","fps","decision","passengerlist","policy","buttons pressed"])
 
+    def setElevatorIndex(self, index):
+        self.elevatorIndex = index
+
     def getCurrentFloor(self):
         return self.currentHeight // 100
+    
     def getElevatorIndex(self):
         return self.elevatorIndex
 

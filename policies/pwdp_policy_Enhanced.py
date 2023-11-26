@@ -23,7 +23,7 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     E  = distanceWeight^(distanceExponent) * abs(currentFloor - i)
 
     Then the i-th floor advertising [Up/Down] will have score:
-    Score = A + B + D + C - E
+    Score = (A + B + D + C) / E
 
     Also: The elevator will always follow the direction it advertised
     """
@@ -70,7 +70,7 @@ class PWDPPolicyEnhanced(PWDPPolicy):
 
         return amount / totalAmount
 
-    def _getScore(self, currentFloor, floorButtons, elevator, elevatorButtons, target, targetDirection, time):
+    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get score for target and targetDirection
         """
