@@ -1,6 +1,7 @@
 
 from building import Building
 from elevator import Elevator
+from simulation import Simulation
 
 import pygame
 import sys
@@ -177,16 +178,16 @@ class GameDisplay():
         if(passengerInfo.inElevator):
             return self.elevators[passengerInfo.index].screenLoc[1]
         else:
-            return ((self.floorAmount - 1 - self.floorAmount) + self.buildingMargin[1]) * self.totScale
+            return ((self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]) * self.totScale + (11 * self.scale)
 
             
     def getRandomPassengerLocation(self, passengerInfo):
         if(passengerInfo.inElevator):
-            return ((random.randrange(0, 1) + self.getShaftLocation(passengerInfo.index) + self.buildingMargin[0]) * self.totScale, 
+            return ((random.uniform(0, 1) + self.getShaftLocation(passengerInfo.index) + self.buildingMargin[0]) * self.totScale, 
                     self.getPassengerYCoord(passengerInfo))
         else:
-            return mul((random.randrange(0, self.buildingWidth) + self.buildingMargin[0], 
-                          (self.floorAmount - 1 - self.floorAmount) + self.buildingMargin[1]), 
+            return mul((random.uniform(0.5, self.buildingWidth - .5) + self.buildingMargin[0], 
+                          (self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]), 
                           self.totScale)
 
     def applyDifferences(self, stepInfo, lastStepInfo):
