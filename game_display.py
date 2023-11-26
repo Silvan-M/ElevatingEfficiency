@@ -63,9 +63,10 @@ class SpriteEntity():
 
 
 class PassengerInfo():
-    def __init__(self, inElevator, index):
+    def __init__(self, inElevator, index, target):
         self.inElevator = inElevator
         self.index = index
+        self.target = target
 
     def equal(self, other):
         return self.index == other.index and self.inElevator == other.inElevator
@@ -77,11 +78,11 @@ class SimulationStepInfo():
 
         for f in building.floors:
             for p in f.passengerList:
-                self.passengers[p.id] = PassengerInfo(False, f.number)
+                self.passengers[p.id] = PassengerInfo(False, f.number, p.endLevel)
 
         for e in building.elevators:
             for p in e.passengerList:
-                self.passengers[p.id] = PassengerInfo(True, e.elevatorIndex)
+                self.passengers[p.id] = PassengerInfo(True, e.elevatorIndex, p.endLevel)
             self.elevatorHeights[e.elevatorIndex] = e.currentHeight
     
 
@@ -115,7 +116,7 @@ class GameDisplay():
         self.elevatorFront = './Sprites/ElevatorFront.png'
 
         self.roomBack = './Sprites/Room_Back_Filled.png'
-        self.backElevator = './Sprites/Room_Back_Elevator.png'
+        self.backElevator = './Sprites/Room_Back_Filled.png'
         self.roomBackWindow = './Sprites/Room_Back_Window.png'
 
         self.frontElevator = './Sprites/Room_Front_Elevator.png'
@@ -155,7 +156,7 @@ class GameDisplay():
         #Elevators
         self.elevators = {}
         for e in building.elevators:
-            ele = SpriteEntity(self.frontElevator, self.backElevator, (0,0), (self.totScale,self.totScale))
+            ele = SpriteEntity(self.elevatorFront, self.elevatorBack, (0,0), (self.totScale,self.totScale))
             self.elevators[e.elevatorIndex] = ele
             self.allSprites.add(ele.back)
             self.allSprites.add(ele.front)
@@ -176,14 +177,14 @@ class GameDisplay():
     
     def getPassengerYCoord(self, passengerInfo):
         if(passengerInfo.inElevator):
-            return self.elevators[passengerInfo.index].screenLoc[1]
+            return self.elevators[passengerInfo.index].screenLoc[1] + (10 * self.scale)
         else:
             return ((self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]) * self.totScale + (11 * self.scale)
 
             
     def getRandomPassengerLocation(self, passengerInfo):
         if(passengerInfo.inElevator):
-            return ((random.uniform(0, 1) + self.getShaftLocation(passengerInfo.index) + self.buildingMargin[0]) * self.totScale, 
+            return ((random.uniform(0.05, .65) + self.getShaftLocation(passengerInfo.index) + self.buildingMargin[0]) * self.totScale, 
                     self.getPassengerYCoord(passengerInfo))
         else:
             return mul((random.uniform(0.5, self.buildingWidth - .5) + self.buildingMargin[0], 
@@ -207,7 +208,7 @@ class GameDisplay():
             val = stepInfo.passengers[key]
             if(key not in self.passengers):     #Spawn new passenger
                 loc = self.getRandomPassengerLocation(val)
-                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, mul((10,19), self.scale), self.floorColors[val.index])
+                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, mul((10,19), self.scale), self.floorColors[val.target])
                 self.passengers[key] = pas
                 self.allSprites.add(pas.back)
                 self.allSprites.add(pas.front)

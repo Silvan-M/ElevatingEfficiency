@@ -10,7 +10,9 @@ class Simulation():
         self.time = 0
         self.building = building
         self.statistics = SimulationStatistics(building)
+        self.onSimulationStarted = Delegate()
         self.onStepEnd = Delegate()
+        self.onSimulationFinished = Delegate()
 
 
     def __str__(self,level=0) -> str:
@@ -24,11 +26,13 @@ class Simulation():
                     + minutes * 60              
                     + seconds)
         
+        self.onSimulationStarted.notify_all(self)
         for i in range(stepAmount):
             self.step()
 
             if(timeScale > 0):
                 time.sleep(timeScale)
+        self.onSimulationFinished.notify_all(self)
         self.statistics.writeToFile("results.txt")
         print("Average waiting time: " + str(self.statistics.calculateAverageWaitingTime()))
 

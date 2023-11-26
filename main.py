@@ -1,6 +1,7 @@
 from simulation import Simulation
 from building import Building
 from elevator import Elevator
+from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
@@ -24,7 +25,10 @@ simulation = Simulation(
 if (DB.mnSetup):
     print(simulation)
 
-simulation.run(seconds=500)
+game = GameDisplay(simulation, 2)
+
+simulation.run(seconds=500, timeScale=.01)
+
 
 if (DB.mnEnd):
     DB.pr("File","Main",message="Simulation ended")
