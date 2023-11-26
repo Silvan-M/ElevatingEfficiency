@@ -117,8 +117,9 @@ class GameDisplay():
         for e in building.elevators:
             back = Sprite(self.backElevator, (0,0), (self.totScale, self.totScale))
             front = Sprite(self.frontElevator, (0,0), (self.totScale, self.totScale))
-            
-
+            self.elevators[e.elevatorIndex] = (back, front)
+            self.allSprites.add(back)
+            self.allSprites.add(front)
 
         #Ground
         for y in range(self.buildingMargin[1]):

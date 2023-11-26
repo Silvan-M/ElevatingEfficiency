@@ -1,5 +1,6 @@
 from simulation import Simulation,SimType, Parameter
 from simulation_statistics import Objective
+from game_display import GameDisplay
 from building import Building
 from elevator import Elevator
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
@@ -24,6 +25,8 @@ simulation = Simulation(
         ,SimType.COMPARATIVE2D,Objective.AWT,[[Parameter.ELEVCAPACITY,0.0,10.0,1.0]])
 if (DB.mnSetup):
     print(simulation)
+
+game = GameDisplay(simulation, 2)
 
 simulation.run(seconds=500)
 
