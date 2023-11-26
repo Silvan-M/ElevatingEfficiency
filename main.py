@@ -14,14 +14,13 @@ if (DB.mnStart):
 simulation = Simulation(
     Building(
             elevators = [
-                Elevator(0, floorAmount-1, LOOKPolicy(), 0, 10),
-                Elevator(0, floorAmount-1, LOOKPolicy(), 1, 10),
+                Elevator(0, floorAmount-1, PWDPPolicy(), 10),
             ],
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             targetDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             timeDistribution = TimeDistribution(1, "h", [(1, 1), (1, 1)]),
-            spawnEvery = 10
+            spawnEvery = 30
         )
 )
 if (DB.mnSetup):
