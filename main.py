@@ -5,11 +5,12 @@ from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
+from simulation_plotter import SimulationPlotter
+from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
 
 floorAmount = 10
 if (DB.mnStart):
     DB.pr("File","Main",message="Simulation started")
-
 simulation = Simulation(
     Building(
             elevators = [
