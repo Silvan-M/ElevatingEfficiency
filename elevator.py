@@ -75,7 +75,7 @@ class Elevator:
             for p in floor.passengerList:
                 # Check if passenger wants to go in same direction
                 if ((p.endLevel < currentFloor and self.decision == Action.WaitDown) or
-                   (p.endLevel > currentFloor and self.decision == Action.WaitUp) and self.capacity > len(self.passengerList)):
+                   (p.endLevel > currentFloor and self.decision == Action.WaitUp)) and self.capacity > len(self.passengerList):
                     # Elevator still has capacity and a passenger wants to enter, thus passenger leaves floor
                     floor.passengerList.remove(p)
                     

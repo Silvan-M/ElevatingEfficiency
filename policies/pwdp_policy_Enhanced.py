@@ -24,6 +24,8 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     s5  = competitorWeight * (amountOfElevatorsMoving[Above/Below]) / (totalAmountOfElevators)
     s6  = distanceWeight^(distanceExponent) * abs(currentFloor - i)
 
+    Additionally s3 = 0, s4 = 0, s5 = 0 if elevator capacity is reached
+
     Then the i-th floor advertising [Up/Down] will have score:
     Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
 
@@ -46,6 +48,25 @@ class PWDPPolicyEnhanced(PWDPPolicy):
         )
     
     # Override functions from PWDPPolicy, rest of the logic remains exactly the same
+    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+        """
+        Get score for target and targetDirection
+        """
+        # Calculate score and firstly get s1, s2, s3, s4, s5, s6
+        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+
+        if (elevator.capacity == len(elevator.passengerList)):
+            s3 = 0
+            s4 = 0
+            s5 = 0
+
+        return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
+
     def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s1, weighed amount of people in elevator going to target
