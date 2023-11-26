@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 *.txt
-!.requirements.txt
+!requirements.txt
 
 # Distribution / packaging
 .Python
