@@ -31,12 +31,11 @@ class Building():
             DB.pr("Func","step",message="function was called")
 
         # Spawn new passengers
-        if (time % self.spawnEvery == 0):
-            spawnedPeople = int(self.timeDistribution.getInterpolatedProb(time))
-            if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
-                DB.pr("Func","spawnPassenger",message="function was called",t=time)
-            for i in range(spawnedPeople):
-                self.spawnPassenger(time)
+        spawnedPeople = round(self.timeDistribution.getRandomProb(time))
+        if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
+            DB.pr("Func","spawnPassenger",message="function was called",t=time)
+        for i in range(spawnedPeople):
+            self.spawnPassenger(time)
 
         for elevator in self.elevators:
             elevator.step(time, self)

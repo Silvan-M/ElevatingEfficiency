@@ -21,7 +21,7 @@ simulation = Simulation(
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             targetDistribution = Distribution(floorAmount, DistrType.UNIFORM),
-            timeDistribution = TimeDistribution(1, "h", [(1, 1), (1, 1)]),
+            timeDistribution = TimeDistribution(.2, "h", [(1, 1), (1, 1)]),
             spawnEvery = 30
         )
 )

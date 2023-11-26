@@ -69,6 +69,11 @@ class TimeDistribution:
             DB.pr("Func","getInterpolatedProb",message="function called",kwargs=[out],desc=["return value"])
         return out
     
+    def getRandomProb(self, time):
+        mean = self.getInterpolatedProb(time)
+        random_value = np.random.exponential(scale=mean)
+        return random_value
+    
 class CustomDistribution(Distribution):
     def __init__(self, distribution: list):
         self.distribution = distribution
