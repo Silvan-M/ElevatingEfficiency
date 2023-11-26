@@ -163,9 +163,10 @@ class PWDPPolicy(Policy):
         maxElevatorButtonTime = time - self.minElevatorButtonTime if (self.minElevatorButtonTime != 0) else 1
 
         for i in range(len(floorButtons)):
-            if (floorButtons[i].moveUp or floorButtons[i].moveDown):
+            if (i > target and targetDirection == 1) or (i < target and targetDirection == -1):
                 totalFloorButtonsPressed += 1
-                if (i > target):
+                if (floorButtons[i].moveUp or floorButtons[i].moveDown):
+                    # Floor button is pressed in direction targetDirection
                     floorButtonsPressed += floorButtons[i].moveUp + floorButtons[i].moveDown
 
         A = self.elevatorButtonWeight * elevatorButtons[target]

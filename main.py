@@ -27,7 +27,7 @@ if (DB.mnSetup):
 
 game = GameDisplay(simulation, 2)
 
-simulation.run(seconds=500, timeScale=.01)
+simulation.run(minutes=500, timeScale=.01)
 
 
 if (DB.mnEnd):
