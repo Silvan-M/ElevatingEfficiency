@@ -22,7 +22,6 @@ simulation = Simulation(
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             targetDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             timeDistribution = TimeDistribution(.2, "h", [(1, 1), (1, 1)]),
-            spawnEvery = 30
         )
 )
 if (DB.mnSetup):
@@ -31,7 +30,7 @@ if (DB.mnSetup):
 game = GameDisplay(simulation, 2)
 livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
-simulation.run(minutes=30, timeScale=.01)
+simulation.run(seconds=300, timeScale=.01)
 
 
 if (DB.mnEnd):

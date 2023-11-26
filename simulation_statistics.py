@@ -26,6 +26,15 @@ class SimulationStatistics():
 
 
     def onSimulationFinished(self, simulation):
+        time = simulation.time
+        #Augment data for those who didn't finish in time
+        for t in self.finishedTasks:
+            val = self.finishedTasks[t]
+            if val.waitingTime < 0:
+                val.waitingTime = time - val.startTime
+            if val.totalTime < 0:         
+                val.finishedTime = time - val.startTime
+
         self.writeToFile("results.txt")
         out = self.calculateAverageWaitingTime()
         print("Average waiting time: " + str(out))

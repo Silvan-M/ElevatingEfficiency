@@ -6,7 +6,7 @@ from debug import Debug as DB
 
 class Building():
 
-    def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution, spawnEvery=1):
+    def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution):
         self.onPassengerCreated = Delegate()
         self.elevators = elevators
         self.spawnDistribution = spawnDistribution
@@ -14,7 +14,6 @@ class Building():
         self.floorAmount = floorAmount
         self.timeDistribution = timeDistribution
         self.floors = []
-        self.spawnEvery = spawnEvery
 
         for i in range(floorAmount):
             self.floors.append(Floor(i))
