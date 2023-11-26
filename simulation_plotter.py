@@ -4,6 +4,9 @@ from distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
 from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyParameter
 from exceptions import Exceptions as EXC
+from elevator import Elevator
+from building import Building
+from simulation import Simulation
 
 class SimulationPlotter():
     def __init__(
@@ -28,10 +31,13 @@ class SimulationPlotter():
     def comparative_2d_plotter(self):
         simulation = self._init()
         simulation.run(minutes=50, timeScale=-1)
+
         
 
     def comparative_3d_plotter(self):
         pass
+
+    
 
     def _init(self):
         spawnDistribution = Distribution(*self.spawnDistrArgs)
