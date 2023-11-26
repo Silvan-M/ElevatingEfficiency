@@ -45,15 +45,15 @@ class Elevator:
 
         currentFloor = self.getCurrentFloor()
 
-        if(self.decision == Action.Wait or self.decision == Action.WaitOpen):
+        if(self.decision == Action.Wait):
             # Waiting, get decision from policy
             self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self, time)
-        elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):
+        elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown or self.decision == Action.WaitOpen):
             # Waiting to go up or down, ask passengers to enter if they go in same direction
 
             # Check if any passenger wants to leave
             for p in self.passengerList:
-                if(p.endLevel == currentFloor):
+                if(p.endLevel == currentFloor or self.decision == Action.WaitOpen):
                     if (DB.elvPassengerLeavesElevator and ((time % int(DB.elvPassengerLeavesElevatorSkips))==0)):
                         DB.pr("Func","step",message="passenger left elevator",t=time,kwargs=[p],desc=["passenger"])
 
