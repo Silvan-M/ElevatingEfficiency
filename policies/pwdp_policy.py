@@ -209,9 +209,9 @@ class PWDPPolicy(Policy):
         totalFloorButtonsPressed = 0
 
         for i in range(len(floorButtons)):
-            if (floorButtons[i].moveUp or floorButtons[i].moveDown):
+            if (i > target and targetDirection == 1) or (i < target and targetDirection == -1):
                 totalFloorButtonsPressed += 1
-                if (i > target and targetDirection == 1) or (i < target and targetDirection == -1):
+                if (floorButtons[i].moveUp or floorButtons[i].moveDown):
                     # Floor button is pressed in direction targetDirection
                     floorButtonsPressed += floorButtons[i].moveUp + floorButtons[i].moveDown
 
