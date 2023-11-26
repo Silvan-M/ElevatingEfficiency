@@ -9,7 +9,6 @@ class Simulation():
     def __init__(self, building):
         self.time = 0
         self.building = building
-        self.statistics = SimulationStatistics(building)
         self.onSimulationStarted = Delegate()
         self.onStepEnd = Delegate()
         self.onSimulationFinished = Delegate()
@@ -27,17 +26,15 @@ class Simulation():
                     + minutes * 60              
                     + seconds)
         
-        self.onSimulationStarted.notify_all(self)
+        self.onSimulationStarted.notify_all(self, stepAmount)
         for i in range(stepAmount):
             self.step()
 
             if(timeScale > 0):
                 time.sleep(timeScale)
+
         self.onSimulationFinished.notify_all(self)
-        self.statistics.writeToFile("results.txt")
-        out = self.statistics.calculateAverageWaitingTime()
-        print("Average waiting time: " + str(out))
-        return out
+        
 
     def step(self):
         if (DB.simFctStep and ((self.time % int(DB.simTimeStepsSkip))==0)):
@@ -46,7 +43,7 @@ class Simulation():
         self.building.step(self.time)
         self.time += 1
 
-        self.onStepEnd.notify_all(self)
+        self.onStepEnd.notify_all(self, self.time)
         if (DB.simTimeSteps and ((self.time % int(DB.simFctStepSkip))==0)):
             DB.pr("Func","step",kwargs=[self.time],desc=["time incremented to "],t=self.time)
         

@@ -1,6 +1,3 @@
-from simulation import Simulation
-from building import Building
-from elevator import Elevator
 from policies import Policy
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from distribution import Distribution, DistrType, TimeDistribution
