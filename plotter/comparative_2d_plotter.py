@@ -4,10 +4,10 @@ from simulation_statistics import Objective as Objective
 import matplotlib.pyplot as plt
 
 class Comparative_2d_plotter():
-    def __init__(self, paramData:list, objectiveData:list, objective:Objective) -> None:
+    def __init__(self, paramData:list, objectiveData:list,name:list) -> None:
         self.paramData = paramData
         self.objectiveData = objectiveData
-        self.objective = objective
+        self.name = name 
 
     def plotNormal(self):
         

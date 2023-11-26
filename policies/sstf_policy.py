@@ -36,7 +36,7 @@ class SSTFPolicy(Policy):
             elevator.target = target
             elevator.targetDirection = targetDirection
 
-            if (target != -1 and targetDirection != 0):
+            if (target != -1):
                 # New target in different floor, move
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
             else:
