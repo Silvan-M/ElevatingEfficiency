@@ -93,7 +93,7 @@ class GameDisplay():
         simulation.onSimulationStarted.add_listener(self.startSimulation)
         self.scale = scale
 
-    def startSimulation(self, simulation):
+    def startSimulation(self, simulation, stepAmount):
         building = simulation.building
         self.tileSize = 32
         self.totScale = self.tileSize*self.scale
@@ -246,7 +246,7 @@ class GameDisplay():
         self.screen.blit(text_surface, text_rect)
 
 
-    def step(self, simulation):
+    def step(self, simulation, time):
         building = simulation.building
         lastStepInfo = self.stepInfo
         self.stepInfo = SimulationStepInfo(building)
@@ -275,4 +275,5 @@ class GameDisplay():
 
         # Update the display
         pygame.display.flip()
+        
 
