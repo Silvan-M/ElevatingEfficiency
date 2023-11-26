@@ -51,8 +51,11 @@ def mul(v1, c):
 class GameDisplay():
     def __init__(self, simulation, scale):
         simulation.onStepEnd.add_listener(self.step)
-        building = simulation.building
+        simulation.onSimulationStarted.add_listener(self.startSimulation)
         self.scale = scale
+
+    def startSimulation(self, simulation):
+        building = simulation.building
         self.tileSize = 32
         self.totScale = self.tileSize*self.scale
 
@@ -137,10 +140,20 @@ class GameDisplay():
                 pygame.quit()
                 sys.exit()
 
-
         self.screen.fill(self.backgroundColor)
+        
+        building = simulation.building
+        for e in building.elevators:
+            ele = self.elevators[e.elevatorIndex]
+            loc = mul((self.getShaftLocation(e.elevatorIndex) + self.buildingMargin[0], (self.floorAmount - 1 - e.currentHeight/100) + self.buildingMargin[0]), self.totScale)
+            ele[0].rect.topleft = loc
+            ele[1].rect.topleft = loc
+
+        
+        
         self.allSprites.update()
         self.allSprites.draw(self.screen)
+
 
         # Update the display
         pygame.display.flip()

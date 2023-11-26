@@ -60,6 +60,8 @@ class Simulation():
         self.type=type
         self.time = 0
         self.objective = objective
+        self.onSimulationStarted = Delegate()
+        self.onStepEnd = Delegate()
 
         if (self.type==SimType.COMPARATIVE2D):
             EXC.typeChecker("Simulation",
@@ -118,7 +120,7 @@ class Simulation():
         self.building = Building(self.elevator,self.floorAmountArg,self.spawnDistr,self.targetDistr,self.timeDistr,self.spawnEveryArg)
 
         self.statistics = SimulationStatistics(self.building)
-        self.onStepEnd = Delegate()
+        self.onSimulationStarted.notify_all(self)
 
 
 
@@ -186,6 +188,7 @@ class Simulation():
                 self.updateParam(self.param1,paramVal1[x])
             plt = Plotter3D(self.objective,objective_data,paramVal1,paramVal2)
             plt.plotNormal()
+
                 
 
 
