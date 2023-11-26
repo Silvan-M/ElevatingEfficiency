@@ -1,6 +1,3 @@
-from simulation import Simulation
-from building import Building
-from elevator import Elevator
 from policies import Policy
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from distribution import Distribution, DistrType, TimeDistribution
@@ -11,7 +8,7 @@ from exceptions import Exceptions as EXC
 class SimulationPlotter():
     def __init__(
         self,
-        elevatorArgs=[[0, 9, [LOOKPolicy], 0, 10]], 
+        elevatorArgs=[[0, 9, [LOOKPolicy], 10]], 
         floorAmount = 10, 
         spawnDistrArgs=[10, DistrType.UNIFORM],
         targetDistrArgs=[10, DistrType.UNIFORM],
@@ -24,12 +21,14 @@ class SimulationPlotter():
         self.spawnDistrArgs= spawnDistrArgs
         self.targetDistrArgs= targetDistrArgs
         self.timeDistrArgs = timeDistrArgs 
-        self.spawnEveryArgs = spawnEveryArgs
+        self.spawnEvery = spawnEveryArgs
 
 
 
-    def compparative_2d_plotter(self):
-        pass
+    def comparative_2d_plotter(self):
+        simulation = self._init()
+        simulation.run(minutes=50, timeScale=-1)
+        
 
     def comparative_3d_plotter(self):
         pass
@@ -42,33 +41,29 @@ class SimulationPlotter():
         
 
         for i in range(len(self.elevatorArgs)):
+            self._initPolicy(i)
+            print(self.elevatorArgs[i])
             elevators.append(Elevator(*self.elevatorArgs[i]))
+
+        building = Building(elevators,self.floorAmount,spawnDistribution,targetDistribution,timeDistribution,self.spawnEvery)
+        return Simulation(building)
 
 
     def _initPolicy(self,i):
-        match self.elevatorArgs[i][2][0]:
-            case LOOKPolicy():
-                self.elevatorArgs[i][2] = LOOKPolicy()
-            case FCFSPolicy():
-                self.elevatorArgs[i][2] = FCFSPolicy()
-            case SSTFPolicy():
-                self.elevatorArgs[i][2] = SSTFPolicy()
-            case SCANPolicy():
-                self.elevatorArgs[i][2] = SCANPolicy()
-            case PWDPPolicy():
-                args = self.elevatorArgs[i][2][1:]
-                self.elevatorArgs[i][2] = PWDPPolicy(*args)
-            case PWDPPolicyEnhanced():
-                args = self.elevatorArgs[i][2][1:]
-                self.elevatorArgs[i][2] = PWDPPolicyEnhanced(*args)
-            
-
-        
-
-
+        t =  type(self.elevatorArgs[i][2][0])
+        if (t == LOOKPolicy):
+            self.elevatorArgs[i][2] = LOOKPolicy()
+        elif (t == LOOKPolicy):
+            self.elevatorArgs[i][2] = FCFSPolicy()
+        elif (t == SSTFPolicy ):
+            self.elevatorArgs[i][2] = SSTFPolicy()
+        elif (t == SCANPolicy):
+            self.elevatorArgs[i][2] = SCANPolicy()
+        elif (t == PWDPPolicy or PWDPPolicyEnhanced):
+            args = self.elevatorArgs[i][2][1:]
+            self.elevatorArgs[i][2] = PWDPPolicy(*args)
 
     def _setFloorAmount(self,amount:int):
-        print("here3")
         self.floorAmount = amount
         self.spawnDistrArgs[0] = amount
         self.timeDistrArgs[0] = amount
@@ -77,7 +72,6 @@ class SimulationPlotter():
             self.elevatorArgs[i][1]=amount-1
 
     def _updateHandler(self, param,newVal,index=0):
-        print("here")
         
         match param.case():
             case 0:
@@ -98,7 +92,7 @@ class SimulationPlotter():
             case 3:
                 self.targetDistrArgs[1] = newVal
             case 5:
-                self.spawnEveryArgs = newVal
+                self.spawnEvery = newVal
         
     def _updatePolicy(self,param,newVal,index:int):
         if (param.value==-1):
@@ -111,8 +105,6 @@ class SimulationPlotter():
 
 
     def _addElevator(self,args:list):
-        amount = len(self.elevatorArgs)
-        args[3] = self.elevatorArgs+1
         self.elevatorArgs.append(args)
 
     def _updateElevator(self,param:ElevatorParameter,newVal,index:int):
@@ -137,8 +129,11 @@ class SimulationPlotter():
         print(self.spawnDistrArgs)
         print(self.targetDistrArgs)
         print(self.timeDistrArgs)
-        print(self.spawnEveryArgs)
+        print(self.spawnEvery)
 
+
+x = SimulationPlotter()
+x.comparative_2d_plotter()
 
 
 
