@@ -47,6 +47,9 @@ def add(v1, v2):
 def mul(v1, c):
     return tuple(e * c for e in v1)       
 
+def lerp(v1, v2, a):
+    tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
+
 class SpriteEntity():
     def __init__(self, front, back, screenLoc, spriteSize, front_color=(255, 255, 255), back_color=(255, 255, 255)):
         self.front = Sprite(front, screenLoc, spriteSize, front_color)
@@ -169,7 +172,7 @@ class GameDisplay():
         self.stepInfo = None
 
     def getFloorColor(self, floorIndex, floorAmount):
-        cmap = plt.get_cmap('viridis')
+        cmap = plt.get_cmap('bone')
         colors = [cmap(i) for i in np.linspace(0, 1, floorAmount)]
         rgb_color = mcolors.to_rgb(colors[floorAmount - floorIndex - 1])
         return tuple(int(val * 255) for val in rgb_color)
@@ -193,6 +196,9 @@ class GameDisplay():
             return mul((random.uniform(0.5, self.buildingWidth - .5) + self.buildingMargin[0], 
                           (self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]), 
                           self.totScale)
+
+    def setBackground(self, time):
+        self.screen.fill(self.backgroundColor)
 
     def applyDifferences(self, stepInfo, lastStepInfo):
         for key in stepInfo.elevatorHeights:
@@ -253,7 +259,7 @@ class GameDisplay():
                 sys.exit()
 
         #Sprites
-        self.screen.fill(self.backgroundColor)
+        self.setBackground(simulation.time)
         self.allSprites.update()
         self.allSprites.draw(self.screen)
 
