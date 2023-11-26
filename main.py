@@ -24,10 +24,10 @@ simulation = Simulation(
 )
 if (DB.mnSetup):
     print(simulation)
-    
+
 game = GameDisplay(simulation, 2)
 
-simulation.run(seconds=500)
+simulation.run(seconds=500, timeScale=.01)
 
 
 if (DB.mnEnd):
