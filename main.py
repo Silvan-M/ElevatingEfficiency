@@ -24,10 +24,11 @@ simulation = Simulation(
 )
 if (DB.mnSetup):
     print(simulation)
+    
+game = GameDisplay(simulation, 2)
 
 simulation.run(seconds=500)
 
-game = GameDisplay(simulation, 2)
 
 if (DB.mnEnd):
     DB.pr("File","Main",message="Simulation ended")
