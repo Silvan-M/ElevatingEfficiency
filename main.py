@@ -31,7 +31,7 @@ if (DB.mnSetup):
 game = GameDisplay(simulation, 2)
 livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
-simulation.run(minutes=500, timeScale=.01)
+simulation.run(minutes=30, timeScale=.01)
 
 
 if (DB.mnEnd):
