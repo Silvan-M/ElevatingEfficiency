@@ -4,25 +4,20 @@ from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.animation import FuncAnimation
+from simulation_statistics import Objective
 import time
 import numpy as np
 from enum import Enum
 
 
-class Objective(Enum):
-    AWT = "average waiting time" # average waiting time
-    AWTSD = "standard deviation of waiting time" # average waiting time's standard deviation
-    ACE = "average crowededness" # average crowdedness in elevator
 
-class Plotter():
-    def __init__(self, objectives):
-        self.objectives = objectives
-        
-class LivePlotter(Plotter):
+class LivePlotter():
     def __init__(self, simulation, objectives):
-        super().__init__(objectives)
+        self.objectives = objectives
+        simulation.onSimulationStarted.add_listener(self.startPlot)
+        simulation.onStepEnd.add_listener(self.step)
 
-        
+
     def startPlot(self, simulation, stepAmount):
         self.x = np.linspace(0, stepAmount, stepAmount)
         self.y = [10] * stepAmount
@@ -44,14 +39,15 @@ class LivePlotter(Plotter):
         plt.show()  # Display the plot
 
        
-    def step(self, simulation, simulation_statistic, tim):
+    def step(self, simulation, tim):
+        statistics = simulation.statistics
         building = simulation.building
 
         new_data_points = {}
 
         waiters = []
-        for p in simulation_statistic.finishedTasks:
-            val = simulation_statistic.finishedTasks[p]
+        for p in statistics.finishedTasks:
+            val = statistics.finishedTasks[p]
             if val.totalTime < 0:
                 waiters.append(tim - val.startTime)
 

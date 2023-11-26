@@ -8,10 +8,11 @@ class Simulation():
 
     def __init__(self, building):
         self.time = 0
-        self.building = building
         self.onSimulationStarted = Delegate()
         self.onStepEnd = Delegate()
         self.onSimulationFinished = Delegate()
+        self.building = building
+        self.statistics = SimulationStatistics(self)
 
 
     def __str__(self,level=0) -> str:

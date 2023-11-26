@@ -2,8 +2,8 @@ from simulation import Simulation
 from building import Building
 from elevator import Elevator
 from simulation_statistics import SimulationStatistics
-from plotter import Objective
-from plotter import LivePlotter
+from simulation_statistics import Objective
+from liveplotter import LivePlotter
 from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from distribution import Distribution, DistrType, TimeDistribution
@@ -30,7 +30,7 @@ if (DB.mnSetup):
     print(simulation)
 
 game = GameDisplay(simulation, 2)
-plot = SimulationStatistics(simulation, [LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])])
+livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
 simulation.run(minutes=500, timeScale=.01)
 
