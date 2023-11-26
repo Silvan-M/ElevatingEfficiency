@@ -11,20 +11,20 @@ from exceptions import Exceptions as EXC
 class SimulationPlotter():
     def __init__(
         self,
-        elevatorArgs=[[0, 9, LOOKPolicy(), 0, 10]], 
+        elevatorArgs=[[0, 9, [LOOKPolicy], 0, 10]], 
         floorAmount = 10, 
         spawnDistrArgs=[10, DistrType.UNIFORM],
         targetDistrArgs=[10, DistrType.UNIFORM],
         timeDistrArgs = [1, "h", [(1, 1), (1, 1)]],
         spawnEveryArgs = 10) -> None:
         
-        self.floorAmount = floorAmount
+        
         self.elevatorArgs = elevatorArgs
+        self.floorAmount = floorAmount
         self.spawnDistrArgs= spawnDistrArgs
         self.targetDistrArgs= targetDistrArgs
         self.timeDistrArgs = timeDistrArgs 
         self.spawnEveryArgs = spawnEveryArgs
-
 
 
 
@@ -33,6 +33,38 @@ class SimulationPlotter():
 
     def comparative_3d_plotter(self):
         pass
+
+    def _init(self):
+        spawnDistribution = Distribution(*self.spawnDistrArgs)
+        targetDistribution = Distribution(*self.targetDistrArgs)
+        timeDistribution = TimeDistribution(*self.timeDistrArgs)
+        elevators=[]
+        
+
+        for i in range(len(self.elevatorArgs)):
+            elevators.append(Elevator(*self.elevatorArgs[i]))
+
+
+    def _initPolicy(self,i):
+        match self.elevatorArgs[i][2][0]:
+            case LOOKPolicy():
+                self.elevatorArgs[i][2] = LOOKPolicy()
+            case FCFSPolicy():
+                self.elevatorArgs[i][2] = FCFSPolicy()
+            case SSTFPolicy():
+                self.elevatorArgs[i][2] = SSTFPolicy()
+            case SCANPolicy():
+                self.elevatorArgs[i][2] = SCANPolicy()
+            case PWDPPolicy():
+                args = self.elevatorArgs[i][2][1:]
+                self.elevatorArgs[i][2] = PWDPPolicy(*args)
+            case PWDPPolicyEnhanced():
+                args = self.elevatorArgs[i][2][1:]
+                self.elevatorArgs[i][2] = PWDPPolicyEnhanced(*args)
+            
+
+        
+
 
 
     def _setFloorAmount(self,amount:int):
@@ -53,12 +85,11 @@ class SimulationPlotter():
             case 1:
                 self._updateElevator(param,newVal,index)
             case 2:
-                self._updateParamPolicy(param,newVal)
+                self._updatePolicy(param,newVal,index)
             case 3:
                 self._updateTimeDistr(param,newVal)
 
     def _updateParam(self,param,newVal):
-        print("here2")
         match param.value:
             case 1:
                 self._setFloorAmount(newVal)
@@ -69,9 +100,14 @@ class SimulationPlotter():
             case 5:
                 self.spawnEveryArgs = newVal
         
-    def _updateParamPolicy(self,param,Newval):
-        pass
-        
+    def _updatePolicy(self,param,newVal,index:int):
+        if (param.value==-1):
+            self.elevatorArgs[index][2]=[newVal]
+        else:
+            print(self.elevatorArgs[index][2])
+            self.elevatorArgs[index][2][param.value]=newVal
+
+    
 
 
     def _addElevator(self,args:list):
@@ -102,7 +138,6 @@ class SimulationPlotter():
         print(self.targetDistrArgs)
         print(self.timeDistrArgs)
         print(self.spawnEveryArgs)
-
 
 
 

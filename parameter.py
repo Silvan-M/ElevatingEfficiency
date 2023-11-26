@@ -13,22 +13,24 @@ class Parameter(Enum):
 class ElevatorParameter(Enum):
     MINFLOOR = 0
     MAXFLOOR = 1
-    POLICY= 2 
+
     CAPACITY = 4
     def case(self):
         return 1
 
 
 class PolicyParameter(Enum):
-    ElEVBUTWEIGHT = 0
-    FLOORBUTWEIGHT = 1
-    DIRWEIGHT = 2
-    DISTWEIGHT =  3
-    DISTEXPONENT = 4
-    TIMEWEIGHT = 5
+    POLICY= -1 
+    ElEVBUTWEIGHT = 1
+    TIMEWEIGHT = 2
+    FLOORBUTWEIGHT = 3
+    DIRWEIGHT = 4
+    COMPWEIGHT = 5
+    DISTWEIGHT =  6
+    DISTEXPONENT = 7
+    
     def case(self):
         return 2 
-
 
 class TimeDistrParameter(Enum):
     MAXPASSENGER = 1
