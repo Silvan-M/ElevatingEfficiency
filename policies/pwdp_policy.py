@@ -135,7 +135,6 @@ class PWDPPolicy(Policy):
                 highestTarget = target
                 highestTargetDirection = targetDirection
 
-        self._printScores(scores, len(floorButtons))
         return highestTarget, highestTargetDirection
     
     def _getScores(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection):
@@ -169,22 +168,22 @@ class PWDPPolicy(Policy):
         Get score for target and targetDirection
         """
         # Calculate score and firstly get s1, s2, s3, s4, s5, s6
-        s1 = self.getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s2 = self.getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s3 = self.getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s4 = self.getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s5 = self.getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s6 = self.getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
 
         return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
     
-    def getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s1, weighted amount of people in elevator going to target
         """
         return self.elevatorButtonWeight * elevatorButtons[target]
     
-    def getS2(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS2(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s2, weighted time since elevator button of target was pressed 
         """
@@ -193,13 +192,13 @@ class PWDPPolicy(Policy):
 
         return self.timeWeight * self._timeSinceElevatorButtonPressed(target, time) / maxElevatorButtonTime
     
-    def getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s3, weighted amount of people in floor going in targetDirection (in the view of target)
         """
         return self.floorButtonWeight * (floorButtons[target].moveUp if (targetDirection == 1) else floorButtons[target].moveDown)
     
-    def getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s4, weighted amount of floor buttons pressed (per floor) in targetDirection (in the view of target)
         """
@@ -221,7 +220,7 @@ class PWDPPolicy(Policy):
 
         return self.directionWeight * (floorButtonsPressed) / (totalFloorButtonsPressed)
 
-    def getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s5, weighted amount of elevators moving in targetDirection (in the view of target)
         """
@@ -242,7 +241,7 @@ class PWDPPolicy(Policy):
 
         return self.competitorWeight * amountOfElevatorsMoving / totalElevatorsMoving
     
-    def getS6(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS6(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
         Get s6, weighted distance to target
         """
