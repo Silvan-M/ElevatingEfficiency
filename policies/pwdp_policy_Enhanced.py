@@ -30,17 +30,20 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     Also: The elevator will always follow the direction it advertised
     """
 
-    def __init__(self, peopleInElevatorButtonWeight=1, peopleFloorWeight=1, directionWeight=1, distanceWeight=1, distanceExponent=1, timeWeight=1):
+    def __init__(self, peopleInElevatorButtonWeight=1, timeWeight=1, peopleFloorWeight=1, directionWeight=1, competitorWeight=1,  distanceWeight=1, distanceExponent=1):
         self.prevAction = Action.Wait
         self.peopleInElevatorButtonWeight = peopleInElevatorButtonWeight
         self.peopleFloorWeight = peopleFloorWeight
         
-        super().__init__(elevatorButtonWeight=1, 
-                         floorButtonWeight=1, 
-                         directionWeight=directionWeight, 
-                         distanceWeight=distanceWeight, 
-                         distanceExponent=distanceExponent, 
-                         timeWeight=timeWeight)
+        super().__init__(
+            elevatorButtonWeight=1, 
+            timeWeight=timeWeight, 
+            floorButtonWeight=1, 
+            directionWeight=directionWeight, 
+            competitorWeight=competitorWeight,  
+            distanceWeight=distanceWeight, 
+            distanceExponent=distanceExponent
+        )
     
     # Override functions from PWDPPolicy, rest of the logic remains exactly the same
     def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
