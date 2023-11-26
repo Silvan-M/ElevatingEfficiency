@@ -22,8 +22,6 @@ class FCFSPolicy(Policy):
             elevator.target = target
             elevator.targetDirection = targetDirection
 
-            print(f"NewTarget: {target}, NewTargetDir: {targetDirection}, PrevAction: {self.prevAction.name}")
-
             if (target == currentFloor):
                 # New target is current floor, open doors
                 action = Action.WaitOpen
@@ -33,8 +31,6 @@ class FCFSPolicy(Policy):
             else:
                 # No new target or target is current floor, wait
                 action = Action.Wait
-
-            print("1: New action is " + action.name)
         elif (elevator.target == currentFloor or elevator.target == -1):
             # Was Action.MoveUp or Action.MoveDown, elevator has reached target or is idle, wait up or down
             if (elevator.targetDirection == 1):
@@ -46,15 +42,12 @@ class FCFSPolicy(Policy):
             else:
                 # We arrived at target, but have no further targets, wait
                 action = Action.WaitOpen
-            print("2: New action is " + action.name)
         elif (self.prevAction == Action.MoveUp):
             # Not reached target yet, continue moving up
             action = Action.MoveUp
-            print("3: New action is " + action.name)
         elif (self.prevAction == Action.MoveDown):
             # Not reached target yet, continue moving down
             action = Action.MoveDown
-            print(f"4: New action is {action.name}, Target: {elevator.target} , CurrentFloor {currentFloor}")
 
         # Safeguarding - Change direction if error occurred
         if ((action == Action.MoveDown or action == Action.WaitDown) and currentFloor == elevator.minFloor):

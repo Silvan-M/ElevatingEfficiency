@@ -169,7 +169,7 @@ class GameDisplay():
         self.stepInfo = None
 
     def getFloorColor(self, floorIndex, floorAmount):
-        cmap = plt.get_cmap('viridis')
+        cmap = plt.get_cmap('bone')
         colors = [cmap(i) for i in np.linspace(0, 1, floorAmount)]
         rgb_color = mcolors.to_rgb(colors[floorAmount - floorIndex - 1])
         return tuple(int(val * 255) for val in rgb_color)
