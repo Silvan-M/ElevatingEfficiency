@@ -1,9 +1,4 @@
 import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.animation import FuncAnimation
 from simulation_statistics import Objective
 import time
 import numpy as np
