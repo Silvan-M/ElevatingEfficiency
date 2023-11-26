@@ -21,6 +21,7 @@ class Simulation():
 
 
     def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
+        print("hi")
         stepAmount = (days * 24 * 60 * 60        
                     + hours * 60 * 60 +            
                     + minutes * 60              
