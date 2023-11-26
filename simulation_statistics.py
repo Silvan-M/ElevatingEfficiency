@@ -1,36 +1,28 @@
-from plotter import LivePlotter
-from plotter import Objective
+
 
 import matplotlib.pyplot as plt
 import csv
 import statistics
+from enum import Enum
 
-
+class Objective(Enum):
+    AWT = "average waiting time" # average waiting time
+    AWTSD = "standard deviation of waiting time" # average waiting time's standard deviation
+    ACE = "average crowededness" # average crowdedness in elevator
 
 class SimulationStatistics():
     
-    def __init__(self, simulation, plotters):
-        self.plotters = plotters
+    def __init__(self, simulation):
         simulation.onSimulationStarted.add_listener(self.onSimulationStarted)
         self.finishedTasks = {}
 
     def onSimulationStarted(self, simulation, stepAmount):
         building = simulation.building
-        simulation.onStepEnd.add_listener(self.onStepEnd)
         simulation.onSimulationFinished.add_listener(self.onSimulationFinished)
         building.onPassengerCreated.add_listener(self.onPassengerCreated)
         for e in building.elevators:
             e.onPassengerEntered.add_listener(self.onPassengerEntered)
             e.onPassengerExited.add_listener(self.onPassengerExited)
-
-        for p in self.plotters:
-            if isinstance(p, LivePlotter):
-                p.startPlot(simulation, stepAmount)
-
-    def onStepEnd(self, simulation, time):
-        for p in self.plotters:
-            if isinstance(p, LivePlotter):
-                p.step(simulation, self, time)
 
 
     def onSimulationFinished(self, simulation):
