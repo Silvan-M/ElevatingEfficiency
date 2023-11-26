@@ -69,6 +69,6 @@ class TimeDistribution:
             DB.pr("Func","getInterpolatedProb",message="function called",kwargs=[out],desc=["return value"])
         return out
     
-    class CustomDistribution(Distribution):
-        def __init__(self, distribution: list):
-            self.distribution = distribution
+class CustomDistribution(Distribution):
+    def __init__(self, distribution: list):
+        self.distribution = distribution
