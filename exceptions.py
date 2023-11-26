@@ -5,8 +5,8 @@ class Exceptions():
         pass
 
     def typeChecker(origin:str,param:list, check:list):
-        #print(C.ok("checking"+str(param)))
-        #print(C.ok("cmmp"+str(check)))
+        print(C.ok("checking"+str(param)))
+        print(C.ok("cmmp"+str(check)))
 
 
         if (len(param)!=len(check)):
@@ -25,8 +25,7 @@ class Exceptions():
                     print(C.error("["+origin+"] ERROR: Type "+(str(type(check[i])))+" was expected as "+(str(i))+"-th argument but "+(str(type(param[i])))+" was found"))
                     raise BaseException()
 
-
-            elif ((type((param[i]))!=check[i])):
+            elif ((type((param[i]))!=check[i]) and not (issubclass(type(param[i]),check[i])) ):
                 print(C.error("["+origin+"] ERROR: Type "+(str(check[i]))+" was expected as "+(str(i))+"-th argument but "+(str(type(param[i])))+" was found"))
                 raise BaseException()
             
@@ -53,7 +52,7 @@ class Exceptions():
                     raise BaseException()
 
 
-            elif ((type((param[i]))!=check[i])):
+            elif ((type((param[i]))!=check[i]) and not (issubclass(type(param[i]),check[i])) ):
                 print(C.error("["+origin+"] ERROR: Type "+(str(check[i]))+" was expected as "+(str(i))+"-th argument but "+(str(type(param[i])))+" was found"))
                 raise BaseException()
         return
