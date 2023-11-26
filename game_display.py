@@ -1,12 +1,10 @@
-
-from building import Building
-from elevator import Elevator
-from simulation import Simulation
-
 import pygame
 import sys
 import os
 import random
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import numpy as np
 
 seed_value = 5  
 random.seed(seed_value)
@@ -135,7 +133,7 @@ class GameDisplay():
         #Building
         buildingOffset = mul(self.buildingMargin, self.totScale)
         for y in range(self.floorAmount):
-            self.floorColors.append((random.randrange(256), random.randrange(256), random.randrange(256)))
+            self.floorColors.append(self.getFloorColor(y, self.floorAmount))
 
             for x in range(self.buildingWidth):
                 spriteBack = self.roomBackWindow
@@ -170,6 +168,11 @@ class GameDisplay():
         self.passengers = {}
         self.stepInfo = None
 
+    def getFloorColor(self, floorIndex, floorAmount):
+        cmap = plt.get_cmap('viridis')
+        colors = [cmap(i) for i in np.linspace(0, 1, floorAmount)]
+        rgb_color = mcolors.to_rgb(colors[floorAmount - floorIndex - 1])
+        return tuple(int(val * 255) for val in rgb_color)
 
 
     def getShaftLocation(self, elevatorIndex):
@@ -208,7 +211,7 @@ class GameDisplay():
             val = stepInfo.passengers[key]
             if(key not in self.passengers):     #Spawn new passenger
                 loc = self.getRandomPassengerLocation(val)
-                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, mul((10,19), self.scale), self.floorColors[val.target])
+                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, mul((10,19), self.scale), self.floorColors[self.floorAmount-1-val.target])
                 self.passengers[key] = pas
                 self.allSprites.add(pas.back)
                 self.allSprites.add(pas.front)
@@ -229,7 +232,12 @@ class GameDisplay():
                 self.allSprites.remove(val.back)
 
             
-
+    def renderText(self, txt, loc):
+        font = pygame.font.Font(None, 36 * self.scale)
+        text_surface = font.render(txt, True, (255,255,255))
+        text_rect = text_surface.get_rect()
+        text_rect.center = loc
+        self.screen.blit(text_surface, text_rect)
 
 
     def step(self, simulation):
@@ -244,10 +252,20 @@ class GameDisplay():
                 pygame.quit()
                 sys.exit()
 
+        #Sprites
         self.screen.fill(self.backgroundColor)
         self.allSprites.update()
         self.allSprites.draw(self.screen)
 
+        #Text
+        for f in building.floors:
+            y_coor = ((self.floorAmount - 1 - f.number) + self.buildingMargin[1]) * self.totScale + 16 * self.scale
+            self.renderText(str(len(f.passengerList)), (-16 * self.scale + self.buildingMargin[0] * self.totScale, y_coor))
+                            
+        for e in building.elevators:
+            self.renderText(str(len(e.passengerList)), ((self.getShaftLocation(e.elevatorIndex) + self.buildingMargin[0]) * self.totScale + 16 * self.scale, 
+                                                        self.screenTileAmount[1] * self.totScale - 16*self.scale))
+            
 
         # Update the display
         pygame.display.flip()

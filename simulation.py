@@ -34,7 +34,9 @@ class Simulation():
                 time.sleep(timeScale)
         self.onSimulationFinished.notify_all(self)
         self.statistics.writeToFile("results.txt")
-        print("Average waiting time: " + str(self.statistics.calculateAverageWaitingTime()))
+        out = self.statistics.calculateAverageWaitingTime()
+        print("Average waiting time: " + str(out))
+        return out
 
     def step(self):
         if (DB.simFctStep and ((self.time % int(DB.simTimeStepsSkip))==0)):
