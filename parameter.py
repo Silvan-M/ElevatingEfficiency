@@ -1,26 +1,45 @@
 from enum import Enum
 
 
-
 class Parameter(Enum):
-    ELEVMINFLOOR = [0,0]
-    ELEVMAXFLOOR = [0,1]
-    ELEVPOLICY = [0,2] 
-    ELEVPOLELBUTWEIGHT = [0,3,0]
-    ELEVPOLFLBUTWEIGHT = [0,3,1]
-    ELEVPOLDIRWEIGHT = [0,3,2]
-    ELEVPOLDISWEIGHT =  [0,3,3]
-    ELEVPOLDISEXPONENT = [0,3,4]
-    ELEVPOLTIMWEIGHT = [0,3,5]
-    ELEVCAPACITY = [0,4]
-    FLOORAMOUNT = [1]
-    SPWDSTRTYPE = [2]
-    TARDSTRTYPE = [3]  
-    TIMEDSTR = [4]
-    SPAWNEVERY = [5] 
+    FLOORAMOUNT = 1
+    SPWDSTRTYPE = 2
+    TARDSTRTYPE = 3
+    SPAWNEVERY = 5
 
-    def getVal(self):
-        print(self.value)
+    def case(self):
+        return 0
+
+class ElevatorParameter(Enum):
+    MINFLOOR = 0
+    MAXFLOOR = 1
+    POLICY= 2 
+    CAPACITY = 4
+    def case(self):
+        return 1
+
+
+class PolicyParameter(Enum):
+    ElEVBUTWEIGHT = 0
+    FLOORBUTWEIGHT = 1
+    DIRWEIGHT = 2
+    DISTWEIGHT =  3
+    DISTEXPONENT = 4
+    TIMEWEIGHT = 5
+    def case(self):
+        return 2 
+
+
+class TimeDistrParameter(Enum):
+    MAXPASSENGER = 1
+    TIMETYPE = 2
+    ADDPOINT = 3
+    def case(self):
+        return 3
+
+
+    
+
     
 
 
