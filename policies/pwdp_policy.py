@@ -8,7 +8,7 @@ class PWDPPolicy(Policy):
     based on parameters weighing the terms as described below:
     - elevatorButtonWeight: Award if elevator button pressed on floor i
     - timeWeight:           Award elevator buttons which were pressed a long time ago
-    - floorButtonWeight:    Award if floor button pressed on floor i
+    - floorButtonWeight:    Award floor buttons which were pressed a long time ago
     - directionWeight:      Award high amount of buttons pressed [above/below] floor i
     - competitorWeight:     Penalize direction in which other eleavtors are moving
     - distanceWeight:       Penalize high distance to target
@@ -17,7 +17,7 @@ class PWDPPolicy(Policy):
     The score for the i-th floor advertising [Up/Down] is calculated as follows:
     s1 = elevatorButtonWeight * elevatorButtons[i]
     s2 = timeWeight * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime
-    s3 = floorButtonWeight * floorButtons[i].move[Up/Down]
+    s3 = floorButtonWeight * floorButtons[i].move[Up/Down]*floorButtons[i].timeSincePressed / maxFloorButtonTime
     s4 = directionWeight * (floorButtonsPressed[Above/Below]) / (totalFloorButtonsPressed)
     s5 = competitorWeight * (amountOfElevatorsMoving[Above/Below]) / (totalAmountOfElevators)
     s6 = distanceWeight^(distanceExponent) * abs(currentFloor - i)
@@ -120,7 +120,6 @@ class PWDPPolicy(Policy):
         """
         Get the highest scored `[target, targetDirection]` in the advertised direction, returns `[target, targetDirection]`
         """
-        
         # Get all scores for each target and targetDirection
         scores = self._getScores(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection)
 
@@ -196,7 +195,23 @@ class PWDPPolicy(Policy):
         """
         Get s3, weighted amount of people in floor going in targetDirection (in the view of target)
         """
-        return self.floorButtonWeight * (floorButtons[target].moveUp if (targetDirection == 1) else floorButtons[target].moveDown)
+        buttonPressed = floorButtons[target].moveUp if (targetDirection == 1) \
+                              else floorButtons[target].moveDown
+        buttonPressedSince = time - floorButtons[target].lastPressedUp if (targetDirection == 1) \
+                                   else time - floorButtons[target].lastPressedDown
+
+        maxFloorButtonTime = 0
+
+        for i in range(len(floorButtons)):
+            if (floorButtons[i].lastPressedDown > maxFloorButtonTime):
+                maxFloorButtonTime = time - floorButtons[i].lastPressedDown
+            if (floorButtons[i].lastPressedUp > maxFloorButtonTime):
+                maxFloorButtonTime = time - floorButtons[i].lastPressedUp
+
+        if (maxFloorButtonTime == 0):
+            maxFloorButtonTime = 1
+
+        return self.floorButtonWeight * buttonPressed * buttonPressedSince / maxFloorButtonTime
     
     def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
