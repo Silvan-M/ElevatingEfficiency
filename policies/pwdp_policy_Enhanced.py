@@ -8,51 +8,92 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     Policy which gives each pair of (target, targetDestination)
     or in other words (floor, directionTakenAtFloor) a score,
     based on parameters weighing the terms as described below (changes are marked with *):
-    * peopleInElevatorButtonWeight: Amount of people, which pressed the elevator button to floor i
-    * peopleFloorWeight:            Amount of people waiting on floor
-    * directionWeight:              Weight of amount of people waiting above or below
-    - distanceWeight:               Distance to target
+    * peopleInElevatorButtonWeight: Award high amount of people that pressed elevator button for floor i
+    - timeWeight:                   Award high amount of elevator buttons which were pressed a long time ago
+    * peopleFloorWeight:            Award high amount of people waiting on floor i
+    * directionWeight:              Award high amount of people that pressed floor button [above/below] floor i
+    - competitorWeight:             Penalize direction in which other eleavtors are moving
+    - distanceWeight:               Penalize high distance to target
     - distanceExponent:             Exponent for distance
-    - timeWeight:                   Time since button was pressed
 
     The score for the i-th floor advertising [Up/Down] is calculated as follows (changes are marked with *):
-    A* = peopleInElevatorButtonWeight * amountOfPeopleInElevatorGoingToFloor(i)
-    B  = timeWeight * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime
-    C* = peopleFloorWeight * amountOfPeopleInFloor(i).moving[Up/Down]
-    D* = directionWeight * (amountOfPeople[Above/Below]Target) / (totalAmountOfPeopleInBuilding)
-    E  = distanceWeight^(distanceExponent) * abs(currentFloor - i)
+    s1* = peopleInElevatorButtonWeight * amountOfPeopleInElevatorGoingToFloor(i)
+    s2  = timeWeight * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime
+    s3* = peopleFloorWeight * amountOfPeopleInFloor(i).moving[Up/Down]
+    s4* = directionWeight * (amountOfPeople[Above/Below]Target) / (totalAmountOfPeopleInBuilding)
+    s5  = competitorWeight * (amountOfElevatorsMoving[Above/Below]) / (totalAmountOfElevators)
+    s6  = distanceWeight^(distanceExponent) * abs(currentFloor - i)
+
+    Additionally s3 = 0, s4 = 0, s5 = 0 if elevator capacity is reached
 
     Then the i-th floor advertising [Up/Down] will have score:
-    Score = A + B + D + C - E
+    Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
 
     Also: The elevator will always follow the direction it advertised
     """
 
-    def __init__(self, peopleInElevatorButtonWeight=1, peopleFloorWeight=1, directionWeight=1, distanceWeight=1, distanceExponent=1, timeWeight=1):
+    def __init__(self, peopleInElevatorButtonWeight=1, timeWeight=1, peopleFloorWeight=1, directionWeight=1, competitorWeight=1,  distanceWeight=1, distanceExponent=1):
         self.prevAction = Action.Wait
         self.peopleInElevatorButtonWeight = peopleInElevatorButtonWeight
         self.peopleFloorWeight = peopleFloorWeight
         
-        super().__init__(elevatorButtonWeight=1, 
-                         floorButtonWeight=1, 
-                         directionWeight=directionWeight, 
-                         distanceWeight=distanceWeight, 
-                         distanceExponent=distanceExponent, 
-                         timeWeight=timeWeight)
+        super().__init__(
+            elevatorButtonWeight=1, 
+            timeWeight=timeWeight, 
+            floorButtonWeight=1, 
+            directionWeight=directionWeight, 
+            competitorWeight=competitorWeight,  
+            distanceWeight=distanceWeight, 
+            distanceExponent=distanceExponent
+        )
+    
+    # Override functions from PWDPPolicy, rest of the logic remains exactly the same
+    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+        """
+        Get score for target and targetDirection
+        """
+        # Calculate score and firstly get s1, s2, s3, s4, s5, s6
+        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
 
-    def _amountOfPeopleInElevatorGoingToFloor(self, target, elevator):
+        if (elevator.capacity == len(elevator.passengerList)):
+            s3 = 0
+            s4 = 0
+            s5 = 0
+
+        return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
+
+    def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
-        Get amount of people in elevator going to target
+        Get s1, weighed amount of people in elevator going to target
         """
+        # Get amount of people in elevator going to target
         amount = 0
         for p in elevator.passengerList:
             if (p.endLevel == target):
                 amount += 1
-        return amount
     
-    def _getAmountOfPeopleInTargetDirectionNormalized(self, currentFloor, target, targetDirection):
+        return self.peopleInElevatorButtonWeight * amount
+    
+    def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
-        Get amount of people in target direction in normalized form (divided by total amount of people in building)
+        Get s3, weighed amount of people in floor moving in target direction
+        """
+        amountOfPeopleInFloorMovingInTargetDir = 0
+        for p in self._floorList[target].passengerList:
+            if (p.endLevel > target and targetDirection == Action.MoveUp) or \
+               (p.endLevel < target and targetDirection == Action.MoveDown):
+                amountOfPeopleInFloorMovingInTargetDir += 1
+        
+        return self.peopleFloorWeight * amountOfPeopleInFloorMovingInTargetDir
+    
+    def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+        """
+        Get s4, weighed amount of people in target direction normalized
         """
         amount = 0
         totalAmount = 0
@@ -68,26 +109,7 @@ class PWDPPolicyEnhanced(PWDPPolicy):
             
             amount += len(self._floorList[target].passengerList)
 
-        return amount / totalAmount
-
-    def _getScore(self, currentFloor, floorButtons, elevator, elevatorButtons, target, targetDirection, time):
-        """
-        Get score for target and targetDirection
-        """
-        maxElevatorButtonTime = time - self.minElevatorButtonTime if (self.minElevatorButtonTime != 0) else 1
-
-        amountOfPeopleInFloorMovingInTargetDir = 0
-        for p in self._floorList[target].passengerList:
-            if (p.endLevel > target and targetDirection == Action.MoveUp) or \
-               (p.endLevel < target and targetDirection == Action.MoveDown):
-                amountOfPeopleInFloor += 1
-
-        
-        A = self.peopleInElevatorButtonWeight * self._amountOfPeopleInElevatorGoingToFloor(target, elevator)
-        B = self.timeWeight * self._timeSinceElevatorButtonPressed(target, time) / maxElevatorButtonTime
-        C = self.peopleFloorWeight * amountOfPeopleInFloorMovingInTargetDir
-        D = self.directionWeight * self._getAmountOfPeopleInTargetDirectionNormalized(currentFloor, target, targetDirection)
-        E = abs(currentFloor - target) * self.distanceWeight ** (self.distanceExponent)
-        
-        return A + B + D + C - E
+        # Amount of people in target direction normalized
+        amountPeopleTargetDirection = amount / totalAmount
+        return self.directionWeight * amountPeopleTargetDirection
     

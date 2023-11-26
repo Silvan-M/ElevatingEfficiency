@@ -8,22 +8,22 @@ from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
+from simulation_plotter import SimulationPlotter
+from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
 
 floorAmount = 10
 if (DB.mnStart):
     DB.pr("File","Main",message="Simulation started")
-
 simulation = Simulation(
     Building(
             elevators = [
-                Elevator(0, floorAmount-1, LOOKPolicy(), 0, 10),
-                Elevator(0, floorAmount-1, LOOKPolicy(), 1, 10),
+                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
             ],
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             targetDistribution = Distribution(floorAmount, DistrType.UNIFORM),
             timeDistribution = TimeDistribution(1, "h", [(1, 1), (1, 1)]),
-            spawnEvery = 10
+            spawnEvery = 30
         )
 )
 if (DB.mnSetup):
@@ -32,7 +32,7 @@ if (DB.mnSetup):
 game = GameDisplay(simulation, 2)
 plot = SimulationStatistics(simulation, [LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])])
 
-simulation.run(seconds=500, timeScale=.01)
+simulation.run(minutes=500, timeScale=.01)
 
 
 if (DB.mnEnd):

@@ -22,14 +22,17 @@ class FCFSPolicy(Policy):
             elevator.target = target
             elevator.targetDirection = targetDirection
 
-            if (target != -1 and targetDirection != 0):
+            if (target == currentFloor):
+                # New target is current floor, open doors
+                action = Action.WaitOpen
+            if (target != -1):
                 # New target in different floor, move
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
             else:
                 # No new target or target is current floor, wait
                 action = Action.Wait
         elif (elevator.target == currentFloor or elevator.target == -1):
-            # Elevator has reached target or is idle, wait up or down
+            # Was Action.MoveUp or Action.MoveDown, elevator has reached target or is idle, wait up or down
             if (elevator.targetDirection == 1):
                 # Arrived at target, advertise up
                 action = Action.WaitUp
@@ -48,10 +51,10 @@ class FCFSPolicy(Policy):
 
         # Safeguarding - Change direction if error occurred
         if ((action == Action.MoveDown or action == Action.WaitDown) and currentFloor == elevator.minFloor):
-            print(f"WARNING: Elevator tried {action} from min floor {currentFloor}, {elevator.target}")
+            print(f"WARNING: Elevator tried {action} from min floor {currentFloor}, Target: {elevator.target}")
             action = Action.MoveUp
         elif ((action == Action.MoveUp or action == Action.WaitUp) and currentFloor == elevator.maxFloor):
-            print(f"WARNING: Elevator tried {action} from max floor")
+            print(f"WARNING: Elevator tried {action} from max floor {currentFloor}, Target: {elevator.target}")
             action = Action.MoveDown
         
         # Safeguarding - Print warning if elevator did not follow advertised direction
@@ -73,15 +76,16 @@ class FCFSPolicy(Policy):
         self._updateFutureTargets(elevatorButtons, elevator, currentFloor)
         
         # Check if there are still future targets (of passengers in elevator)
-        if (len(self.futureTargets) > 0):
-            target, targetDirection = self.futureTargets[0]
-            self.futureTargets = self.futureTargets[1:]
+        while ((target == -1 or target == currentFloor) and len(self.futureTargets) > 0):
+                target, targetDirection = self.futureTargets[0]
+                self.futureTargets = self.futureTargets[1:]
 
-            # If no future targets left, advertise no direction at arrival
+        if (target != -1 and target != currentFloor):
+            # Found target, If no future targets left, advertise no direction at arrival
             if (len(self.futureTargets) == 0):
                 targetDirection = 0
-        else:
-            # Check if there are passengers (outside of elevator) waiting
+        elif (target == -1 or target == currentFloor):
+            # Did not find target, Check if there are passengers (outside of elevator) waiting
             for i, button in enumerate(floorButtons):
                 if (button.moveUp or button.moveDown):
                     target = i
