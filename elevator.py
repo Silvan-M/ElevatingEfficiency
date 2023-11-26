@@ -45,7 +45,7 @@ class Elevator:
 
         currentFloor = self.getCurrentFloor()
 
-        if(self.decision == Action.Wait):
+        if(self.decision == Action.Wait or self.decision == Action.WaitOpen):
             # Waiting, get decision from policy
             self.decision = self.policy.getAction(currentFloor, building.floors, self.elevatorButtons, building.elevators, self, time)
         elif (self.decision == Action.WaitUp or self.decision == Action.WaitDown):

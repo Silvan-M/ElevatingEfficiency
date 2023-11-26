@@ -39,7 +39,7 @@ class Policy():
         if ((not DB.pcyActionUpdate) and DB.pcyActionUpdateSelect and (out.value in DB.pcyActionUpdateSelection)):
             DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
 
-        ''' TODO: Move this to debug.py
+        ''' TODO: Move this to debug.py'''
         str = f"Elevator {elevator.elevatorIndex} on \033[93mFloor: {currentFloor}\033[0m with {len(elevator.passengerList)} passengers, pAction: {out}, Target: {elevator.target}, TargetDir: {elevator.targetDirection} \n  Floors: ["
         for floor in floorList:
             suffix = ""
@@ -59,7 +59,7 @@ class Policy():
                 suffix = "0/0"
             str += f"{floor.number}:"+suffix+", "
         print(str[0:-2] + "]")
-        '''
+        
 
         return out
     
