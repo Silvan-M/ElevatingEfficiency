@@ -26,13 +26,13 @@ class Simulation():
                     + minutes * 60              
                     + seconds)
         
-        self.onSimulationStarted(self)
+        self.onSimulationStarted.notify_all(self)
         for i in range(stepAmount):
             self.step()
 
             if(timeScale > 0):
                 time.sleep(timeScale)
-        self.onSimulationFinished(self)
+        self.onSimulationFinished.notify_all(self)
         self.statistics.writeToFile("results.txt")
         print("Average waiting time: " + str(self.statistics.calculateAverageWaitingTime()))
 
