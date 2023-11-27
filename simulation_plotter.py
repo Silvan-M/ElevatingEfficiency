@@ -86,7 +86,7 @@ class SimulationPlotter():
             self._initPolicy(i)
             elevators.append(Elevator(self.elevatorArgs[i][0],self.elevatorArgs[i][1],self.elevatorsInit[i],self.elevatorArgs[i][3]))
 
-        building = Building(elevators,self.floorAmount,spawnDistribution,targetDistribution,timeDistribution,self.spawnEvery)
+        building = Building(elevators,self.floorAmount,spawnDistribution,targetDistribution,timeDistribution)
         return Simulation(building)
 
 
@@ -180,7 +180,7 @@ class SimulationPlotter():
 
 
 x = SimulationPlotter( elevatorArgs=[[0, 9, [PWDPPolicy,1,1,1,1,1,1], 10]])
-x.continuous_2d_plotter_avg(100,Objective.AWT,PolicyParameter.DIRWEIGHT,0,5,10)
+x.continuous_2d_plotter_avg(100,Objective.AWT,PolicyParameter.ElEVBUTWEIGHT,0,5,10)
 
 
 
