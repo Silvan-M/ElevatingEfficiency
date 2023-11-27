@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from scipy.interpolate import interp2d
 
-class Comparative_3d_plotter():
+class Plotter3D():
     def __init__(self,objective:Objective, objectiveData:list, param1Data:list,param2Data:list) -> None:
         self.param1Data = param1Data
         self.param2Data = param2Data
