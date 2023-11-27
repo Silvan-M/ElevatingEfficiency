@@ -45,7 +45,10 @@ def add(v1, v2):
     return tuple(a + r for a, r in zip(v1, v2))
 
 def mul(v1, c):
-    return tuple(e * c for e in v1)       
+    return tuple(e * c for e in v1)    
+
+def vround(v1):
+    return tuple(round(e) for e in v1)   
 
 def lerp(v1, v2, a):
     tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
@@ -96,7 +99,7 @@ class GameDisplay():
     def startSimulation(self, simulation, stepAmount):
         building = simulation.building
         self.tileSize = 32
-        self.totScale = self.tileSize*self.scale
+        self.totScale = round(self.tileSize*self.scale)
 
         self.floorAmount = building.floorAmount
         self.additionalBuildingWidth = 3
@@ -217,7 +220,7 @@ class GameDisplay():
             val = stepInfo.passengers[key]
             if(key not in self.passengers):     #Spawn new passenger
                 loc = self.getRandomPassengerLocation(val)
-                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, mul((10,19), self.scale), self.floorColors[self.floorAmount-1-val.target])
+                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, vround(mul((10,19), self.scale)), self.floorColors[self.floorAmount-1-val.target])
                 self.passengers[key] = pas
                 self.allSprites.add(pas.back)
                 self.allSprites.add(pas.front)
@@ -239,7 +242,7 @@ class GameDisplay():
 
             
     def renderText(self, txt, loc):
-        font = pygame.font.Font(None, 36 * self.scale)
+        font = pygame.font.Font(None, round(36 * self.scale))
         text_surface = font.render(txt, True, (255,255,255))
         text_rect = text_surface.get_rect()
         text_rect.center = loc

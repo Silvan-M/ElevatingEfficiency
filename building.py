@@ -6,7 +6,7 @@ from debug import Debug as DB
 
 class Building():
 
-    def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution, spawnEvery=1):
+    def __init__(self, elevators, floorAmount, spawnDistribution, targetDistribution, timeDistribution):
         self.onPassengerCreated = Delegate()
         self.elevators = elevators
         self.spawnDistribution = spawnDistribution
@@ -14,7 +14,6 @@ class Building():
         self.floorAmount = floorAmount
         self.timeDistribution = timeDistribution
         self.floors = []
-        self.spawnEvery = spawnEvery
 
         for i in range(floorAmount):
             self.floors.append(Floor(i))
@@ -31,12 +30,11 @@ class Building():
             DB.pr("Func","step",message="function was called")
 
         # Spawn new passengers
-        if (time % self.spawnEvery == 0):
-            spawnedPeople = int(self.timeDistribution.getInterpolatedProb(time))
-            if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
-                DB.pr("Func","spawnPassenger",message="function was called",t=time)
-            for i in range(spawnedPeople):
-                self.spawnPassenger(time)
+        spawnedPeople = round(self.timeDistribution.getRandomProb(time))
+        if (DB.bldFctSpawnPassenger and ((time % int(DB.bldFctSpawnPassengerStepsSkip))==0)):
+            DB.pr("Func","spawnPassenger",message="function was called",t=time)
+        for i in range(spawnedPeople):
+            self.spawnPassenger(time)
 
         for elevator in self.elevators:
             elevator.step(time, self)

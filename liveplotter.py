@@ -1,9 +1,4 @@
 import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.animation import FuncAnimation
 from simulation_statistics import Objective
 import time
 import numpy as np
@@ -58,10 +53,9 @@ class LivePlotter():
             new_data_points[Objective.AWTSD] = 0 if len(waiters) == 0 else np.std(waiters)
 
         if Objective.ACE in self.objectives:
-            count = sum(len(e.passengerList) for e in building.elevators)
-            new_data_points[Objective.ACE] = count / len(building.elevators)
-
-        for objective in self.objectives:
+            new_data_points[Objective.ACE] = statistics.crowdedness[-1]
+        
+        for objective in self.objectives:   
             self.live_data[objective].append(new_data_points[objective])
 
         for objective in self.objectives:
