@@ -5,7 +5,6 @@ class Parameter(Enum):
     FLOORAMOUNT = 1
     SPWDSTRTYPE = 2
     TARDSTRTYPE = 3
-    SPAWNEVERY = 5
 
     def case(self):
         return 0

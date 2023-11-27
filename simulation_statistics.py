@@ -90,7 +90,7 @@ class SimulationStatistics():
         elif (obj == Objective.ACE):
             result = [self.calculateAverageCrowdedness(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
 
-        return result if timestep != -1 else result[0]
+        return result if timestep != maxTime else result[0]
     
     def getObjectives(self,objs : [Objective], timestep=-1):
         return [self.getObjective(obj, timestep) for obj in objs]

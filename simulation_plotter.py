@@ -19,8 +19,7 @@ class SimulationPlotter():
         floorAmount = 10, 
         spawnDistrArgs=[10, DistrType.UNIFORM],
         targetDistrArgs=[10, DistrType.UNIFORM],
-        timeDistrArgs = [1, "h", [(1, 1), (1, 1)]],
-        spawnEveryArgs = 10) -> None:
+        timeDistrArgs = [1, "h", [(1, 1), (1, 1)]]) -> None:
         
         
         self.elevatorArgs = elevatorArgs
@@ -29,38 +28,53 @@ class SimulationPlotter():
         self.spawnDistrArgs= spawnDistrArgs
         self.targetDistrArgs= targetDistrArgs
         self.timeDistrArgs = timeDistrArgs 
-        self.spawnEvery = spawnEveryArgs
 
 
 
-    def continuous_2d_plotter(self,obj:Objective,param:Parameter,startVal,endVal,steps):
+    def continuous_2d_plotter(self,obj:list,param:Parameter,startVal,endVal,steps):
+        objList = obj
         objectiveData = []
+        objectiveNames = []
+        for i in range(len(objList)):
+            objectiveNames.append(objList[i].value)
+            objectiveData.append([])
         parameterData = np.linspace(startVal,endVal,num=steps)
+        
         for i in range(len(parameterData)):
             self._updateHandler(param,parameterData[i])
             simulation = self._init()
             simulation.run(minutes=500, timeScale=-1)
-            objectiveData.append((round(simulation.statistics.getObjective(obj)),3))
-        plt = P2D(parameterData,param.name(),objectiveData,obj.value)
+            for q in range(len(objList)):
+                objectiveData[q].append((round(simulation.statistics.getObjective(objList[q]),3)))
+
+        plt = P2D(parameterData,param.name(),objectiveData,objectiveNames)
         plt.plotNormal()
 
-    def continuous_2d_plotter_avg(self,trials:int,obj:Objective,param:Parameter,startVal,endVal,steps):
+    def continuous_2d_plotter_avg(self,trials:int,obj:list,param:Parameter,startVal,endVal,steps):
+        objList = obj
         objectiveData = []
-        objectiveTemp=[]
+        objectiveNames = []
+        objectiveTemp = []
+        for i in range(len(objList)):
+            objectiveNames.append(objList[i].value)
+            objectiveData.append([])
+            objectiveTemp.append([])
         parameterData = np.linspace(startVal,endVal,num=steps)
 
     
         for i in range(len(parameterData)):
-            for a in range(trials):
+            print("round "+str(i))
+            for a in range(trials):  
                 self._updateHandler(param,parameterData[i])
                 simulation = self._init()
-                simulation.run(minutes=500, timeScale=-1)
-                objectiveTemp.append((simulation.statistics.getObjective(obj)))
-            
-            self._delNone(objectiveTemp)
-            objectiveData.append(round(np.mean(objectiveTemp),3))
-            objectiveTemp=[]
-        plt = P2D(parameterData,param.name(),objectiveData,obj.value)
+                simulation.run(minutes=100, timeScale=-1)
+                for q in range(len(objList)):
+                    objectiveTemp[q].append((round(simulation.statistics.getObjective(objList[q]),3)))
+            for q in range(len(objList)):
+                self._delNone(objectiveTemp[q])
+                objectiveData[q].append(round(np.mean(objectiveTemp[q]),3))
+                objectiveTemp[q]=[]
+        plt = P2D(parameterData,param.name(),objectiveData,objectiveNames)
         plt.plotNormal()
         
         
@@ -86,7 +100,7 @@ class SimulationPlotter():
             self._initPolicy(i)
             elevators.append(Elevator(self.elevatorArgs[i][0],self.elevatorArgs[i][1],self.elevatorsInit[i],self.elevatorArgs[i][3]))
 
-        building = Building(elevators,self.floorAmount,spawnDistribution,targetDistribution,timeDistribution,self.spawnEvery)
+        building = Building(elevators,self.floorAmount,spawnDistribution,targetDistribution,timeDistribution)
         return Simulation(building)
 
 
@@ -132,8 +146,6 @@ class SimulationPlotter():
                 self.spawnDistrArgs[1] = newVal
             case 3:
                 self.targetDistrArgs[1] = newVal
-            case 5:
-                self.spawnEvery = newVal
         
     def _updatePolicy(self,param,newVal,index:int):
         if (param.value==-1):
@@ -170,7 +182,6 @@ class SimulationPlotter():
         print(self.spawnDistrArgs)
         print(self.targetDistrArgs)
         print(self.timeDistrArgs)
-        print(self.spawnEvery)
     
     def _delNone(self,lst:list):
         for i in sorted(range(len(lst)),reverse=True):
@@ -179,8 +190,8 @@ class SimulationPlotter():
 
 
 
-x = SimulationPlotter( elevatorArgs=[[0, 9, [PWDPPolicy,1,1,1,1,1,1], 10]])
-x.continuous_2d_plotter_avg(100,Objective.AWT,PolicyParameter.DIRWEIGHT,0,5,10)
+x = SimulationPlotter(elevatorArgs=[[0, 9, [PWDPPolicy,1,1,1,1,1,1], 10]])
+x.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,100)
 
 
 
