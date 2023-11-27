@@ -109,6 +109,9 @@ class PWDPPolicyEnhanced(PWDPPolicy):
             
             amount += len(self._floorList[target].passengerList)
 
+        if (totalAmount == 0):
+            totalAmount = 1
+
         # Amount of people in target direction normalized
         amountPeopleTargetDirection = amount / totalAmount
         return self.directionWeight * amountPeopleTargetDirection

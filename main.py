@@ -10,28 +10,14 @@ from distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
 from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
 
-floorAmount = 100
+floorAmount = 10
 if (DB.mnStart):
     DB.pr("File","Main",message="Simulation started")
 simulation = Simulation(
     Building(
             elevators = [
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
-                Elevator(0, floorAmount-1, PWDPPolicy(), 20),
+                Elevator(0, floorAmount-1, SCANPolicy(), 20),
+                Elevator(0, floorAmount-1, SCANPolicy(), 20),
             ],
             floorAmount = floorAmount,
             spawnDistribution = Distribution(floorAmount, DistrType.UNIFORM),
@@ -42,12 +28,10 @@ simulation = Simulation(
 if (DB.mnSetup):
     print(simulation)
 
+game = GameDisplay(simulation, 2)
 livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
-game = GameDisplay(simulation, 0.3)
 
 simulation.run(seconds=5000, timeScale=-1)
-
-print(simulation.statistics.getObjective(Objective.ACE, 50))
 
 
 if (DB.mnEnd):
