@@ -1,5 +1,4 @@
-
-
+import sys
 import matplotlib.pyplot as plt
 import csv
 import statistics
@@ -14,7 +13,9 @@ class SimulationStatistics():
     
     def __init__(self, simulation):
         simulation.onSimulationStarted.add_listener(self.onSimulationStarted)
+        simulation.onStepEnd.add_listener(self.onStepEnd)
         self.finishedTasks = {}
+        self.crowdedness = []
 
     def onSimulationStarted(self, simulation, stepAmount):
         building = simulation.building
@@ -24,10 +25,14 @@ class SimulationStatistics():
             e.onPassengerEntered.add_listener(self.onPassengerEntered)
             e.onPassengerExited.add_listener(self.onPassengerExited)
 
+    def onStepEnd(self, simulation, time):
+        building = simulation.building
+        count = sum(len(e.passengerList) for e in building.elevators)
+        self.crowdedness.append(count / len(building.elevators))
 
     def onSimulationFinished(self, simulation):
         time = simulation.time
-        #Augment data for those who didn't finish in time
+        # Augment data for those who didn't finish in time
         for t in self.finishedTasks:
             val = self.finishedTasks[t]
             if val.waitingTime < 0:
@@ -62,21 +67,33 @@ class SimulationStatistics():
                                     'WaitingTime': task.waitingTime,
                                     'TotalTime': task.totalTime})
 
-    def calculateAverageWaitingTime(self):
-        waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.waitingTime >= 0]
+    def calculateAverageWaitingTime(self, fromTime=-1, toTime=sys.maxsize):
+        waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
         return statistics.mean(waiting_times) if waiting_times else None
 
-    def calculateStdDevWaitingTime(self):
-        waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.waitingTime >= 0]
+    def calculateStdDevWaitingTime(self, fromTime=-1, toTime=sys.maxsize):
+        waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
         return statistics.stdev(waiting_times) if len(waiting_times) > 1 else None
     
-    def getObjective(self,obj : Objective):
-        
-        if (obj == Objective.AWT):
-            return self.calculateAverageWaitingTime()
-        elif (obj == Objective.AWTSD):
-            return self.calculateStdDevWaitingTime()
+    def calculateAverageCrowdedness(self, fromTime=-1, toTime=sys.maxsize):
+        return statistics.mean(self.crowdedness[fromTime:toTime]) if self.crowdedness else None
+    
+    def getObjective(self,obj : Objective, timestep=-1):
+        maxTime = max([task.startTime for task in self.finishedTasks.values()])
+        timestep = maxTime if timestep == -1 else timestep
+        result = None
 
+        if (obj == Objective.AWT):
+            result = [self.calculateAverageWaitingTime(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+        elif (obj == Objective.AWTSD):
+            result = [self.calculateStdDevWaitingTime(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+        elif (obj == Objective.ACE):
+            result = [self.calculateAverageCrowdedness(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+
+        return result if timestep != -1 else result[0]
+    
+    def getObjectives(self,objs : [Objective], timestep=-1):
+        return [self.getObjective(obj, timestep) for obj in objs]
 
 class FinishInfo():
     def __init__(self, id, start, target, startTime):
