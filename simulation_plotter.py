@@ -9,6 +9,7 @@ from plotter.plotter2D import Plotter2D as P2D
 from building import Building
 from simulation import Simulation
 from simulation_statistics import Objective
+from progress_bar import ProgressBar
 
 import numpy as np
 
@@ -32,6 +33,7 @@ class SimulationPlotter():
 
 
     def continuous_2d_plotter(self,obj:list,param:Parameter,startVal,endVal,steps):
+        
         objList = obj
         objectiveData = []
         objectiveNames = []
@@ -60,11 +62,12 @@ class SimulationPlotter():
             objectiveData.append([])
             objectiveTemp.append([])
         parameterData = np.linspace(startVal,endVal,num=steps)
+        bar = ProgressBar(len(parameterData)*trials,"Simulating: ")
 
     
         for i in range(len(parameterData)):
-            print("round "+str(i))
             for a in range(trials):  
+                bar.update()
                 self._updateHandler(param,parameterData[i])
                 simulation = self._init()
                 simulation.run(minutes=100, timeScale=-1)
@@ -189,9 +192,8 @@ class SimulationPlotter():
                 lst.pop(i)
 
 
-
 x = SimulationPlotter(elevatorArgs=[[0, 9, [PWDPPolicy,1,1,1,1,1,1], 10]])
-x.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,100)
+x.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.ElEVBUTWEIGHT,0,5,1000)
 
 
 

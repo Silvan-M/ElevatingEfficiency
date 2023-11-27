@@ -42,7 +42,7 @@ class SimulationStatistics():
 
         self.writeToFile("results.txt")
         out = self.calculateAverageWaitingTime()
-        print("Average waiting time: " + str(out))
+        #print("Average waiting time: " + str(out))
 
     def onPassengerCreated(self, passenger, time):
         self.finishedTasks[passenger.id] = FinishInfo(passenger.id, passenger.startLevel, passenger.endLevel, passenger.startTime)
