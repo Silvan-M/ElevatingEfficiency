@@ -6,7 +6,7 @@ from simulation_statistics import Objective
 from liveplotter import LivePlotter
 from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distributions import ShoppingMallDistribution
+from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
 
@@ -43,6 +43,9 @@ hours, minutes, seconds = 0, 0, 0
 # Elevator parameters: [startFloor, endFloor, policy, capacity]
 # Example: [Elevator(0, floorAmount-1, SCANPolicy(), 20)]
 
+# Window size of the GUI
+windowSize = 2
+
 ## --- END OF SETTINGS --- ##
 
 if (not isCustomScenario):
@@ -52,7 +55,8 @@ if (not isCustomScenario):
     for i in range(amountOfElevators):
         elevators.append(Elevator(0, floorAmount-1, policy(), distribution.elevatorCapacity))
 
-    hours, minutes, seconds = 12, 0, 0
+    hours, minutes, seconds = 3, 0, 0
+    windowSize = 2//(floorAmount//10)
 
 
 if (DB.mnStart):
@@ -72,7 +76,7 @@ if (DB.mnSetup):
     print(simulation)
 
 if (showGui):
-    game = GameDisplay(simulation, 2)
+    game = GameDisplay(simulation, windowSize)
 
 if (showLivePlot):
     livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])

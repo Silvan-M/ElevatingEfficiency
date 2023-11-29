@@ -39,12 +39,23 @@ class FloorDistribution():
         
 class EqualFloorDistribution(FloorDistribution):
     """
-    A distribution of how many passengers per floor at a fixed time point.
+    A distribution with equal probability for every floor.
     """
     def __init__(self, amountFloors: int):
         self.distribution = []
         for _ in range(amountFloors):
             self.distribution.append(1.0/amountFloors)
+
+class PeakFloorDistribution(FloorDistribution):
+    """
+    A distribution with a peak probability for a specific floor.
+    """
+    def __init__(self, amountFloors: int, peakFloor: int, multiplier: int):
+        self.distribution = []
+        for _ in range(amountFloors):
+            self.distribution.append(1.0/amountFloors)
+        self.distribution[peakFloor] = self.distribution[peakFloor] * multiplier
+        
 
 class TimeDistribution:
     """
@@ -54,18 +65,20 @@ class TimeDistribution:
         self.data = []
         self.probabilities = None
 
+        newData = []
+
         for (time, probability) in data:
             if timeType == "m":
                 time = time * 60
             elif timeType == "h":
                 time = time * 60 * 60
-            self.data.append((time, probability))
-        self.addData(self.data)
+            newData.append((time, probability))
+        self.addData(newData)
 
     def addData(self, data):
         self.data.extend(data)
         times, people = zip(*self.data)
-        self.probabilities = [p / max(people) for p in people]
+        self.probabilities = people
         self.maxTime = max(times)
 
     def getInterpolatedProb(self, time):

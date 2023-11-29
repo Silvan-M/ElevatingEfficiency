@@ -32,7 +32,6 @@ class Building():
             DB.pr("Func","spawnPassenger",message="function was called",t=time)
 
         spawnedPeople = self.distribution.getPassengersToSpawn(time)
-        print(spawnedPeople)
 
         for spawn, target in spawnedPeople:
             self.spawnPassenger(time, spawn, target)
