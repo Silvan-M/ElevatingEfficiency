@@ -33,6 +33,7 @@ class Building():
 
         spawnedPeople = self.distribution.getPassengersToSpawn(time)
         print(spawnedPeople)
+
         for spawn, target in spawnedPeople:
             self.spawnPassenger(time, spawn, target)
 

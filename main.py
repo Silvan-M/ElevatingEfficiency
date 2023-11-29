@@ -52,7 +52,7 @@ if (not isCustomScenario):
     for i in range(amountOfElevators):
         elevators.append(Elevator(0, floorAmount-1, policy(), distribution.elevatorCapacity))
 
-    hours, minutes, seconds = 8, 0, 0
+    hours, minutes, seconds = 12, 0, 0
 
 
 if (DB.mnStart):

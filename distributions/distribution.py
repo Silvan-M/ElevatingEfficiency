@@ -14,6 +14,9 @@ class FloorDistribution():
     def __str__(self) -> str:
         return DB.str("Class","Distribution",kwargs=[self.distribution],desc=["distribution"])
 
+    def updateDistribution(self, distribution):
+        self.distribution = distribution
+
     def isChosen(self, index):
         out = self.getRandomIndex(index) > random.random()
         if (DB.dsrFctIsChosen):
@@ -26,12 +29,13 @@ class FloorDistribution():
             DB.pr("Func","getIndexProb",message="function called",kwargs=[out],desc=["return value"])
         return out
     
-    def getRandomIndex(self):
-        out = random.choices(len(self.distribution), weights=self.distribution, k=1)[0].number
+    def getRandomIndex(self, exclude=None):
+        indices = [i for i, _ in enumerate(self.distribution) if i != exclude]
+        weights = [self.distribution[i] for i in indices]
+        index = random.choices(indices, weights=weights, k=1)[0]
         if (DB.dsrFctRandomIndex):
-            DB.pr("Func","getRandomIndex",message="function called",kwargs=[out],desc=["return value"])
-
-        return out
+            DB.pr("Func","getRandomIndex",message="function called",kwargs=[index],desc=["return value"])
+        return index
         
 class EqualFloorDistribution(FloorDistribution):
     """
@@ -92,6 +96,10 @@ class TimeSpaceDistribution():
         self.maxTime = 0
         self.floorAmount = 0
 
+        # Create reusable empty floor distributions (to save memory)
+        self.distribution1 = FloorDistribution([])
+        self.distribution2 = FloorDistribution([])
+
         # Raise Exception if the data is null
         if data is None:
             raise Exception("Data cannot be null.")
@@ -130,11 +138,9 @@ class TimeSpaceDistribution():
         for _ in range(amount):
             # Get the spawn and target floor
             spawnFloor = floorSpawnDistribution.getRandomIndex()
-            targetFloor = floorTargetDistribution.getRandomIndex()
-            
-            # Make sure that the target floor is not the same as the spawn floor
-            while targetFloor == spawnFloor:
-                targetFloor = floorTargetDistribution.getRandomIndex()
+
+            # Get the target floor, exclude the spawn floor
+            targetFloor = floorTargetDistribution.getRandomIndex(spawnFloor)
 
             spawnPassengers.append((spawnFloor, targetFloor))
 
@@ -145,11 +151,11 @@ class TimeSpaceDistribution():
         """
         Returns a list of tuples (spawnDistribution, targetDistribution) of the passengers that spawn at the given time.
         """
-        # Get the probabilities of the floor distributions
-        spawnProbabilities = [floor.getInterpolatedProb(time) for floor in self.floorSpawnDistribution]
-        targetProbabilities = [floor.getInterpolatedProb(time) for floor in self.floorTargetDistribution]
+        # Get the probabilities of the floor distributions, use reusable to save memory
+        self.distribution1.updateDistribution([floor.getInterpolatedProb(time) for floor in self.floorSpawnDistribution])
+        self.distribution2.updateDistribution([floor.getInterpolatedProb(time) for floor in self.floorTargetDistribution])
 
-        return FloorDistribution(spawnProbabilities), FloorDistribution(targetProbabilities)
+        return self.distribution1, self.distribution2
 
     def getSpawnAmount(self, time):
         """
@@ -157,7 +163,7 @@ class TimeSpaceDistribution():
         """
         # Get the interpolated probability of the time distribution
         mean = self.timeDistribution.getInterpolatedProb(time)*self.maxPassengers
-        
+
         # Use the exponential distribution to get the amount of passengers that spawn (for maxPassengers < 1)
         random_value = round(np.random.exponential(scale=mean))
         return random_value
