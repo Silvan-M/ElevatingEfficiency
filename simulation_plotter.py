@@ -210,12 +210,12 @@ if (not isCustomScenario):
     amountOfElevators = dist.amountOfElevators
     for i in range(amountOfElevators):
         elevatorArgs.append([0, floorAmount, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
-x = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
+plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 
 
 ## --- START OF PLOTTER SETTINGS --- ##
 # Call the plotter functions here
 
-x.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.ElEVBUTWEIGHT,0,5,1000)
+plt.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.ElEVBUTWEIGHT,0,5,1000)
 
 ## --- END OF PLOTTER SETTINGS --- ##
