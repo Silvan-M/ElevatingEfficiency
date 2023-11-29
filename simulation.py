@@ -18,13 +18,18 @@ class Simulation():
     def __str__(self,level=0) -> str:
         out = DB.str("Class","Simulation",kwargs=[self.time,self.building],desc=["time","building"])
         return out
-
-
-    def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
-        stepAmount = (days * 24 * 60 * 60        
+    
+    def _convertTime(self, days=0, hours=0, minutes=0, seconds=0):
+        return (days * 24 * 60 * 60        
                     + hours * 60 * 60 +            
                     + minutes * 60              
                     + seconds)
+
+    def setTime(self, days=0, hours=0, minutes=0, seconds=0):
+        self.time = self._convertTime(days, hours, minutes, seconds)
+
+    def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
+        stepAmount = self._convertTime(days, hours, minutes, seconds)
         
         self.onSimulationStarted.notify_all(self, stepAmount)
         for i in range(stepAmount):
