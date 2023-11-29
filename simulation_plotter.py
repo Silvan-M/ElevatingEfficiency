@@ -1,6 +1,6 @@
 from policies import Policy
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distributions.distribution import Distribution, DistrType, TimeDistribution
+from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyParameter
 from exceptions import Exceptions as EXC
@@ -17,19 +17,13 @@ class SimulationPlotter():
     def __init__(
         self,
         elevatorArgs=[[0, 9, [LOOKPolicy], 10]], 
-        floorAmount = 10, 
-        spawnDistrArgs=[10, DistrType.UNIFORM],
-        targetDistrArgs=[10, DistrType.UNIFORM],
-        timeDistrArgs = [1, "h", [(1, 1), (1, 1)]]) -> None:
+        distrType=ShoppingMallDistribution):
         
-        
+        self.distribution = distrType()
+        self.floorAmount = self.distribution.floorAmount
+
         self.elevatorArgs = elevatorArgs
         self.elevatorsInit = [0]*len(elevatorArgs)
-        self.floorAmount = floorAmount
-        self.spawnDistrArgs= spawnDistrArgs
-        self.targetDistrArgs= targetDistrArgs
-        self.timeDistrArgs = timeDistrArgs 
-
 
 
     def continuous_2d_plotter(self,obj:list,param:Parameter,startVal,endVal,steps):
@@ -93,17 +87,12 @@ class SimulationPlotter():
 
 
     def _init(self):
-        spawnDistribution = Distribution(*self.spawnDistrArgs)
-        targetDistribution = Distribution(*self.targetDistrArgs)
-        timeDistribution = TimeDistribution(*self.timeDistrArgs)
         elevators=[]
-        
-
         for i in range(len(self.elevatorArgs)):
             self._initPolicy(i)
             elevators.append(Elevator(self.elevatorArgs[i][0],self.elevatorArgs[i][1],self.elevatorsInit[i],self.elevatorArgs[i][3]))
 
-        building = Building(elevators,self.floorAmount,spawnDistribution,targetDistribution,timeDistribution)
+        building = Building(elevators,self.floorAmount,self.distribution)
         return Simulation(building)
 
 
@@ -166,11 +155,9 @@ class SimulationPlotter():
     def _updateElevator(self,param:ElevatorParameter,newVal,index:int):
         self.elevatorArgs[index][param.value]=newVal
 
-    def _updateSpawnDistr(self,type:DistrType):
-        self.spawnDistrArgs[1]= type
-
-    def _updateTargetDistr(self,type:DistrType):
-        self.targetDistrArgs[1]= type
+    def _updateDistr(self,distribution):
+        self.distribution = distribution()
+        self.floorAmount = self.distribution.floorAmount
 
     def _updateTimeDistr(self,param:TimeDistrParameter, newVal):
         if (param.value==3):
@@ -192,8 +179,43 @@ class SimulationPlotter():
                 lst.pop(i)
 
 
-x = SimulationPlotter(elevatorArgs=[[0, 9, [PWDPPolicy,1,1,1,1,1,1], 10]])
+## --- START OF SCENARIO SETTINGS --- ##
+## MAIN SCENARIO SETTINGS
+# Choose whether to use a standard scenario or a custom scenario
+isCustomScenario = False
+
+# Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
+distribution = ShoppingMallDistribution
+
+# Choose a policy for the elevators
+policy = SCANPolicy
+
+
+## CUSTOM SCENARIO SETTINGS
+# Specify floor amount if using a custom scenario
+floorAmount = 10
+
+# Specify elevator list if using a custom scenario
+elevatorCapacity = 10
+elevatorArgs = [] 
+
+## --- END OF SCENARIO SETTINGS --- ##
+
+
+if (not isCustomScenario):
+    # Initilaize distribution to get parameters
+    dist = distribution()
+    # Standard scenario, set parameters automatically
+    floorAmount = dist.floorAmount
+    amountOfElevators = dist.amountOfElevators
+    for i in range(amountOfElevators):
+        elevatorArgs.append([0, floorAmount, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
+x = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
+
+
+## --- START OF PLOTTER SETTINGS --- ##
+# Call the plotter functions here
+
 x.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.ElEVBUTWEIGHT,0,5,1000)
 
-
-
+## --- END OF PLOTTER SETTINGS --- ##
