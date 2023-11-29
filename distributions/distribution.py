@@ -1,0 +1,164 @@
+from debug import Debug as DB
+
+import random
+import numpy as np
+from enum import Enum
+
+class FloorDistribution():
+    """
+    A distribution of how many passengers per floor at a fixed time point.
+    """
+    def __init__(self, distribution: list):
+        self.distribution = distribution
+
+    def __str__(self) -> str:
+        return DB.str("Class","Distribution",kwargs=[self.distribution],desc=["distribution"])
+
+    def isChosen(self, index):
+        out = self.getRandomIndex(index) > random.random()
+        if (DB.dsrFctIsChosen):
+            DB.pr("Func","isChosen",message="function called",kwargs=[out],desc=["return value"])
+        return out
+
+    def getIndexProb(self, index):
+        out = self.distribution[index]
+        if (DB.dsrFctgetIndexProb):
+            DB.pr("Func","getIndexProb",message="function called",kwargs=[out],desc=["return value"])
+        return out
+    
+    def getRandomIndex(self):
+        out = random.choices(len(self.distribution), weights=self.distribution, k=1)[0].number
+        if (DB.dsrFctRandomIndex):
+            DB.pr("Func","getRandomIndex",message="function called",kwargs=[out],desc=["return value"])
+
+        return out
+        
+class EqualFloorDistribution(FloorDistribution):
+    """
+    A distribution of how many passengers per floor at a fixed time point.
+    """
+    def __init__(self, amountFloors: int):
+        self.distribution = []
+        for _ in range(amountFloors):
+            self.distribution.append(1.0/amountFloors)
+
+class TimeDistribution:
+    """
+    A probability distribution of how many passengers spawn on a floor over time. 
+    """
+    def __init__(self, timeType, data):
+        self.data = []
+        self.probabilities = None
+
+        for (time, probability) in data:
+            if timeType == "m":
+                time = time * 60
+            elif timeType == "h":
+                time = time * 60 * 60
+            self.data.append((time, probability))
+        self.addData(self.data)
+
+    def addData(self, data):
+        self.data.extend(data)
+        times, people = zip(*self.data)
+        self.probabilities = [p / max(people) for p in people]
+        self.maxTime = max(times)
+
+    def getInterpolatedProb(self, time):
+        times, _ = zip(*self.data)
+        interpolated_probability = np.interp(time%self.maxTime, times, self.probabilities)
+        out = interpolated_probability
+        if (DB.tdsrFctInterpolatedProb):
+            DB.pr("Func","getInterpolatedProb",message="function called",kwargs=[out],desc=["return value"])
+        return out
+
+class TimeSpaceDistribution():
+    """
+    A distribution of how many passengers spawn on every floor over time.
+    maxPassengers: The maximum amount of passengers that can spawn in the entire building once.
+    timeType: The type of the time values. Can be "s", "m" or "h".
+    data: A list of tuples (time, spawnDistribution, targetDistribution) with the last two parameters being a Distribution object.
+    timeDistribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.
+
+    Note: The spawnDistribution and targetDistribution of the data parameter contain the probabilities of which floor should be chosen for spawning or as a target.
+    """
+    def __init__(self, maxPassengers, timeType, data, timeDistribution):
+        self.floorSpawnDistribution = []
+        self.floorTargetDistribution = []
+        self.timeDistribution = timeDistribution
+        self.times = []
+        self.probabilities = None
+        self.maxPassengers = maxPassengers
+        self.maxTime = 0
+        self.floorAmount = 0
+
+        # Raise Exception if the data is null
+        if data is None:
+            raise Exception("Data cannot be null.")
+
+        # Sort the data by time, set maxTime and floorAmount
+        data.sort(key=lambda x: x[0])
+        self.maxTime = data[-1][0]
+        self.floorAmount = len(data[0][1].distribution)
+
+        # Check if every distribution has the same amount of floors
+        for (_, spawnDistribution, timeDistribution) in data:
+            if len(spawnDistribution.distribution) != len(timeDistribution.distribution) or \
+               len(spawnDistribution.distribution) != self.floorAmount:
+                raise Exception("Every distribution needs to have the same amount of floors.")
+        
+        # Create time distributions for every floor
+        for i in range(self.floorAmount):
+            floorSpawnTuples = [(tupel[0], tupel[1].distribution[i]) for tupel in data]
+            floorTargetTuples = [(tupel[0], tupel[2].distribution[i]) for tupel in data]
+
+            self.floorSpawnDistribution.append(TimeDistribution(timeType, floorSpawnTuples))
+            self.floorTargetDistribution.append(TimeDistribution(timeType, floorTargetTuples))
+        
+    def getPassengersToSpawn(self, time):
+        """
+        Returns a list of tuples (spawnFloor, targetFloor) of the passengers that spawn at the given time.
+        """
+        floorSpawnDistribution, floorTargetDistribution = self.getFloorDistributions(time)
+        
+        # Get the amount of passengers that spawn at the given time
+        amount = self.getSpawnAmount(time)
+
+        # Get the spawn and target floor for every passenger
+        spawnPassengers = []
+        
+        for _ in range(amount):
+            # Get the spawn and target floor
+            spawnFloor = floorSpawnDistribution.getRandomIndex()
+            targetFloor = floorTargetDistribution.getRandomIndex()
+            
+            # Make sure that the target floor is not the same as the spawn floor
+            while targetFloor == spawnFloor:
+                targetFloor = floorTargetDistribution.getRandomIndex()
+
+            spawnPassengers.append((spawnFloor, targetFloor))
+
+        return spawnPassengers
+        
+
+    def getFloorDistributions(self, time):
+        """
+        Returns a list of tuples (spawnDistribution, targetDistribution) of the passengers that spawn at the given time.
+        """
+        # Get the probabilities of the floor distributions
+        spawnProbabilities = [floor.getInterpolatedProb(time) for floor in self.floorSpawnDistribution]
+        targetProbabilities = [floor.getInterpolatedProb(time) for floor in self.floorTargetDistribution]
+
+        return FloorDistribution(spawnProbabilities), FloorDistribution(targetProbabilities)
+
+    def getSpawnAmount(self, time):
+        """
+        Returns the amount of passengers that spawn at the given time.
+        """
+        # Get the interpolated probability of the time distribution
+        mean = self.timeDistribution.getInterpolatedProb(time)*self.maxPassengers
+        
+        # Use the exponential distribution to get the amount of passengers that spawn (for maxPassengers < 1)
+        random_value = round(np.random.exponential(scale=mean))
+        return random_value
+    

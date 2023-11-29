@@ -1,6 +1,6 @@
 from policies import Policy
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distribution import Distribution, DistrType, TimeDistribution
+from distributions.distribution import Distribution, DistrType, TimeDistribution
 from debug import Debug as DB
 from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyParameter
 from exceptions import Exceptions as EXC
