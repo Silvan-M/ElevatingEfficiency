@@ -24,13 +24,13 @@ showLivePlot = True
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution()
+distribution = RooftopBarDistribution()
 
 # Choose a policy for the elevators
-policy = SCANPolicy
+policy = PWDPPolicy()
 
 # Start simulation at a specific time
-hours, minutes, seconds = 13, 0, 0
+hours, minutes, seconds = 21, 0, 0
 
 
 ## CUSTOM SCENARIO SETTINGS
@@ -53,7 +53,7 @@ if (not isCustomScenario):
     floorAmount = distribution.floorAmount
     amountOfElevators = distribution.amountOfElevators
     for i in range(amountOfElevators):
-        elevators.append(Elevator(0, floorAmount-1, policy(), distribution.elevatorCapacity))
+        elevators.append(Elevator(0, floorAmount-1, policy, distribution.elevatorCapacity))
 
     windowSize = 2//(floorAmount//10)
 
