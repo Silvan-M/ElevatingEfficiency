@@ -49,7 +49,7 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
             (19, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 1/10)),
             (20, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 10))
         ]
-        print(PeakFloorDistribution(floorAmount, 0, 1/10).distribution)
+        
         # Building is open from 08:00 to 24:00, most people come between 10:00 and 18:00, peak at 12:00
         timeDistribution = TimeDistribution(timeType, [(5, 0.2), (6, 1), (10, 0.4), (11, 0.4), (12, 0.6), (13, 0.6), (14, 0.4), (15, 0.4), (19, 1), (20, 0.2)])
 
