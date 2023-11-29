@@ -29,6 +29,9 @@ distribution = ShoppingMallDistribution()
 # Choose a policy for the elevators
 policy = SCANPolicy
 
+# Start simulation at a specific time
+hours, minutes, seconds = 13, 0, 0
+
 
 ## CUSTOM SCENARIO SETTINGS
 # Specify floor amount if using a custom scenario
@@ -36,9 +39,6 @@ floorAmount = 10
 
 # Specify elevator list if using a custom scenario
 elevators = [] 
-
-# Start simulation at a specific time
-hours, minutes, seconds = 0, 0, 0
 
 # Elevator parameters: [startFloor, endFloor, policy, capacity]
 # Example: [Elevator(0, floorAmount-1, SCANPolicy(), 20)]
@@ -55,7 +55,6 @@ if (not isCustomScenario):
     for i in range(amountOfElevators):
         elevators.append(Elevator(0, floorAmount-1, policy(), distribution.elevatorCapacity))
 
-    hours, minutes, seconds = 3, 0, 0
     windowSize = 2//(floorAmount//10)
 
 
