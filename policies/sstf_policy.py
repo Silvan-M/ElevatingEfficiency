@@ -47,7 +47,7 @@ class SSTFPolicy(Policy):
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
             else:
                 # No new target or target is current floor, wait
-                action = Action.Wait
+                action = Action.WaitOpen
         elif (elevator.target == currentFloor or elevator.target == -1):
             # Elevator has reached target or is idle, wait up or down
             if (elevator.targetDirection == 1):

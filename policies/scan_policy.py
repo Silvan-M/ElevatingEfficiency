@@ -15,7 +15,7 @@ class SCANPolicy(Policy):
         
         if (not self._hasRequests(floorButtons, elevators, elevatorButtons)):
             # No requests, wait
-            action = Action.Wait
+            action = Action.WaitOpen
         elif (self.goingUp):
             # Going up
             if (currentFloor == elevator.maxFloor):

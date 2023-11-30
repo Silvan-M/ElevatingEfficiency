@@ -77,7 +77,7 @@ class PWDPPolicy(Policy):
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
             else:
                 # No new target or target is current floor, wait
-                action = Action.Wait
+                action = Action.WaitOpen
         elif (elevator.target == currentFloor or elevator.target == -1):
             # Elevator has reached target or is idle, wait up or down
             if (elevator.targetDirection == 1):
@@ -140,9 +140,6 @@ class PWDPPolicy(Policy):
                 highestTarget = target
                 highestTargetDirection = targetDirection
 
-
-        print(elevator.elevatorIndex)
-        self._printScores(scores, len(floorButtons))
         return highestTarget, highestTargetDirection
     
     def _getScores(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection):
