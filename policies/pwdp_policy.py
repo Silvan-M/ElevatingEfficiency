@@ -61,13 +61,13 @@ class PWDPPolicy(Policy):
             # Get advertised direction from previous action
             advertisedDirection = actionToDirection.get(self.prevAction, 0)
             
+            target, targetDirection = currentFloor, 0
+            
             # Get closest target in advertised direction
-            if self._hasRequests(floorButtons, elevatorButtons):
+            if self._hasRequests(floorButtons, elevators, elevatorButtons):
                 # There are requests, get highest scored target
                 target, targetDirection = self._getHighestScoredTarget(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection)
-            else: 
-                # No requests, wait
-                target, targetDirection = currentFloor, 0
+                
             
             elevator.target = target
             elevator.targetDirection = targetDirection
@@ -115,18 +115,6 @@ class PWDPPolicy(Policy):
                 self.minElevatorButtonTime = min(self.minElevatorButtonTime, time)
             else:
                 self.elevatorButtonLastPressed[i] = -1
-
-    def _hasRequests(self, floorButtons, elevatorButtons):
-        """
-        Returns true if there is any passenger waiting
-        """
-        for floor in floorButtons:
-            if (floor.moveUp or floor.moveDown):
-                return True
-        for button in elevatorButtons:
-            if (button):
-                return True
-        return False
     
     def _timeSinceElevatorButtonPressed(self, i, time):
         """

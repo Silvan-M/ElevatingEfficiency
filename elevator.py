@@ -10,9 +10,10 @@ class Elevator:
         self.onPassengerEntered = Delegate() 
         self.onPassengerExited = Delegate() 
 
-        self.maxFloor = maxFloor
         self.minFloor = minFloor
-        self.currentHeight = random.randint(minFloor*100, (maxFloor)*100)
+        self.maxFloor = maxFloor
+
+        self.currentHeight = random.randint(minFloor, maxFloor)*100
         self.fps = 10  # floors per second (in Percent)
         self.decision = Action.Wait
         self.passengerList = []

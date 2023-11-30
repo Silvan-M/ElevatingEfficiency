@@ -31,8 +31,14 @@ class SSTFPolicy(Policy):
             # Get advertised direction from previous action
             advertisedDirection = actionToDirection.get(self.prevAction, 0)
             
+            # Initilize target
+            target, targetDirection = -1, 0
+
             # Get closest target in advertised direction
-            target, targetDirection = self._getClosestTarget(currentFloor, floorButtons, elevatorButtons, advertisedDirection)
+            if (self._hasRequests(floorButtons, elevators, elevatorButtons)):
+                # Has requests, set new target
+                target, targetDirection = self._getClosestTarget(currentFloor, floorButtons, elevatorButtons, advertisedDirection)
+            
             elevator.target = target
             elevator.targetDirection = targetDirection
 

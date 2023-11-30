@@ -63,6 +63,29 @@ class Policy():
 
         return out
     
+    def _noElevatorHeading(self, elevators, target, targetDirection):
+        """
+        Returns true if another elevator already is going to target with advertised targetDirection
+        """
+        for e in elevators:
+            if (e.target == target):
+                return False
+        return True
+
+    def _hasRequests(self, floorButtons, elevators, elevatorButtons):
+        """
+        Returns true if there is any passenger waiting
+        """
+        for i, floor in enumerate(floorButtons):
+            if (floor.moveUp and self._noElevatorHeading(elevators, i, 1)):
+                return True
+            elif (floor.moveDown and self._noElevatorHeading(elevators, i, -1)):
+                return True
+        for button in elevatorButtons:
+            if (button):
+                return True
+        return False
+    
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """
         Internal implementation of how the policy decides what action to take

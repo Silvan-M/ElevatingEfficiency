@@ -21,7 +21,7 @@ showGui = True
 showLivePlot = True
 
 # Set seed for random number generator (if -1, no seed is set)
-seed = 0
+seed = 1
 
 ## MAIN SCENARIO SETTINGS
 # Choose whether to use a standard scenario or a custom scenario
@@ -30,12 +30,12 @@ isCustomScenario = False
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
 distribution = ShoppingMallDistribution()
 
-# Choose a policy for the elevators (Do not initilize the policy, only pass the class)
-policy = PWDPPolicy
-policyArguments = [1,1,1,1,1,1,0.1]
+# Choose a policy for the elevators (Do not initialize the policy, only pass the class)
+policy = PWDPPolicyEnhanced
+policyArguments = []
 
 # Start simulation at a specific time
-hours, minutes, seconds = 12, 0, 0
+hours, minutes, seconds = 8, 30, 0
 
 
 ## CUSTOM SCENARIO SETTINGS

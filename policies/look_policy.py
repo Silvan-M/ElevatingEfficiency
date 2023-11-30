@@ -16,7 +16,7 @@ class LOOKPolicy(Policy):
         hasRequestsAbove = self._hasRequestsAbove(currentFloor, floorButtons, elevatorButtons, elevator)
         hasRequestsBelow = self._hasRequestsBelow(currentFloor, floorButtons, elevatorButtons, elevator)
         
-        if (not (hasRequestsAbove or hasRequestsBelow)):
+        if (not self._hasRequests(floorButtons, elevators, elevatorButtons)):
             # No requests, wait
             action = Action.Wait
         elif (self.goingUp):

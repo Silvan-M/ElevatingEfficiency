@@ -18,7 +18,12 @@ class FCFSPolicy(Policy):
 
         if (self.prevAction in (Action.WaitUp, Action.WaitDown, Action.WaitOpen, Action.Wait)):
             # Get new decision if elevator leaves a target or is idle
-            target, targetDirection = self._setNextTarget(floorButtons, elevatorButtons, elevator, currentFloor)
+            target, targetDirection = -1, 0
+            
+            # If has requests get next target
+            if (self._hasRequests(floorButtons, elevators, elevatorButtons)):
+                target, targetDirection = self._setNextTarget(floorButtons, elevatorButtons, elevator, currentFloor)
+                
             elevator.target = target
             elevator.targetDirection = targetDirection
 

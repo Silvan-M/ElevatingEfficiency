@@ -13,7 +13,7 @@ class SCANPolicy(Policy):
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         action = Action.Wait
         
-        if (not self._hasRequests(floorButtons, elevatorButtons)):
+        if (not self._hasRequests(floorButtons, elevators, elevatorButtons)):
             # No requests, wait
             action = Action.Wait
         elif (self.goingUp):
@@ -49,15 +49,3 @@ class SCANPolicy(Policy):
 
         self.prevAction = action
         return action
-    
-    def _hasRequests(self, floorButtons, elevatorButtons):
-        """
-        Returns true if there is any passenger waiting
-        """
-        for floor in floorButtons:
-            if (floor.moveUp or floor.moveDown):
-                return True
-        for button in elevatorButtons:
-            if (button):
-                return True
-        return False
