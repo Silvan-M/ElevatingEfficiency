@@ -7,8 +7,8 @@ class PWDPPolicy(Policy):
     or in other words (floor, directionTakenAtFloor) a score,
     based on parameters weighing the terms as described below:
     - elevatorButtonWeight: Award if elevator button pressed on floor i
-    - timeWeight:           Award elevator buttons which were pressed a long time ago
-    - floorButtonWeight:    Award floor buttons which were pressed a long time ago
+    - timeWeight:           Award elevator and floor buttons which were pressed a long time ago
+    - floorButtonWeight:    Award floor buttons which were pressed
     - directionWeight:      Award high amount of buttons pressed [above/below] floor i
     - competitorWeight:     Penalize direction in which other eleavtors are moving
     - distanceWeight:       Penalize high distance to target

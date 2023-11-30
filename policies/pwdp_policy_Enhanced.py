@@ -9,7 +9,7 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     or in other words (floor, directionTakenAtFloor) a score,
     based on parameters weighing the terms as described below (changes are marked with *):
     * peopleInElevatorButtonWeight: Award high amount of people that pressed elevator button for floor i
-    - timeWeight:                   Award high amount of elevator buttons which were pressed a long time ago
+    - timeWeight:                   Award high amount of elevator or floor buttons which were pressed a long time ago
     * peopleFloorWeight:            Award high amount of people waiting on floor i
     * directionWeight:              Award high amount of people that pressed floor button [above/below] floor i
     - competitorWeight:             Penalize direction in which other eleavtors are moving
@@ -18,7 +18,7 @@ class PWDPPolicyEnhanced(PWDPPolicy):
 
     The score for the i-th floor advertising [Up/Down] is calculated as follows (changes are marked with *):
     s1* = peopleInElevatorButtonWeight * amountOfPeopleInElevatorGoingToFloor(i)
-    s2  = timeWeight * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime
+    s2  = timeWeight * elevatorButtonPressed[i] * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime * floorButtons[i].timeSincePressed / maxFloorButtonTime
     s3* = peopleFloorWeight * amountOfPeopleInFloor(i).moving[Up/Down]
     s4* = directionWeight * (amountOfPeople[Above/Below]Target) / (totalAmountOfPeopleInBuilding)
     s5  = competitorWeight * (amountOfElevatorsMoving[Above/Below]) / (totalAmountOfElevators)
