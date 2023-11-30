@@ -98,6 +98,7 @@ class GameDisplay():
 
     def startSimulation(self, simulation, stepAmount):
         building = simulation.building
+        self.timeStepAmount = stepAmount
         self.tileSize = 32
         self.totScale = round(self.tileSize*self.scale)
 
@@ -241,12 +242,28 @@ class GameDisplay():
                 self.allSprites.remove(val.back)
 
             
-    def renderText(self, txt, loc):
-        font = pygame.font.Font(None, round(36 * self.scale))
+    def renderText(self, txt, loc, alignement=0):
+        font = pygame.font.Font(None, round(30 * self.scale))
         text_surface = font.render(txt, True, (255,255,255))
         text_rect = text_surface.get_rect()
-        text_rect.center = loc
+
+        if(alignement == 0):
+            text_rect.center = loc
+        elif(alignement == 1):
+            text_rect.right = loc[0]
+            text_rect.centery = loc[1]
+        else:
+            text_rect.left = loc[0]
+            text_rect.centery = loc[1]
+
         self.screen.blit(text_surface, text_rect)
+    
+    def toTime(self, totSeconds):
+        sec = totSeconds % 60
+        min = totSeconds // 60 % 60
+        hrs = totSeconds // 60 // 60 % 60
+        day = totSeconds // 60 // 60 // 24
+        return f"{day}:{hrs}:{min}:{sec}"
 
 
     def step(self, simulation, time):
@@ -274,8 +291,13 @@ class GameDisplay():
         for e in building.elevators:
             self.renderText(str(len(e.passengerList)), ((self.getShaftLocation(e.elevatorIndex) + self.buildingMargin[0]) * self.totScale + 16 * self.scale, 
                                                         self.screenTileAmount[1] * self.totScale - 16*self.scale))
-            
-
+        
+        # Time display
+        self.renderText(f"{self.toTime(simulation.time)} / {self.toTime(self.timeStepAmount)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
+        
+        # Name display
+        self.renderText("Help", (16 * self.scale, 16 * self.scale), -1)
+        
         # Update the display
         pygame.display.flip()
         
