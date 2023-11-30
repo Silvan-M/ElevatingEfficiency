@@ -15,5 +15,5 @@ class Colors:
         return Colors.WARNING+text+Colors.ENDC
     def ok(text:str):
         return Colors.OKGREEN+text+Colors.ENDC
-    def checkSuc(text:str):
+    def info(text:str):
         return Colors.OKCYAN+text+Colors.ENDC

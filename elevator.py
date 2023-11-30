@@ -72,6 +72,7 @@ class Elevator:
             self.elevatorButtons[currentFloor] = False
             
             # Check if any passenger wants to enter
+            #print("cur"+str(currentFloor))
             floor = building.floors[currentFloor]
             for p in floor.passengerList:
                 # Check if passenger wants to go in same direction
