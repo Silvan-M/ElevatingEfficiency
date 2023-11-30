@@ -216,7 +216,7 @@ class SimulationPlotter():
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ResidentialBuildingDistribution
+distribution = ShoppingMallDistribution
 
 # Choose a policy for the elevators
 policy = SCANPolicy
@@ -248,8 +248,8 @@ plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 # Call the plotter functions here
 
 plt.continuous_3d_plotter(Objective.AWT,
-                          [PolicyParameter.ElEVBUTWEIGHT,0,5,10],
-                          [PolicyParameter.FLOORBUTWEIGHT,0,5,10],
+                          [PolicyParameter.DIRWEIGHT,0,5,10],
+                          [PolicyParameter.DISTEXPONENT,0,5,10],
                           averageOf=1)
 
 ## --- END OF PLOTTER SETTINGS --- ##

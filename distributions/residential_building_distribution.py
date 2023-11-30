@@ -23,6 +23,7 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
     """
     def __init__(self):
         timeType = "h"
+        maxTimeTyped = 24
 
         # Maximum amount of passengers that can spawn in one timestep
         maxPassengers = 0.21
@@ -51,7 +52,7 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
         ]
         
         # Building is open from 08:00 to 24:00
-        timeDistribution = TimeDistribution(timeType, [(5, 0.4), (6, 1), (10, 0.6), (11, 0.6), (12, 0.8), (13, 0.8), (14, 0.6), (15, 0.6), (19, 1), (20, 0.4), (24, 0.4)])
+        timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(5, 0.4), (6, 1), (10, 0.6), (11, 0.6), (12, 0.8), (13, 0.8), (14, 0.6), (15, 0.6), (19, 1), (20, 0.4), (24, 0.4)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, data, timeDistribution)
+        super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution)

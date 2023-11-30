@@ -14,6 +14,7 @@ class RooftopBarDistribution(TimeSpaceDistribution):
     """
     def __init__(self):
         timeType = "h"
+        maxTimeTyped = 24
 
         # Maximum amount of passengers that can spawn in one timestep
         maxPassengers = 0.21
@@ -38,7 +39,7 @@ class RooftopBarDistribution(TimeSpaceDistribution):
         ]
 
         # Building is open from 08:00 to 24:00, most people come between 08:00 and 24:00, peak at 20:00-22:00
-        timeDistribution = TimeDistribution(timeType, [(7, 0.5), (8, 0.6), (20, 1), (22, 1), (23, 0.6), (24, 0.5)])
+        timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(7, 0.5), (8, 0.6), (20, 1), (22, 1), (23, 0.6), (24, 0.5)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, data, timeDistribution)
+        super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution)
