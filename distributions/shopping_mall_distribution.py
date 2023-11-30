@@ -37,4 +37,4 @@ class ShoppingMallDistribution(TimeSpaceDistribution):
         timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(8, 0.3), (10, 0.8), (12, 1), (18, 0.8), (24, 0.3)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution)
+        super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution, "Shopping mall")

@@ -89,7 +89,7 @@ if (showGui):
 if (showLivePlot):
     livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
-simulation.run(seconds=5000, timeScale=0.9)
+simulation.run(seconds=500, timeScale=-1)
 
 
 if (DB.mnEnd):

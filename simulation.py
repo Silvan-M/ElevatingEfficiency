@@ -31,7 +31,7 @@ class Simulation():
     def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
         stepAmount = self._convertTime(days, hours, minutes, seconds)
         
-        self.onSimulationStarted.notify_all(self, stepAmount)
+        self.onSimulationStarted.notify_all(self, self.time, stepAmount)
         for i in range(stepAmount):
             self.step()
 

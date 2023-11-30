@@ -53,6 +53,17 @@ def vround(v1):
 def lerp(v1, v2, a):
     tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
 
+def format_time(seconds):
+    # Calculate days, hours, minutes, and seconds
+    days, remainder = divmod(seconds, 86400)
+    hours, remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    # Create a formatted string
+    time_string = "{:02.0f}:{:02.0f}:{:02.0f}:{:02.0f}".format(days, hours, minutes, seconds)
+
+    return time_string
+
 class SpriteEntity():
     def __init__(self, front, back, screenLoc, spriteSize, front_color=(255, 255, 255), back_color=(255, 255, 255)):
         self.front = Sprite(front, screenLoc, spriteSize, front_color)
@@ -96,8 +107,9 @@ class GameDisplay():
         simulation.onSimulationStarted.add_listener(self.startSimulation)
         self.scale = scale
 
-    def startSimulation(self, simulation, stepAmount):
+    def startSimulation(self, simulation, startTime, stepAmount):
         building = simulation.building
+        self.timeStepAmount = startTime + stepAmount
         self.tileSize = 32
         self.totScale = round(self.tileSize*self.scale)
 
@@ -241,12 +253,23 @@ class GameDisplay():
                 self.allSprites.remove(val.back)
 
             
-    def renderText(self, txt, loc):
-        font = pygame.font.Font(None, round(36 * self.scale))
+    def renderText(self, txt, loc, alignement=0):
+        font = pygame.font.Font(None, round(24 * self.scale))
         text_surface = font.render(txt, True, (255,255,255))
         text_rect = text_surface.get_rect()
-        text_rect.center = loc
+
+        if(alignement == 0):
+            text_rect.center = loc
+        elif(alignement == 1):
+            text_rect.right = loc[0]
+            text_rect.centery = loc[1]
+        else:
+            text_rect.left = loc[0]
+            text_rect.centery = loc[1]
+
         self.screen.blit(text_surface, text_rect)
+    
+
 
 
     def step(self, simulation, time):
@@ -274,8 +297,13 @@ class GameDisplay():
         for e in building.elevators:
             self.renderText(str(len(e.passengerList)), ((self.getShaftLocation(e.elevatorIndex) + self.buildingMargin[0]) * self.totScale + 16 * self.scale, 
                                                         self.screenTileAmount[1] * self.totScale - 16*self.scale))
-            
-
+        
+        # Time display
+        self.renderText(f"{format_time(simulation.time)} / {format_time(self.timeStepAmount)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
+        
+        # Name display
+        self.renderText(building.distribution.distributionName, (16 * self.scale, 16 * self.scale), -1)
+        
         # Update the display
         pygame.display.flip()
         
