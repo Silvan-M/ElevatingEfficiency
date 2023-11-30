@@ -6,7 +6,7 @@ from simulation_statistics import Objective
 from liveplotter import LivePlotter
 from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution
+from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution, CustomBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
 import random
@@ -35,7 +35,7 @@ policy = PWDPPolicy
 policyArguments = [1,1,1,1,1,1,0.1]
 
 # Start simulation at a specific time
-hours, minutes, seconds = 10, 0, 0
+hours, minutes, seconds = 12, 0, 0
 
 
 ## CUSTOM SCENARIO SETTINGS
