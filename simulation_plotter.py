@@ -52,7 +52,7 @@ class SimulationPlotter():
             for a in range(averageOf):  
                 bar.update()
                 simulation = self._init()
-                simulation.run(minutes=100, timeScale=-1)
+                simulation.run(days=1, timeScale=-1)
                 for q in range(len(objList)):
                     x = (simulation.statistics.getObjective(objList[q]))
                     objectiveTemp[q].append(x)
@@ -98,7 +98,7 @@ class SimulationPlotter():
                 for a in range(averageOf):  
                     bar.update()
                     simulation = self._init()
-                    simulation.run(minutes=100, timeScale=-1)
+                    simulation.run(days=1, timeScale=-1)
                     x = (simulation.statistics.getObjective(objective))
                     objectiveTemp.append(x)
                 self._delNone(objectiveTemp)
@@ -248,8 +248,8 @@ plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 # Call the plotter functions here
 
 plt.continuous_3d_plotter(Objective.AWT,
-                          [PolicyParameter.ElEVBUTWEIGHT,0,5,20],
-                          [PolicyParameter.FLOORBUTWEIGHT,0,5,20],
-                          averageOf=10)
+                          [PolicyParameter.ElEVBUTWEIGHT,0,5,10],
+                          [PolicyParameter.FLOORBUTWEIGHT,0,5,10],
+                          averageOf=1)
 
 ## --- END OF PLOTTER SETTINGS --- ##
