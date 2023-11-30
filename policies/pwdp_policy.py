@@ -180,7 +180,6 @@ class PWDPPolicy(Policy):
         s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
         s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
 
-        print(f"Target: {target}, TargetDir: {targetDirection}, s1: {s1}, s2: {s2}, s3: {s3}, s4: {s4}, s5: {s5}, s6: {s6}")
         return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
     
     def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
