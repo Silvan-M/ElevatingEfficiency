@@ -29,10 +29,10 @@ class Simulation():
         self.time = self._convertTime(days, hours, minutes, seconds)
 
     def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
-        stepAmount = self.time + self._convertTime(days, hours, minutes, seconds)
+        stepAmount = self._convertTime(days, hours, minutes, seconds)
         
-        self.onSimulationStarted.notify_all(self, stepAmount)
-        for i in range(self.time, stepAmount):
+        self.onSimulationStarted.notify_all(self, self.time, stepAmount)
+        for i in range(stepAmount):
             self.step()
 
             if(timeScale > 0):

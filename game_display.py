@@ -107,9 +107,9 @@ class GameDisplay():
         simulation.onSimulationStarted.add_listener(self.startSimulation)
         self.scale = scale
 
-    def startSimulation(self, simulation, stepAmount):
+    def startSimulation(self, simulation, startTime, stepAmount):
         building = simulation.building
-        self.timeStepAmount = stepAmount
+        self.timeStepAmount = startTime + stepAmount
         self.tileSize = 32
         self.totScale = round(self.tileSize*self.scale)
 

@@ -17,7 +17,7 @@ class SimulationStatistics():
         self.finishedTasks = {}
         self.crowdedness = []
 
-    def onSimulationStarted(self, simulation, stepAmount):
+    def onSimulationStarted(self, simulation, startTime, stepAmount):
         building = simulation.building
         simulation.onSimulationFinished.add_listener(self.onSimulationFinished)
         building.onPassengerCreated.add_listener(self.onPassengerCreated)

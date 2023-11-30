@@ -13,7 +13,7 @@ class LivePlotter():
         simulation.onStepEnd.add_listener(self.step)
 
 
-    def startPlot(self, simulation, stepAmount):
+    def startPlot(self, simulation, startTime, stepAmount):
         self.x = np.linspace(0, stepAmount, stepAmount)
         self.y = [10] * stepAmount
         plt.ion()
