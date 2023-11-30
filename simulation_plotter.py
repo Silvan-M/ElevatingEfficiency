@@ -6,6 +6,7 @@ from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyPara
 from exceptions import Exceptions as EXC
 from elevator import Elevator
 from plotter.plotter2D import Plotter2D as P2D
+from plotter.plotter3D import Plotter3D as P3D
 from building import Building
 from simulation import Simulation
 from simulation_statistics import Objective
@@ -26,27 +27,14 @@ class SimulationPlotter():
         self.elevatorsInit = [0]*len(elevatorArgs)
 
 
-    def continuous_2d_plotter(self,obj:list,param:Parameter,startVal,endVal,steps):
+    def continuous_2d_plotter(self,obj:list,param:Parameter,startVal,endVal,steps,averageOf=1):
+        """
+        Simulate the parameter param with steps amount of simulations equidistant in [startVal,endVal]
+        The averageOf defines how often each step stated above gets executed. The average will be taken 
+        to further compute any plots. The list obj contains the metrics which will be plotted and measured during 
+        this numerical experiment.
         
-        objList = obj
-        objectiveData = []
-        objectiveNames = []
-        for i in range(len(objList)):
-            objectiveNames.append(objList[i].value)
-            objectiveData.append([])
-        parameterData = np.linspace(startVal,endVal,num=steps)
-        
-        for i in range(len(parameterData)):
-            self._updateHandler(param,parameterData[i])
-            simulation = self._init()
-            simulation.run(minutes=500, timeScale=-1)
-            for q in range(len(objList)):
-                objectiveData[q].append((round(simulation.statistics.getObjective(objList[q]),3)))
-
-        plt = P2D(parameterData,param.name(),objectiveData,objectiveNames)
-        plt.plotNormal()
-
-    def continuous_2d_plotter_avg(self,trials:int,obj:list,param:Parameter,startVal,endVal,steps):
+        """
         objList = obj
         objectiveData = []
         objectiveNames = []
@@ -56,37 +44,80 @@ class SimulationPlotter():
             objectiveData.append([])
             objectiveTemp.append([])
         parameterData = np.linspace(startVal,endVal,num=steps)
-        bar = ProgressBar(len(parameterData)*trials,"Simulating: ")
+        bar = ProgressBar(len(parameterData)*averageOf,"Simulating: ")
 
     
         for i in range(len(parameterData)):
-            for a in range(trials):  
+            self._updateHandler(param,parameterData[i])
+            for a in range(averageOf):  
                 bar.update()
-                self._updateHandler(param,parameterData[i])
                 simulation = self._init()
-                simulation.run(minutes=100, timeScale=-1)
+                simulation.run(days=1, timeScale=-1)
                 for q in range(len(objList)):
-                    objectiveTemp[q].append((round(simulation.statistics.getObjective(objList[q]),3)))
+                    x = (simulation.statistics.getObjective(objList[q]))
+                    objectiveTemp[q].append(x)
             for q in range(len(objList)):
                 self._delNone(objectiveTemp[q])
-                objectiveData[q].append(round(np.mean(objectiveTemp[q]),3))
+                objectiveData[q].append(np.mean(objectiveTemp[q]))
                 objectiveTemp[q]=[]
         plt = P2D(parameterData,param.name(),objectiveData,objectiveNames)
         plt.plotNormal()
-        
-        
-
-    def discrete_2d_plotter(self,obj:Objective):
-        pass
 
         
 
-    def continuous_3d_plotter(self):
-        pass
+    def continuous_3d_plotter(self,obj:Objective,param1:list,param2:list,averageOf=0):
+        """
+        Simulate two parameters param1 and param2 with steps amount of simulations equidistant 
+        in their respective [startVal,endVal] The averageOf defines how often each step stated above gets executed. 
+        The average will be taken to further compute any plots. The obj represents the metric which will be plotted 
+        and measured during this numerical experiment.
+        
+        """
+        objective = obj
+        objectiveData = []
+        objectiveTemp = []
+        par1 = param1[0]
+        startVal1 = param1[1]
+        endVal1 = param1[2]
+        steps1 = param1[3]
+
+        par2 = param2[0]
+        startVal2 = param2[1]
+        endVal2 = param2[2]
+        steps2 = param2[3]
+
+        parameterData1 = np.linspace(startVal1,endVal1,num=steps1)
+        parameterData2 = np.linspace(startVal2,endVal2,num=steps2)
+        bar = ProgressBar(len(parameterData1)*averageOf*len(parameterData2),"Simulating: ")
+
+    
+        for i in range(len(parameterData1)):
+            self._updateHandler(par1,parameterData1[i])
+            for j in range(len(parameterData2)):
+                self._updateHandler(par1,parameterData1[j])
+                for a in range(averageOf):  
+                    bar.update()
+                    simulation = self._init()
+                    simulation.run(days=1, timeScale=-1)
+                    x = (simulation.statistics.getObjective(objective))
+                    objectiveTemp.append(x)
+                self._delNone(objectiveTemp)
+                objectiveData.append(np.mean(objectiveTemp))
+                objectiveTemp=[]
+        plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
+        plt.plotNormal(showMin=True,showMax=True)       
 
 
 
     def _init(self):
+        """
+        Initialises an experiment with the current member variables as arguments. 
+        The arguments are:
+        - elevatorArgs : stores the arguments of the i-th elevator in elevatorArgs[i]
+        - distrType : stores the scenario [ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution]
+        - self.distribution : stores the distribution
+        - self.floorAmount : stores the floor amount
+        """
         elevators=[]
         for i in range(len(self.elevatorArgs)):
             self._initPolicy(i)
@@ -185,7 +216,7 @@ class SimulationPlotter():
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = ResidentialBuildingDistribution
 
 # Choose a policy for the elevators
 policy = SCANPolicy
@@ -209,13 +240,16 @@ if (not isCustomScenario):
     floorAmount = dist.floorAmount
     amountOfElevators = dist.amountOfElevators
     for i in range(amountOfElevators):
-        elevatorArgs.append([0, floorAmount, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
+        elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
 plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 
 
 ## --- START OF PLOTTER SETTINGS --- ##
 # Call the plotter functions here
 
-plt.continuous_2d_plotter_avg(100,[Objective.AWT],PolicyParameter.ElEVBUTWEIGHT,0,5,1000)
+plt.continuous_3d_plotter(Objective.AWT,
+                          [PolicyParameter.ElEVBUTWEIGHT,0,5,10],
+                          [PolicyParameter.FLOORBUTWEIGHT,0,5,10],
+                          averageOf=1)
 
 ## --- END OF PLOTTER SETTINGS --- ##

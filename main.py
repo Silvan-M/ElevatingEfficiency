@@ -35,7 +35,7 @@ policy = PWDPPolicy
 policyArguments = []
 
 # Start simulation at a specific time
-hours, minutes, seconds = 8, 30, 0
+hours, minutes, seconds = 12, 0, 0
 
 
 ## CUSTOM SCENARIO SETTINGS
@@ -89,7 +89,7 @@ if (showGui):
 if (showLivePlot):
     livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
-simulation.run(seconds=5000, timeScale=0.000001)
+simulation.run(seconds=5000, timeScale=0.9)
 
 
 if (DB.mnEnd):
