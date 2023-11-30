@@ -31,7 +31,7 @@ isCustomScenario = False
 distribution = ShoppingMallDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
-policy = PWDPPolicyEnhanced
+policy = PWDPPolicy
 policyArguments = []
 
 # Start simulation at a specific time
