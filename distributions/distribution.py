@@ -99,7 +99,7 @@ class TimeSpaceDistribution():
 
     Note: The spawnDistribution and targetDistribution of the data parameter contain the probabilities of which floor should be chosen for spawning or as a target.
     """
-    def __init__(self, maxPassengers, timeType, data, timeDistribution):
+    def __init__(self, maxPassengers, timeType, data, timeDistribution, distributionName = "Base distribution"):
         self.floorSpawnDistribution = []
         self.floorTargetDistribution = []
         self.timeDistribution = timeDistribution
@@ -108,6 +108,7 @@ class TimeSpaceDistribution():
         self.maxPassengers = maxPassengers
         self.maxTime = 0
         self.floorAmount = 0
+        self.distributionName = distributionName
 
         # Create reusable empty floor distributions (to save memory)
         self.distribution1 = FloorDistribution([])

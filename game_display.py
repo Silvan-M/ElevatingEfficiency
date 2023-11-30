@@ -53,6 +53,17 @@ def vround(v1):
 def lerp(v1, v2, a):
     tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
 
+def format_time(seconds):
+    # Calculate days, hours, minutes, and seconds
+    days, remainder = divmod(seconds, 86400)
+    hours, remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    # Create a formatted string
+    time_string = "{:02.0f}:{:02.0f}:{:02.0f}:{:02.0f}".format(days, hours, minutes, seconds)
+
+    return time_string
+
 class SpriteEntity():
     def __init__(self, front, back, screenLoc, spriteSize, front_color=(255, 255, 255), back_color=(255, 255, 255)):
         self.front = Sprite(front, screenLoc, spriteSize, front_color)
@@ -243,7 +254,7 @@ class GameDisplay():
 
             
     def renderText(self, txt, loc, alignement=0):
-        font = pygame.font.Font(None, round(30 * self.scale))
+        font = pygame.font.Font(None, round(24 * self.scale))
         text_surface = font.render(txt, True, (255,255,255))
         text_rect = text_surface.get_rect()
 
@@ -258,12 +269,7 @@ class GameDisplay():
 
         self.screen.blit(text_surface, text_rect)
     
-    def toTime(self, totSeconds):
-        sec = totSeconds % 60
-        min = totSeconds // 60 % 60
-        hrs = totSeconds // 60 // 60 % 60
-        day = totSeconds // 60 // 60 // 24
-        return f"{day}:{hrs}:{min}:{sec}"
+
 
 
     def step(self, simulation, time):
@@ -293,10 +299,10 @@ class GameDisplay():
                                                         self.screenTileAmount[1] * self.totScale - 16*self.scale))
         
         # Time display
-        self.renderText(f"{self.toTime(simulation.time)} / {self.toTime(self.timeStepAmount)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
+        self.renderText(f"{format_time(simulation.time)} / {format_time(self.timeStepAmount)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
         
         # Name display
-        self.renderText("Help", (16 * self.scale, 16 * self.scale), -1)
+        self.renderText(building.distribution.distributionName, (16 * self.scale, 16 * self.scale), -1)
         
         # Update the display
         pygame.display.flip()

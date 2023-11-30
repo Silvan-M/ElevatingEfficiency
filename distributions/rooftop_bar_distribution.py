@@ -41,4 +41,4 @@ class RooftopBarDistribution(TimeSpaceDistribution):
         timeDistribution = TimeDistribution(timeType, [(7, 0.5), (8, 0.6), (20, 1), (22, 1), (23, 0.6), (24, 0.5)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, data, timeDistribution)
+        super().__init__(maxPassengers, timeType, data, timeDistribution, "Rooftop bar")
