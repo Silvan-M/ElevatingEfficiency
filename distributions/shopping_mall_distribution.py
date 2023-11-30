@@ -15,7 +15,7 @@ class ShoppingMallDistribution(TimeSpaceDistribution):
         timeType = "h"
 
         # Maximum amount of passengers that can spawn in one timestep
-        maxPassengers = 0.2
+        maxPassengers = 0.21
 
         # Amount of floors
         floorAmount = 10
