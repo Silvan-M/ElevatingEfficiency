@@ -35,7 +35,7 @@ policy = PWDPPolicy
 policyArguments = []
 
 # Start simulation at a specific time
-hours, minutes, seconds = 8, 30, 0
+hours, minutes, seconds = 12, 0, 0
 
 
 ## CUSTOM SCENARIO SETTINGS
