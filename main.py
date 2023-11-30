@@ -9,6 +9,8 @@ from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy,
 from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
+import random
+import numpy as np
 
 ## --- START OF SETTINGS --- ##
 ## MAIN SETTINGS
@@ -18,19 +20,22 @@ showGui = True
 # Show live plot
 showLivePlot = True
 
+# Set seed for random number generator (if -1, no seed is set)
+seed = 0
 
 ## MAIN SCENARIO SETTINGS
 # Choose whether to use a standard scenario or a custom scenario
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = RooftopBarDistribution()
+distribution = ShoppingMallDistribution()
 
-# Choose a policy for the elevators
-policy = PWDPPolicy()
+# Choose a policy for the elevators (Do not initilize the policy, only pass the class)
+policy = PWDPPolicy
+policyArguments = [1,1,1,1,1,1,0.1]
 
 # Start simulation at a specific time
-hours, minutes, seconds = 21, 0, 0
+hours, minutes, seconds = 10, 0, 0
 
 
 ## CUSTOM SCENARIO SETTINGS
@@ -48,12 +53,16 @@ windowSize = 2
 
 ## --- END OF SETTINGS --- ##
 
+if (seed != -1):
+    random.seed(seed)
+    np.random.seed(seed)
+
 if (not isCustomScenario):
     # Standard scenario, set parameters automatically
     floorAmount = distribution.floorAmount
     amountOfElevators = distribution.amountOfElevators
     for i in range(amountOfElevators):
-        elevators.append(Elevator(0, floorAmount-1, policy, distribution.elevatorCapacity))
+        elevators.append(Elevator(0, floorAmount-1, policy(*policyArguments), distribution.elevatorCapacity))
 
     windowSize = 2//(floorAmount//10)
 
@@ -80,7 +89,7 @@ if (showGui):
 if (showLivePlot):
     livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
-simulation.run(seconds=5000, timeScale=-1)
+simulation.run(seconds=5000, timeScale=0.000001)
 
 
 if (DB.mnEnd):

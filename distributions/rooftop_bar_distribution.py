@@ -16,24 +16,24 @@ class RooftopBarDistribution(TimeSpaceDistribution):
         timeType = "h"
 
         # Maximum amount of passengers that can spawn in one timestep
-        maxPassengers = 0.2
+        maxPassengers = 0.21
 
         # Amount of floors
-        floorAmount = 20
+        floorAmount = 10
 
         # Amount of elevators
         self.amountOfElevators = 2
 
         # Capacity of elevators
-        self.elevatorCapacity = 10
+        self.elevatorCapacity = 15
 
         # Set the amount of passengers that spawn on each floor (time [h], spawn distribution, target distribution)
         data = [
             (11, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
-            (12, PeakFloorDistribution(floorAmount, 0, 3), PeakFloorDistribution(floorAmount, 19, 3)),
-            (20, PeakFloorDistribution(floorAmount, 0, 20), PeakFloorDistribution(floorAmount, 19, 20)),
-            (22, PeakFloorDistribution(floorAmount, 19, 20), PeakFloorDistribution(floorAmount, 0, 20)),
-            (23, PeakFloorDistribution(floorAmount, 19, 3), PeakFloorDistribution(floorAmount, 0, 3)),
+            (12, PeakFloorDistribution(floorAmount, 0, 3), PeakFloorDistribution(floorAmount, 9, 3)),
+            (20, PeakFloorDistribution(floorAmount, 0, 20), PeakFloorDistribution(floorAmount, 9, 20)),
+            (22, PeakFloorDistribution(floorAmount, 9, 20), PeakFloorDistribution(floorAmount, 0, 20)),
+            (23, PeakFloorDistribution(floorAmount, 9, 3), PeakFloorDistribution(floorAmount, 0, 3)),
             (24, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
         ]
 

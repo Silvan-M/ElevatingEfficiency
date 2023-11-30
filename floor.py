@@ -11,18 +11,18 @@ class ButtonPressed():
         return DB.str("Class","ButtonPressed",kwargs=[self.moveDown,self.moveUp],desc=["moveDown","moveUp"])
     
     def setMoveUp(self, value, time):
-        self.moveUp = value
-        if (value):
+        if (value and self.moveUp == False):
             self.lastPressedUp = time
         else:
             self.lastPressedUp = -1
+        self.moveUp = value
 
     def setMoveDown(self, value, time):
-        self.moveDown = value
-        if (value):
+        if (value and self.moveDown == False):
             self.lastPressedDown = time
         else:
             self.lastPressedDown = -1
+        self.moveDown = value
 
 
 class Floor():

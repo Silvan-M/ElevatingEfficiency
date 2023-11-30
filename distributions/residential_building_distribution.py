@@ -25,7 +25,7 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
         timeType = "h"
 
         # Maximum amount of passengers that can spawn in one timestep
-        maxPassengers = 0.4
+        maxPassengers = 0.21
 
         # Amount of floors
         floorAmount = 10
@@ -34,7 +34,7 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
         self.amountOfElevators = 2
 
         # Capacity of elevators
-        self.elevatorCapacity = 10
+        self.elevatorCapacity = 15
 
         # Set the amount of passengers that spawn on each floor (time [h], spawn distribution, target distribution)
         data = [
@@ -50,8 +50,8 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
             (20, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 10))
         ]
         
-        # Building is open from 08:00 to 24:00, most people come between 10:00 and 18:00, peak at 12:00
-        timeDistribution = TimeDistribution(timeType, [(5, 0.2), (6, 1), (10, 0.4), (11, 0.4), (12, 0.6), (13, 0.6), (14, 0.4), (15, 0.4), (19, 1), (20, 0.2)])
+        # Building is open from 08:00 to 24:00
+        timeDistribution = TimeDistribution(timeType, [(5, 0.4), (6, 1), (10, 0.6), (11, 0.6), (12, 0.8), (13, 0.8), (14, 0.6), (15, 0.6), (19, 1), (20, 0.4)])
 
         # Initialize the TimeSpaceDistribution
         super().__init__(maxPassengers, timeType, data, timeDistribution)

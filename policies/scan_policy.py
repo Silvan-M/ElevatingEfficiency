@@ -36,6 +36,7 @@ class SCANPolicy(Policy):
                 # Change direction, since we reached the bottom floor
                 self.goingUp = True
                 action = Action.WaitUp
+                print(f"Change direction {elevator.elevatorIndex}")
             elif (self.prevAction == Action.WaitDown):
                 # Waited on floor, now move down
                 action = Action.MoveDown

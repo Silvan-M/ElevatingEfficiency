@@ -15,16 +15,16 @@ class ShoppingMallDistribution(TimeSpaceDistribution):
         timeType = "h"
 
         # Maximum amount of passengers that can spawn in one timestep
-        maxPassengers = 0.4
+        maxPassengers = 0.2
 
         # Amount of floors
         floorAmount = 10
 
         # Amount of elevators
-        self.amountOfElevators = 4
+        self.amountOfElevators = 2
 
         # Capacity of elevators
-        self.elevatorCapacity = 10
+        self.elevatorCapacity = 15
 
         # Set the amount of passengers that spawn on each floor equally (time [h], spawn distribution, target distribution)
         data = [
