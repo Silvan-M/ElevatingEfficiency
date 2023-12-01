@@ -275,7 +275,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = RooftopBarDistribution
+distribution = ShoppingMallDistribution
 
 # Choose a policy for the elevators
 policy = SCANPolicy
