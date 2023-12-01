@@ -177,16 +177,17 @@ class SimulationPlotter():
             plt = P2D(keyFrames,"time [s]",floorSpawnData,floorNames)
         plt.plotNormal(name,cmap="viridis",save=savePlot)
     
-    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="h",averageOf=1,savePlot=False,name=""):
+    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="m",averageOf=1,savePlot=False,name=""):
         bar = ProgressBar(len(policies)*averageOf,"Simulating: ")
         objectiveData = []
         objectiveTemp = []
         objectiveNames = []
         objectiveAverage=[]
 
+        t = 1
         if (timeScale=="h"):
             t = 60*60
-        else:
+        elif (timeScale=="m"):
             t = 60
 
         if (name==""):
@@ -209,7 +210,7 @@ class SimulationPlotter():
                 bar.update()
                 simulation = self._init()
                 simulation.run(days=1, timeScale=-1)
-                x = (simulation.statistics.getObjective(objective,t,24))
+                x = (simulation.statistics.getObjective(objective,t,24*60*60//t))
                 objectiveTemp.append(x)
             objectiveData.append(self._extractMean(objectiveTemp))
             objectiveTemp=[]
@@ -404,13 +405,13 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-    #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy],averageOf=1)
+    plt.policyPlotter2d(Objective.AWT,[LOOKPolicy],averageOf=1)
     
-    plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
+    #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
 
-    plt.distrPlotter2d(distribution,savePlot=True)
+    #plt.distrPlotter2d(distribution,savePlot=True)
 
 
     ## --- END OF PLOTTER SETTINGS --- ##
