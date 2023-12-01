@@ -105,7 +105,7 @@ class SimulationPlotter():
                 objectiveData.append(np.mean(objectiveTemp))
                 objectiveTemp=[]
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
-        plt.plotNormal(name,showMin=True,showMax=True,save=savePlot)     
+        plt.plotNormal(name,showMin=True,showMax=True,save=savePlot,interpolation="none")     
 
     def distrPlotter2d(self,distr,target=False,savePlot=False,name="distrPlotter2d"):
         distrInit = distr()
@@ -279,9 +279,9 @@ plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 # Call the plotter functions here
 
 plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DIRWEIGHT,0,5,2],
-                          [PolicyParameter.DISTEXPONENT,0,5,2],
-                          averageOf=1,savePlot=True,name="test1") 
+                          [PolicyParameter.DIRWEIGHT,0,5,10],
+                          [PolicyParameter.DISTEXPONENT,0,5,10],
+                          averageOf=1,savePlot=True,name="test1")
 
 # plt.distrPlotter2d(distribution,savePlot=True)
 

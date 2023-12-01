@@ -19,7 +19,7 @@ class Plotter3D():
     
 
 
-    def plotNormal(self,name:str,showMin=False,showMax=False,save=False):
+    def plotNormal(self,name:str,showMin=False,showMax=False,save=False,interpolation='bilinear'):
         xi, yi = np.meshgrid(np.linspace(min(self.param1Data), max(self.param1Data),len(self.param1Data)), 
                              np.linspace(min(self.param2Data), max(self.param2Data), len(self.param1Data)))
 
@@ -29,29 +29,33 @@ class Plotter3D():
 
         cmap = plt.get_cmap('viridis')
 
-
-        plt.contourf(xi, yi, zi, cmap=cmap, levels=1000)
+        # Use imshow to create a rasterized 2D plot
+        plt.imshow(zi, extent=(np.amin(xi), np.amax(xi), np.amin(yi), np.amax(yi)), origin='lower', cmap=cmap, aspect='auto', interpolation=interpolation)
         plt.colorbar(label=str(self.objectiveName))
 
 
-        if (showMax):
+        if showMax:
             max_z_index = np.unravel_index(np.argmax(zi, axis=None), zi.shape)
             max_z_x = xi[max_z_index]
             max_z_y = yi[max_z_index]
-            plt.plot(max_z_x, max_z_y, marker='x', color='red', label = "M("+str(max_z_x)+","+str(max_z_y)+")")
-           
 
-            print("[Plotter3D] Maximum was found at ("+str(max_z_x)+","+str(max_z_y)+")") 
+            round_max_z_x = round(max_z_x, 2)
+            round_max_z_y = round(max_z_y, 2)
 
-        if (showMin):
+            print("[Plotter3D] Maximum was found at ("+str(round_max_z_x)+","+str(round_max_z_y)+")")
+            plt.plot(max_z_x, max_z_y, marker='x', color='red', label="M("+str(round_max_z_x)+","+str(round_max_z_y)+")")
+
+        if showMin:
             min_z_index = np.unravel_index(np.argmin(zi, axis=None), zi.shape)
             min_z_x = xi[min_z_index]
             min_z_y = yi[min_z_index]
-            plt.plot(min_z_x, min_z_y,marker='x', color='blue', label = "m("+str(min_z_x)+","+str(min_z_y)+")") 
-             
-            print("[Plotter3D] Minimum was found at ("+str(min_z_x)+","+str(min_z_y)+")") 
+            
+            round_min_z_x = round(min_z_x, 2)
+            round_min_z_y = round(min_z_y, 2)
 
-        
+            print("[Plotter3D] Maximum was found at ("+str(round_min_z_x)+","+str(round_min_z_y)+")") 
+            plt.plot(min_z_x, min_z_y, marker='x', color='blue', label="m("+str(round_min_z_x)+","+str(round_min_z_y)+")")
+
         plt.legend()
         plt.xlabel(str(self.param1Name))
         plt.ylabel(str(self.param2Name))
