@@ -207,11 +207,10 @@ class SimulationPlotter():
                 bar.update()
                 simulation = self._init()
                 simulation.run(days=1, timeScale=-1)
-                x = (simulation.statistics.getObjective(objective,t))
+                x = (simulation.statistics.getObjective(objective,t,24))
                 objectiveTemp.append(x)
             objectiveData.append(self._extractMean(objectiveTemp))
             objectiveTemp=[]
-
         plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
         plt.plotNormal(name,save=savePlot)
         
@@ -319,7 +318,6 @@ class SimulationPlotter():
         
     def _updatePolicy(self,param,newVal,index:int):
         if (param.value==-1):
-            print("here")
             self.elevatorArgs[index][2]=[newVal]
         else:
             self.elevatorArgs[index][2][param.value]=newVal
@@ -385,30 +383,33 @@ dist = distribution()
 elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
-if (seed != -1):
-    random.seed(seed)
-    np.random.seed(seed)
+if __name__ == "__main__":
+    if (seed != -1):
+        random.seed(seed)
+        np.random.seed(seed)
 
-if (not isCustomScenario):
-    elevatorArgs = []
-    # Initilaize distribution to get parameters
-    dist = distribution()
-    # Standard scenario, set parameters automatically
-    floorAmount = dist.floorAmount
-    amountOfElevators = dist.amountOfElevators
-    for i in range(amountOfElevators):
-        elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
-plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
+    if (not isCustomScenario):
+        elevatorArgs = []
+        # Initilaize distribution to get parameters
+        dist = distribution()
+        # Standard scenario, set parameters automatically
+        floorAmount = dist.floorAmount
+        amountOfElevators = dist.amountOfElevators
+        for i in range(amountOfElevators):
+            elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
+    plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
 
 
     ## --- START OF PLOTTER SETTINGS --- ##
+
+    # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
+    plt.policyPlotter2d(Objective.AWT,[SCANPolicy,PWDPPolicy,FCFSPolicy,PWDPPolicyEnhanced,LOOKPolicy],averageOf=10)
+    
+    #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
-plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,10,10)
-
-plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,10],[PolicyParameter.DISTWEIGHT,0,5,10,10],10)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
 
 
 

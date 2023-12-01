@@ -88,7 +88,7 @@ class SimulationStatistics():
         return mean_values
 
     
-    def getObjective(self,obj : Objective, timestep=-1):
+    def getObjective(self,obj : Objective, timestep=-1, timestepAmount=24):
         maxTime = max([task.startTime for task in self.finishedTasks.values()])
         timestep = maxTime if timestep == -1 else timestep
         result = None
@@ -99,7 +99,9 @@ class SimulationStatistics():
             result = [self.calculateStdDevWaitingTime(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
         elif (obj == Objective.ACE):
             result = [self.calculateAverageCrowdedness(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
-
+        
+        while (len(result) < timestepAmount):
+            result.append(None)
         return result if timestep != maxTime else result[0]
     
     def getObjectives(self,objs : [Objective], timestep=-1):

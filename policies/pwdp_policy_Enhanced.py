@@ -37,9 +37,6 @@ class PWDPPolicyEnhanced(PWDPPolicy):
         self.peopleInElevatorButtonWeight = peopleInElevatorButtonWeight
         self.peopleFloorWeight = peopleFloorWeight
 
-    def name() -> str:
-        return  "PWDP Enhanced Policy"
-        
         super().__init__(
             elevatorButtonWeight=1, 
             timeWeight=timeWeight, 
@@ -49,6 +46,10 @@ class PWDPPolicyEnhanced(PWDPPolicy):
             distanceWeight=distanceWeight, 
             distanceExponent=distanceExponent
         )
+
+    def name() -> str:
+        return  "PWDP Enhanced Policy"
+        
     
     # Override functions from PWDPPolicy, rest of the logic remains exactly the same
     def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):

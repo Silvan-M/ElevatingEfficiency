@@ -72,7 +72,8 @@ class FCFSPolicy(Policy):
         # Safeguarding - Print warning if elevator did not follow advertised direction
         if ((self.prevAction == Action.WaitDown and action == Action.MoveUp) or 
             (self.prevAction == Action.WaitUp and action == Action.MoveDown)):
-            print(f"WARNING: Elevator did not follow advertised direction, {self.prevAction} -> {action}")
+            if DB.enableWarnings:
+                print(C.warning(f"WARNING: Elevator did not follow advertised direction, {self.prevAction} -> {action}"))
 
         self.prevAction = action
         return action
