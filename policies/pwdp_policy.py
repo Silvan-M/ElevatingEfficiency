@@ -9,7 +9,7 @@ class PWDPPolicy(Policy):
     - elevatorButtonWeight: Award if elevator button pressed on floor i
     - timeWeight:           Award elevator and floor buttons which were pressed a long time ago
     - floorButtonWeight:    Award floor buttons which were pressed
-    - directionWeight:      Award going in same direction as elevator
+    - directionWeight:      Award high amount of buttons pressed [above/below] floor i
     - competitorWeight:     Penalize direction in which other eleavtors are moving
     - distanceWeight:       Penalize high distance to target
     - distanceExponent:     Exponent for distance penalty
@@ -39,7 +39,6 @@ class PWDPPolicy(Policy):
         self.distanceExponent = distanceExponent
         self.elevatorButtonLastPressed = None
         self.minElevatorButtonTime = 0
-        self.goingUp = False
 
     def name() -> str:
         return  "PWDP Policy"
@@ -79,7 +78,6 @@ class PWDPPolicy(Policy):
             if (target != -1 and targetDirection != 0):
                 # New target in different floor, move
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
-                self.goingUp = target > currentFloor
             else:
                 # No new target or target is current floor, wait
                 action = Action.WaitOpen
@@ -185,8 +183,8 @@ class PWDPPolicy(Policy):
         s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
         s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
 
-        # print(f"Target: {target}, TargetDir: {targetDirection}, s1: {s1}, s2: {s2}, s3: {s3}, s4: {s4}, s5: {s5}, s6: {s6}")
-        return float(s1 + s2 + s3 + s4) / max(1, (s5 + s6))
+       # print(f"Target: {target}, TargetDir: {targetDirection}, s1: {s1}, s2: {s2}, s3: {s3}, s4: {s4}, s5: {s5}, s6: {s6}")
+        return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
     
     def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
@@ -210,15 +208,15 @@ class PWDPPolicy(Policy):
 
         # Get max time since of all floor buttons pressed
         for i in range(len(floorButtons)):
-            if (time - floorButtons[i].lastPressedDown > maxFloorButtonTime and floorButtons[i].moveDown):
+            if (time - floorButtons[i].lastPressedDown > maxFloorButtonTime):
                 maxFloorButtonTime = time - floorButtons[i].lastPressedDown
-            if (time - floorButtons[i].lastPressedUp > maxFloorButtonTime and floorButtons[i].moveUp):
+            if (time - floorButtons[i].lastPressedUp > maxFloorButtonTime):
                 maxFloorButtonTime = time - floorButtons[i].lastPressedUp
 
         if (maxFloorButtonTime == 0):
             maxFloorButtonTime = 1
 
-        floorButtonTime = float(floorButtonTimePressedSince * floorButtonPressed) / maxFloorButtonTime
+        floorButtonTime = floorButtonTimePressedSince * floorButtonPressed / maxFloorButtonTime
         elevatorButtonTime = self._timeSinceElevatorButtonPressed(target, time) + elevatorButtons[target] / maxElevatorButtonTime
 
         return self.timeWeight * elevatorButtonTime * floorButtonTime
@@ -235,21 +233,28 @@ class PWDPPolicy(Policy):
     
     def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
-        Get s4, award going in same direction as elevator
+        Get s4, weighted amount of floor buttons pressed (per floor) in targetDirection (in the view of target)
         """
         
         # Get amount of floor buttons pressed above/below (dependant on targetDirection) target and it's total amount
-        isFlPressed = floorButtons[target].moveUp if (self.goingUp) \
-                                else floorButtons[target].moveDown
-        if (target == elevator.maxFloor and self.goingUp):
-            isFlPressed = floorButtons[target].moveDown
-        elif (target == elevator.minFloor and not self.goingUp):
-            isFlPressed = floorButtons[target].moveUp
-        
-        isElPressed = elevatorButtons[target]
-        isPressed = isFlPressed or isElPressed
+        floorButtonsPressed = 0
+        totalFloorButtonsPressed = 0
 
-        return self.directionWeight * isPressed
+        for i in range(len(floorButtons)):
+            if (i > target and targetDirection == 1) or (i < target and targetDirection == -1):
+                totalFloorButtonsPressed += 1
+                if (floorButtons[i].moveUp or floorButtons[i].moveDown):
+                    # Floor button is pressed in direction targetDirection
+                    floorButtonsPressed += floorButtons[i].moveUp + floorButtons[i].moveDown
+
+        if totalFloorButtonsPressed == 0:
+            # No floor buttons pressed, set to 1 to avoid division by 0
+            totalFloorButtonsPressed = 1
+
+        if (not (floorButtons[target].moveUp or floorButtons[target].moveDown) and not(elevatorButtons[target])):
+            floorButtonsPressed = 0
+
+        return self.directionWeight * (floorButtonsPressed) / (totalFloorButtonsPressed)
 
     def _getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """
@@ -270,7 +275,7 @@ class PWDPPolicy(Policy):
             # No elevators moving, set to 1 to avoid division by 0
             totalElevatorsMoving = 1
 
-        return float(self.competitorWeight * amountOfElevatorsMoving) / totalElevatorsMoving
+        return self.competitorWeight * amountOfElevatorsMoving / totalElevatorsMoving
     
     def _getS6(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
         """

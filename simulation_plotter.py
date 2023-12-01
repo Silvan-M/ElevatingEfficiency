@@ -380,7 +380,7 @@ seed = 1345678
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = RooftopBarDistribution
+distribution = ShoppingMallDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -417,7 +417,7 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-    plt.policyPlotter2d(Objective.AWT,[PWDPPolicy],averageOf=10)
+    plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
