@@ -95,7 +95,7 @@ class SimulationPlotter():
         for i in range(len(parameterData1)):
             self._updateHandler(par1,parameterData1[i])
             for j in range(len(parameterData2)):
-                self._updateHandler(par1,parameterData1[j])
+                self._updateHandler(par2,parameterData2[j])
                 for a in range(averageOf):  
                     bar.update()
                     simulation = self._init()
@@ -278,7 +278,7 @@ if (not isCustomScenario):
     floorAmount = dist.floorAmount
     amountOfElevators = dist.amountOfElevators
     for i in range(amountOfElevators):
-        elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
+        elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1,1], dist.elevatorCapacity])
 plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 
 
@@ -286,27 +286,27 @@ plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 # Call the plotter functions here
 
 plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
+                          [PolicyParameter.ElEVBUTWEIGHT,0,10,25],
                           [PolicyParameter.DISTEXPONENT,0,10,25],
                           averageOf=10,savePlot=True,name="test1")
 
 plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
+                          [PolicyParameter.ElEVBUTWEIGHT,0,10,25],
                           [PolicyParameter.FLOORBUTWEIGHT,0,10,25],
                           averageOf=10,savePlot=True,name="test2") 
 
 plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
                           [PolicyParameter.ElEVBUTWEIGHT,0,10,25],
+                          [PolicyParameter.DISTWEIGHT,0,10,25],
                           averageOf=10,savePlot=True,name="test3") 
 
 plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
+                          [PolicyParameter.ElEVBUTWEIGHT,0,10,25],
                           [PolicyParameter.TIMEWEIGHT,0,10,25],
                           averageOf=10,savePlot=True,name="test4") 
 
 plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
+                          [PolicyParameter.ElEVBUTWEIGHT,0,10,25],
                           [PolicyParameter.COMPWEIGHT,0,10,25],
                           averageOf=10,savePlot=True,name="test5")
 
