@@ -99,6 +99,10 @@ class LivePlotter():
         if Objective.ACE in self.objectives:
             self.live_data[Objective.ACE].append(statistics.crowdedness[-1])
             self.setLineData(Objective.ACE)
+
+        if Objective.AMP in self.objectives:
+            self.live_data[Objective.AMP].append(statistics.calculateAmountPeopleSpawned())
+            self.setLineData(Objective.AMP)
        
     def step(self, simulation, tim):
         if tim % self.updatePointInterval == 0:

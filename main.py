@@ -15,7 +15,7 @@ import numpy as np
 ## --- START OF SETTINGS --- ##
 ## MAIN SETTINGS
 # Show gui
-showGui = False
+showGui = True
 
 # Show live plot
 showLivePlot = True
@@ -87,7 +87,7 @@ if (showGui):
     game = GameDisplay(simulation, windowSize)
 
 if (showLivePlot):
-    livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
+    livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE, Objective.AMP])
 
 simulation.run(hours=1, timeScale=-1)
 

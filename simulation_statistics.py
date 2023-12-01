@@ -9,7 +9,9 @@ from enum import Enum
 class Objective(Enum):
     AWT = "average waiting time" # average waiting time
     AWTSD = "standard deviation of waiting time" # average waiting time's standard deviation
+    ATTD = "average time to destination" # average time to destination
     ACE = "average crowededness" # average crowdedness in elevator
+    AMP = "amount of people" # amount of people spawned
 
 class SimulationStatistics():
     
@@ -75,6 +77,13 @@ class SimulationStatistics():
         waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
         return statistics.stdev(waiting_times) if len(waiting_times) > 1 else None
     
+    def calculateAmountPeopleSpawned(self, fromTime=-1, toTime=sys.maxsize):
+        return len([task for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime])
+    
+    def calculateAverageTimeToDestination(self, fromTime=-1, toTime=sys.maxsize):
+        total_times = [task.totalTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
+        return statistics.mean(total_times) if total_times else None
+    
     def calculateAverageCrowdedness(self, fromTime=-1, toTime=sys.maxsize):
         return statistics.mean(self.crowdedness[fromTime:toTime]) if self.crowdedness else None
     
@@ -99,6 +108,10 @@ class SimulationStatistics():
             result = [self.calculateStdDevWaitingTime(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
         elif (obj == Objective.ACE):
             result = [self.calculateAverageCrowdedness(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+        elif (obj == Objective.AMP):
+            result = [self.calculateAmountPeopleSpawned(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+        elif (obj == Objective.ATTD):
+            result = [self.calculateAverageTimeToDestination(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
         
         while (len(result) < timestepAmount):
             result.append(None)

@@ -33,6 +33,8 @@ class SimulationPlotter():
             self.elevatorsInit.append([])
 
 
+
+
     def paramPlotter2d(self,obj:list,param:Parameter,startVal,endVal,steps,averageOf=1,savePlot=False, name="paramPlotter2d"):
         """
         Simulate the parameter param with steps amount of simulations equidistant in [startVal,endVal]
@@ -361,7 +363,7 @@ class SimulationPlotter():
 
 # Choose a seed
 
-seed = -1
+seed = 1345678
 
 # Choose whether to use a standard scenario or a custom scenario
 isCustomScenario = False
@@ -384,9 +386,6 @@ elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]]
 
 ## --- END OF SCENARIO SETTINGS --- ##
 if __name__ == "__main__":
-    if (seed != -1):
-        random.seed(seed)
-        np.random.seed(seed)
 
     if (not isCustomScenario):
         elevatorArgs = []
@@ -405,11 +404,11 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-    plt.policyPlotter2d(Objective.AWT,[SCANPolicy,PWDPPolicy,FCFSPolicy,PWDPPolicyEnhanced,LOOKPolicy],averageOf=10)
+    #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy],averageOf=1)
     
-    #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
+    plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
 
 
 
