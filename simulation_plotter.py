@@ -102,7 +102,7 @@ class SimulationPlotter():
 
         for i in range(len(parameterData1)):
             for j in range(len(parameterData2)):
-                result = pool.apply_async(self._paramPlotter3dWorker, args=(i, j, par1, par2, parameterData1, parameterData2, averageOf, objective))
+                result = pool.apply_async(self._paramPlotter3dWorker, args=(i, j, par1, par2, parameterData1, parameterData2, averageOf, objective, random.randint(0, 1000000)))
                 results.append(result)
 
         objectiveData = []
@@ -121,7 +121,10 @@ class SimulationPlotter():
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
         plt.plotNormal(name,showMin=True,showMax=True,save=savePlot,interpolation="bilinear")     
 
-    def _paramPlotter3dWorker(self, i, j, par1, par2, parameterData1, parameterData2, averageOf, objective):
+    def _paramPlotter3dWorker(self, i, j, par1, par2, parameterData1, parameterData2, averageOf, objective, seed):
+        np.random.seed(seed)
+        random.seed(seed)
+
         objectiveTemp = []
         self._updateHandler(par1, parameterData1[i])
         self._updateHandler(par2, parameterData2[j])
