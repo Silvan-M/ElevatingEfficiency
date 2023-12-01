@@ -4,7 +4,10 @@ import os
 import random
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
+from matplotlib.colors import LinearSegmentedColormap, Normalize
+from matplotlib.cm import ScalarMappable
 
 seed_value = 5  
 random.seed(seed_value)
@@ -60,9 +63,37 @@ def format_time(seconds):
     minutes, seconds = divmod(remainder, 60)
 
     # Create a formatted string
-    time_string = "{:02.0f}:{:02.0f}:{:02.0f}:{:02.0f}".format(days, hours, minutes, seconds)
+    time_string = "{:02.0f}:{:02.0f}:{:02.0f}".format(days, hours, minutes, seconds)
 
     return time_string
+
+
+def get_color_at_time(data, time):
+    # Ensure data is sorted by time
+    sorted_data = sorted(data, key=lambda x: x[0])
+    
+    # Extract times and colors
+    times, colors = zip(*sorted_data)
+    
+    # Find the index where time should be inserted to maintain sorted order
+    idx = next((i for i, t in enumerate(times) if t >= time), len(times) - 1)
+    
+    # Interpolate between the colors at idx-1 and idx based on the relative position of time
+    t1, c1 = times[idx - 1], colors[idx - 1]
+    t2, c2 = times[idx], colors[idx]
+    
+    alpha = (time - t1) / (t2 - t1)
+
+    c1_rgb = mcolors.to_rgb(c1)
+    c2_rgb = mcolors.to_rgb(c2)
+
+    interpolated_color = (
+        c1_rgb[0] + alpha * (c2_rgb[0] - c1_rgb[0]),
+        c1_rgb[1] + alpha * (c2_rgb[1] - c1_rgb[1]),
+        c1_rgb[2] + alpha * (c2_rgb[2] - c1_rgb[2]),
+    )
+
+    return interpolated_color
 
 class SpriteEntity():
     def __init__(self, front, back, screenLoc, spriteSize, front_color=(255, 255, 255), back_color=(255, 255, 255)):
@@ -145,7 +176,8 @@ class GameDisplay():
         self.allSprites = pygame.sprite.Group()
         self.floorColors = []
 
-        self.backgroundColor = (0, 128, 180)
+
+#        self.backgroundColor = interpolateColors(colors, times)
         self.greyColor = (100, 100, 100)
 
         #Building
@@ -212,8 +244,19 @@ class GameDisplay():
                           (self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]), 
                           self.totScale)
 
+
     def setBackground(self, time):
-        self.screen.fill(self.backgroundColor)
+        colors = [(0,"midnightblue"), (5.5, "cornflowerblue"), (6, "lightsalmon"), (7, "skyblue"), (12, "lightskyblue"), (18, "powderblue"), (18.5, "orangered"), (19, "navy"), (24, "midnightblue")]
+        hour = (time / 24) % 24
+        col = mul(get_color_at_time(colors, hour), 255)
+        grey = (128, 128, 128)
+        alpha = .4
+        interpolated_color = (
+        col[0] + alpha * (grey[0] - col[0]),
+        col[1] + alpha * (grey[1] - col[1]),
+        col[2] + alpha * (grey[2] - col[2]),
+        )
+        self.screen.fill(interpolated_color)
 
     def applyDifferences(self, stepInfo, lastStepInfo):
         for key in stepInfo.elevatorHeights:
@@ -299,7 +342,7 @@ class GameDisplay():
                                                         self.screenTileAmount[1] * self.totScale - 16*self.scale))
         
         # Time display
-        self.renderText(f"{format_time(simulation.time)} / {format_time(self.timeStepAmount)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
+        self.renderText(f"{format_time(simulation.time)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
         
         # Name display
         self.renderText(building.distribution.distributionName, (16 * self.scale, 16 * self.scale), -1)
