@@ -15,7 +15,7 @@ import numpy as np
 ## --- START OF SETTINGS --- ##
 ## MAIN SETTINGS
 # Show gui
-showGui = True
+showGui = False
 
 # Show live plot
 showLivePlot = True
@@ -28,7 +28,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution()
+distribution = ResidentialBuildingDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
 policy = PWDPPolicy
@@ -89,7 +89,7 @@ if (showGui):
 if (showLivePlot):
     livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE])
 
-simulation.run(seconds=500, timeScale=-1)
+simulation.run(seconds=5000, timeScale=-1)
 
 
 if (DB.mnEnd):

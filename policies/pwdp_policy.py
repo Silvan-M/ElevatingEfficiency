@@ -40,6 +40,9 @@ class PWDPPolicy(Policy):
         self.elevatorButtonLastPressed = None
         self.minElevatorButtonTime = 0
 
+    def name() -> str:
+        return  "PWDP Policy"
+
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """
         Choose action based on floor scores

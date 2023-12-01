@@ -12,6 +12,9 @@ class SSTFPolicy(Policy):
         
         # If true, elevator buttons are preferred over external buttons
         self.prefersElevatorButtons = prefersElevatorButtons
+    
+    def name() -> str:
+        return  "SSTF Policy"
 
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """

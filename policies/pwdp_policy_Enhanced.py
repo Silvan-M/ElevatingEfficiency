@@ -36,6 +36,9 @@ class PWDPPolicyEnhanced(PWDPPolicy):
         self.prevAction = Action.Wait
         self.peopleInElevatorButtonWeight = peopleInElevatorButtonWeight
         self.peopleFloorWeight = peopleFloorWeight
+
+    def name() -> str:
+        return  "PWDP Enhanced Policy"
         
         super().__init__(
             elevatorButtonWeight=1, 

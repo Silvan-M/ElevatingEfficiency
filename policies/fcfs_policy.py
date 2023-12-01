@@ -10,6 +10,9 @@ class FCFSPolicy(Policy):
         self.prevAction = Action.Wait
         self.futureTargets = [] # [[target, direction], ...]]
 
+    def name() -> str:
+        return  "FCFS Policy"
+
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """
         Determine which action the elevator should take

@@ -19,6 +19,10 @@ class Policy():
         pass
     def __str__(self) -> str:
         return DB.str("Class","Policy",kwargs=[self.prevAction],desc=["prevAction"])
+    
+    def name(self) -> str:
+        """To be overwritten by sublcasses"""
+        pass
 
     def getAction(self, currentFloor, floorList, elevatorButtons, elevators, elevator, time):
         """

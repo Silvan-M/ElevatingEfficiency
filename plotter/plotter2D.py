@@ -7,19 +7,28 @@ import numpy as np
 from datetime import datetime
 
 class Plotter2D():
-    def __init__(self, paramData:list,paramName:str, objectiveData:list,objectiveName:list) -> None:
+    def __init__(self, paramData:list,paramName:str, objectiveData:list,objectiveName:list,yLabel="value") -> None:
         self.paramData = paramData
         self.objectiveData = objectiveData
         self.paramName = paramName
         self.objectiveName = objectiveName
+        self.yLabel=yLabel
 
-    def plotNormal(self,name:str,showMin=False,showMax=False,cmap=None,save=False):
+    def plotNormal(self,name:str,showMin=False,showMax=False,cmap=None,save=False,ignoreNegValue=True):
         
         plt.title(name)
         plt.xlabel(self.paramName)
-        plt.ylabel("value")
+        plt.ylabel(self.yLabel)
+        paramDataMod = self.paramData
         for i in range(len(self.objectiveData)):
-            plt.plot(self.paramData,self.objectiveData[i],label=self.objectiveName[i],color = self._getColor(i,len(self.objectiveData),cmap) )
+            if (ignoreNegValue):
+                paramDataMod = self.paramData
+                for j in reversed(range(len(self.objectiveData[i]))):
+                    if (self.objectiveData[i][j]<0):
+                        self.objectiveData[i].pop(j)
+                        paramDataMod.pop(j)
+
+            plt.plot(paramDataMod,self.objectiveData[i],label=self.objectiveName[i],color = self._getColor(i,len(self.objectiveData),cmap) )
 
         # Find and mark the maximum value
 

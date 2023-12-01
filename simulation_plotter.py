@@ -19,13 +19,17 @@ class SimulationPlotter():
     def __init__(
         self,
         elevatorArgs=[[0, 9, [LOOKPolicy], 10]], 
-        distrType=ShoppingMallDistribution):
+        distrType=ShoppingMallDistribution,
+        seed = -1):
         
         self.distribution = distrType()
         self.floorAmount = self.distribution.floorAmount
-
+        self.seed = seed
         self.elevatorArgs = elevatorArgs
-        self.elevatorsInit = [0]*len(elevatorArgs)
+        self.elevatorsInit = []
+
+        for i in range(len(elevatorArgs)):
+            self.elevatorsInit.append([])
 
 
     def paramPlotter2d(self,obj:list,param:Parameter,startVal,endVal,steps,averageOf=1,savePlot=False, name="paramPlotter2d"):
@@ -66,7 +70,7 @@ class SimulationPlotter():
 
         
 
-    def paramPlotter3d(self,obj:Objective,param1:list,param2:list,averageOf=0,savePlot=False,name="paramPlotter3d"):
+    def paramPlotter3d(self,obj:Objective,param1:list,param2:list,averageOf=1,savePlot=False,name=""):
         """
         Simulate two parameters param1 and param2 with steps amount of simulations equidistant 
         in their respective [startVal,endVal] The averageOf defines how often each step stated above gets executed. 
@@ -86,6 +90,9 @@ class SimulationPlotter():
         startVal2 = param2[1]
         endVal2 = param2[2]
         steps2 = param2[3]
+
+        if (name==""):
+            name = self.distribution.distributionName+" Scenario"
 
         parameterData1 = np.linspace(startVal1,endVal1,num=steps1)
         parameterData2 = np.linspace(startVal2,endVal2,num=steps2)
@@ -108,12 +115,15 @@ class SimulationPlotter():
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
         plt.plotNormal(name,showMin=True,showMax=True,save=savePlot,interpolation="bilinear")     
 
-    def distrPlotter2d(self,distr,target=False,savePlot=False,name="distrPlotter2d"):
+    def distrPlotter2d(self,distr,target=False,savePlot=False,name=""):
         distrInit = distr()
         start = 0
         end = distrInit.maxTime
         keyFrames = list(range(start, end + 1))
         floorAmount = self.floorAmount
+
+        if (name==""):
+            name = self.distribution.distributionName+" Scenario"
 
         floorNames = []
         floorTargetData = []
@@ -136,8 +146,77 @@ class SimulationPlotter():
         else:
             plt = P2D(keyFrames,"time [s]",floorSpawnData,floorNames)
         plt.plotNormal(name,cmap="viridis",save=savePlot)
+    
+    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="h",averageOf=1,savePlot=False,name=""):
+        bar = ProgressBar(len(policies)*averageOf,"Simulating: ")
+        objectiveData = []
+        objectiveTemp = []
+        objectiveNames = []
+        objectiveAverage=[]
+
+        if (timeScale=="h"):
+            t = 60*60
+        else:
+            t = 60
+
+        if (name==""):
+            name = self.distribution.distributionName+" Scenario"
+
+        distr = self.distribution
+        start = 0
+        end = (distr.maxTime)//t
+        seedStore = self.seed
+
+        keyFrames = list(range(start, end))
+
+        for i in range(len(policies)):
+            self.seed = seedStore
+            objectiveNames.append(policies[i].name())
+            for j in range(len(self.elevatorArgs)):
+                self._updateHandler(PolicyParameter.POLICY,policies[i],j)
+            for a in range(averageOf):
+                self.seed+=1234  
+                bar.update()
+                simulation = self._init()
+                simulation.run(days=1, timeScale=-1)
+                x = (simulation.statistics.getObjective(objective,t))
+                objectiveTemp.append(x)
+            objectiveData.append(self._extractMean(objectiveTemp))
+            objectiveTemp=[]
+
+        plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
+        plt.plotNormal(name,save=savePlot)
+        
+
+
+
 
         
+    def _extractMean(self,input:list):
+        """
+        Extracts the mean of the columns of a matrix represented by input. 
+        Individual None values get deleted in a column. When column only consists of 
+        None, average will be marked with -1, such that we can handle that case later.
+        """
+        if (len(input)==0 or input==None):
+            raise BaseException("List cannot be empty or of length 0")
+        
+        avg = []
+        avgTemp=[]
+
+        xLen = len(input)
+        yLen = len(input[0])
+        
+        for y in range(yLen):
+            for x in range(xLen):
+                avgTemp.append(input[x][y])
+            self._delNone(avgTemp)
+            if (len(avgTemp)==0):
+                avgTemp.append(-1)
+            avg.append(np.mean(avgTemp))
+            avgTemp=[]
+        return avg
+
 
 
 
@@ -150,6 +229,9 @@ class SimulationPlotter():
         - self.distribution : stores the distribution
         - self.floorAmount : stores the floor amount
         """
+        if (self.seed != -1):
+            random.seed(self.seed)
+            np.random.seed(self.seed)
         elevators=[]
         for i in range(len(self.elevatorArgs)):
             self._initPolicy(i)
@@ -160,18 +242,23 @@ class SimulationPlotter():
 
 
     def _initPolicy(self,i):
-        t =  type(self.elevatorArgs[i][2][0])
+        t =  self.elevatorArgs[i][2][0]
+        
+
         if (t == LOOKPolicy):
-            self.elevatorsInit[i][2] = LOOKPolicy()
-        elif (t == LOOKPolicy):
-            self.elevatorsInit[i][2] = FCFSPolicy()
+            self.elevatorsInit[i] = LOOKPolicy()
+        elif (t == FCFSPolicy):
+            self.elevatorsInit[i] = FCFSPolicy()
         elif (t == SSTFPolicy ):
-            self.elevatorsInit[i][2] = SSTFPolicy()
+            self.elevatorsInit[i] = SSTFPolicy()
         elif (t == SCANPolicy):
-            self.elevatorsInit[i][2] = SCANPolicy()
-        elif (t == PWDPPolicy or PWDPPolicyEnhanced):
+            self.elevatorsInit[i] = SCANPolicy()
+        elif (t == PWDPPolicy):
             args = self.elevatorArgs[i][2][1:]
             self.elevatorsInit[i] = PWDPPolicy(*args)
+        elif (t == PWDPPolicyEnhanced):
+            args = self.elevatorArgs[i][2][1:]
+            self.elevatorsInit[i] = PWDPPolicyEnhanced(*args)
 
     def _setFloorAmount(self,amount:int):
         self.floorAmount = amount
@@ -204,6 +291,7 @@ class SimulationPlotter():
         
     def _updatePolicy(self,param,newVal,index:int):
         if (param.value==-1):
+            print("here")
             self.elevatorArgs[index][2]=[newVal]
         else:
             self.elevatorArgs[index][2][param.value]=newVal
@@ -245,8 +333,9 @@ class SimulationPlotter():
 ## --- START OF SCENARIO SETTINGS --- ##
 ## MAIN SCENARIO SETTINGS
 
-# Set seed for random number generator (if -1, no seed is set)
-seed = 1
+# Choose a seed
+
+seed = -1
 
 # Choose whether to use a standard scenario or a custom scenario
 isCustomScenario = False
@@ -264,14 +353,14 @@ floorAmount = 10
 
 # Specify elevator list if using a custom scenario
 elevatorCapacity = 10
-elevatorArgs = [] 
+dist = distribution()
+elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
-if (seed != -1):
-    random.seed(seed)
-    np.random.seed(seed)
+
 
 if (not isCustomScenario):
+    elevatorArgs = []
     # Initilaize distribution to get parameters
     dist = distribution()
     # Standard scenario, set parameters automatically
@@ -279,36 +368,17 @@ if (not isCustomScenario):
     amountOfElevators = dist.amountOfElevators
     for i in range(amountOfElevators):
         elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
-plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
+plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
 
 
 ## --- START OF PLOTTER SETTINGS --- ##
 # Call the plotter functions here
 
-plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
-                          [PolicyParameter.DISTEXPONENT,0,10,25],
-                          averageOf=10,savePlot=True,name="test1")
+plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
 
-plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
-                          [PolicyParameter.FLOORBUTWEIGHT,0,10,25],
-                          averageOf=10,savePlot=True,name="test2") 
+plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,10,10)
 
-plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
-                          [PolicyParameter.ElEVBUTWEIGHT,0,10,25],
-                          averageOf=10,savePlot=True,name="test3") 
-
-plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
-                          [PolicyParameter.TIMEWEIGHT,0,10,25],
-                          averageOf=10,savePlot=True,name="test4") 
-
-plt.paramPlotter3d(Objective.AWT,
-                          [PolicyParameter.DISTWEIGHT,0,10,25],
-                          [PolicyParameter.COMPWEIGHT,0,10,25],
-                          averageOf=10,savePlot=True,name="test5")
+plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,10],[PolicyParameter.DISTWEIGHT,0,5,10,10],10)
 
 
 

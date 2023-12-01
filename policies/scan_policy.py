@@ -10,6 +10,9 @@ class SCANPolicy(Policy):
         self.prevAction = Action.Wait
         self.goingUp = True
 
+    def name() -> str:
+        return  "SCAN Policy"
+
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         action = Action.Wait
         
