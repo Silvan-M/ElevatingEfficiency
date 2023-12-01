@@ -4,6 +4,7 @@ from simulation_statistics import Objective as Objective
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import numpy as np
+import copy
 from datetime import datetime
 
 class Plotter2D():
@@ -21,16 +22,15 @@ class Plotter2D():
         plt.title(name)
         plt.xlabel(self.paramName)
         plt.ylabel(self.yLabel)
-
-        paramDataMod = self.paramData
+        
+        paramDataMod = copy.deepcopy(self.paramData)
         for i in range(len(self.objectiveData)):
             if (ignoreNegValue):
-                paramDataMod = self.paramData
+                paramDataMod = copy.deepcopy(self.paramData)
                 for j in reversed(range(len(self.objectiveData[i]))):
                     if (self.objectiveData[i][j]<0):
                         self.objectiveData[i].pop(j)
                         paramDataMod.pop(j)
-
             plt.plot(paramDataMod,self.objectiveData[i],label=self.objectiveName[i],color = self._getColor(i,len(self.objectiveData),cmap) )
 
         # Find and mark the maximum value

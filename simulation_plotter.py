@@ -212,11 +212,10 @@ class SimulationPlotter():
                 bar.update()
                 simulation = self._init()
                 simulation.run(days=1, timeScale=-1)
-                x = (simulation.statistics.getObjective(objective,t))
+                x = (simulation.statistics.getObjective(objective,t,24))
                 objectiveTemp.append(x)
             objectiveData.append(self._extractMean(objectiveTemp))
             objectiveTemp=[]
-
         plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
         plt.plotNormal(name,save=savePlot)
         
@@ -324,7 +323,6 @@ class SimulationPlotter():
         
     def _updatePolicy(self,param,newVal,index:int):
         if (param.value==-1):
-            print("here")
             self.elevatorArgs[index][2]=[newVal]
         else:
             self.elevatorArgs[index][2][param.value]=newVal
@@ -390,20 +388,24 @@ dist = distribution()
 elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
+if __name__ == "__main__":
 
-if (not isCustomScenario):
-    elevatorArgs = []
-    # Initilaize distribution to get parameters
-    dist = distribution()
-    # Standard scenario, set parameters automatically
-    floorAmount = dist.floorAmount
-    amountOfElevators = dist.amountOfElevators
-    for i in range(amountOfElevators):
-        elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
-plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
+
+    if (not isCustomScenario):
+        elevatorArgs = []
+        # Initilaize distribution to get parameters
+        dist = distribution()
+        # Standard scenario, set parameters automatically
+        floorAmount = dist.floorAmount
+        amountOfElevators = dist.amountOfElevators
+        for i in range(amountOfElevators):
+            elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
+    plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
 
 
     ## --- START OF PLOTTER SETTINGS --- ##
+
+    # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
 #plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
