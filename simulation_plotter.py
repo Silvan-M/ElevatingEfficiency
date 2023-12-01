@@ -13,6 +13,7 @@ from simulation_statistics import Objective
 from progress_bar import ProgressBar
 
 import numpy as np
+import random
 
 class SimulationPlotter():
     def __init__(
@@ -243,6 +244,10 @@ class SimulationPlotter():
 
 ## --- START OF SCENARIO SETTINGS --- ##
 ## MAIN SCENARIO SETTINGS
+
+# Set seed for random number generator (if -1, no seed is set)
+seed = 1
+
 # Choose whether to use a standard scenario or a custom scenario
 isCustomScenario = False
 
@@ -262,7 +267,9 @@ elevatorCapacity = 10
 elevatorArgs = [] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
-
+if (seed != -1):
+    random.seed(seed)
+    np.random.seed(seed)
 
 if (not isCustomScenario):
     # Initilaize distribution to get parameters
@@ -282,6 +289,13 @@ plt.paramPlotter3d(Objective.AWT,
                           [PolicyParameter.DIRWEIGHT,0,5,2],
                           [PolicyParameter.DISTEXPONENT,0,5,2],
                           averageOf=1,savePlot=True,name="test1") 
+
+plt.paramPlotter3d(Objective.AWT,
+                          [PolicyParameter.DIRWEIGHT,0,5,2],
+                          [PolicyParameter.DISTEXPONENT,0,5,2],
+                          averageOf=1,savePlot=True,name="test2") 
+
+
 
 # plt.distrPlotter2d(distribution,savePlot=True)
 
