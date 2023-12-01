@@ -48,15 +48,15 @@ class PolicyParameter(Enum):
         elif (self.value == 2):
             return "time weight "
         elif (self.value == 3):
-            return "floor button weight "
+            return "floor button weight"
         elif (self.value == 4):
-            return "direction weight "
+            return "direction weight"
         elif (self.value == 5):
-            return "camparator weight "
+            return "comparator weight"
         elif (self.value == 6):
-            return "distance weight "
+            return "distance weight"
         elif (self.value == 7):
-            return "distance exponent "
+            return "distance exponent"
 
 
     
