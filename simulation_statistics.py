@@ -2,6 +2,8 @@ import sys
 import matplotlib.pyplot as plt
 import csv
 import statistics
+from itertools import groupby
+from operator import attrgetter
 from enum import Enum
 
 class Objective(Enum):
@@ -38,11 +40,9 @@ class SimulationStatistics():
             if val.waitingTime < 0:
                 val.waitingTime = time - val.startTime
             if val.totalTime < 0:         
-                val.finishedTime = time - val.startTime
+                val.totalTime = time - val.startTime
 
         self.writeToFile("results.txt")
-        out = self.calculateAverageWaitingTime()
-        #print("Average waiting time: " + str(out))
 
     def onPassengerCreated(self, passenger, time):
         self.finishedTasks[passenger.id] = FinishInfo(passenger.id, passenger.startLevel, passenger.endLevel, passenger.startTime)
@@ -77,6 +77,16 @@ class SimulationStatistics():
     
     def calculateAverageCrowdedness(self, fromTime=-1, toTime=sys.maxsize):
         return statistics.mean(self.crowdedness[fromTime:toTime]) if self.crowdedness else None
+    
+    def calculateAverageCrowdednessPerFloor(self):
+        sorted_finish_info = sorted(self.finishedTasks.values(), key=attrgetter('start'))
+
+        grouped_finish_info = {key: list(group) for key, group in groupby(sorted_finish_info, key=attrgetter('start'))}
+
+        mean_values = {key: statistics.mean(info.totalTime for info in group) for key, group in grouped_finish_info.items()}
+        
+        return mean_values
+
     
     def getObjective(self,obj : Objective, timestep=-1):
         maxTime = max([task.startTime for task in self.finishedTasks.values()])
