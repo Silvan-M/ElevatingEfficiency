@@ -108,6 +108,11 @@ class LivePlotter():
             max_y = sum([max(data) for data in self.live_data.values()])
             max_y2= max(self.live_data[Objective.ACE])
 
+            if max_y == 0:
+                max_y = 1
+            if max_y2 == 0:
+                max_y2 = 1
+
             self.ax.set_ylim([0, max_y])
 
             self.ax2.set_ylim([0, max_y2*2])
