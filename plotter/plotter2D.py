@@ -14,6 +14,8 @@ class Plotter2D():
         self.paramName = paramName
         self.objectiveName = objectiveName
         self.yLabel=yLabel
+        self.specialValues = []
+        self.specialValuesName = ""
 
     def plotNormal(self,name:str,showMin=False,showMax=False,cmap=None,save=False,ignoreNegValue=True):
         
@@ -46,6 +48,10 @@ class Plotter2D():
             min_indices = [np.argmin(data) for data in self.objectiveData]
             for idx, min_val, min_idx in zip(range(len(self.objectiveData)), min_values, min_indices):
                 plt.scatter(self.paramData[min_idx], min_val, color='blue', marker='o',label="minimum")
+
+        if (len(self.specialValues)==len(self.paramData)):
+            plt.plot(self.paramData,self.specialValues,label = self.specialValuesName,color="red")
+
         plt.legend()
 
         # Display the plot
@@ -57,6 +63,9 @@ class Plotter2D():
         else:
             plt.show()
 
+    def setSpecialValue(self,specVal:list,specValName:str):
+        self.specialValues  = specVal
+        self.specialValuesName = specValName
 
     def _getColor(self, index, max,cmapInp):
         if (cmapInp==None):

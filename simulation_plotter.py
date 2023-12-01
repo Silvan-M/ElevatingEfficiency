@@ -410,11 +410,7 @@ if __name__ == "__main__":
 
     plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
 
-
-
-
-
-    # plt.distrPlotter2d(distribution,savePlot=True)
+    plt.distrPlotter2d(distribution,savePlot=True)
 
 
     ## --- END OF PLOTTER SETTINGS --- ##
