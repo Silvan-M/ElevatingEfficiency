@@ -247,7 +247,7 @@ class GameDisplay():
 
     def setBackground(self, time):
         colors = [(0,"midnightblue"), (5.5, "cornflowerblue"), (6, "lightsalmon"), (7, "skyblue"), (12, "lightskyblue"), (18, "powderblue"), (18.5, "orangered"), (19, "navy"), (24, "midnightblue")]
-        hour = (time / 24) % 24
+        hour = (time / 60 / 60) % 24
         col = mul(get_color_at_time(colors, hour), 255)
         grey = (128, 128, 128)
         alpha = .4
