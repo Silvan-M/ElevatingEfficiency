@@ -32,6 +32,11 @@ class SimulationPlotter():
         for i in range(len(elevatorArgs)):
             self.elevatorsInit.append([])
 
+        if (seed != -1):
+            random.seed(seed)
+            np.random.seed(seed)
+
+
 
     def paramPlotter2d(self,obj:list,param:Parameter,startVal,endVal,steps,averageOf=1,savePlot=False, name="paramPlotter2d"):
         """
@@ -385,9 +390,6 @@ dist = distribution()
 elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
-if (seed != -1):
-    random.seed(seed)
-    np.random.seed(seed)
 
 if (not isCustomScenario):
     elevatorArgs = []
@@ -404,14 +406,11 @@ plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=s
     ## --- START OF PLOTTER SETTINGS --- ##
     # Call the plotter functions here
 
-plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
-
-plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,10,10)
-
-plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,10],[PolicyParameter.DISTWEIGHT,0,5,10,10],10)
+#plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
 
 
 
+#plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,5],[PolicyParameter.DISTWEIGHT,0,5,10,10],5)
 
 
     # plt.distrPlotter2d(distribution,savePlot=True)
