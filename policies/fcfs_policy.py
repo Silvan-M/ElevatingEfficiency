@@ -1,6 +1,6 @@
 from policies.policy import Policy, Action
 from debug import Debug as DB
-import color as C
+from color import Colors as C
 
 class FCFSPolicy(Policy):
     """
@@ -35,12 +35,16 @@ class FCFSPolicy(Policy):
             if (target == currentFloor):
                 # New target is current floor, open doors
                 action = Action.WaitOpen
-            if (target != -1):
+            elif (target != -1):
                 # New target in different floor, move
                 action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
             else:
                 # No new target or target is current floor, wait
                 action = Action.WaitOpen
+
+            if ((self.prevAction == Action.WaitDown and action == Action.MoveUp) or 
+                (self.prevAction == Action.WaitUp and action == Action.MoveDown)):
+                action = Action.Wait
         elif (elevator.target == currentFloor or elevator.target == -1):
             # Was Action.MoveUp or Action.MoveDown, elevator has reached target or is idle, wait up or down
             if (elevator.targetDirection == 1):
@@ -72,8 +76,8 @@ class FCFSPolicy(Policy):
         # Safeguarding - Print warning if elevator did not follow advertised direction
         if ((self.prevAction == Action.WaitDown and action == Action.MoveUp) or 
             (self.prevAction == Action.WaitUp and action == Action.MoveDown)):
-            if DB.enableWarnings:
-                print(C.warning(f"WARNING: Elevator did not follow advertised direction, {self.prevAction} -> {action}"))
+            if DB.enableWarnings and elevator.elevatorIndex == 1:
+                print(C.warning(f"WARNING: Elevator did not follow advertised direction, {self.prevAction} -> {action}, time: {elevator.time}"))
 
         self.prevAction = action
         return action
@@ -99,11 +103,23 @@ class FCFSPolicy(Policy):
                 targetDirection = 0
         elif (target == -1 or target == currentFloor):
             # Did not find target, Check if there are passengers (outside of elevator) waiting
-            for i, button in enumerate(floorButtons):
-                if (button.moveUp or button.moveDown):
-                    target = i
-                    targetDirection = 1 if button.moveUp else -1
-                    break
+            # Find closest passenger in same direction
+            closestTarget = -1
+            closestTargetDirection = 0
+            closestDistance = float('inf')
+            for i, floor in enumerate(floorButtons):
+                if (abs(currentFloor - i) >= closestDistance):
+                    continue
+                elif (floor.moveUp and (targetDirection == 1 or targetDirection == 0)):
+                    closestTarget = i
+                    closestTargetDirection = 1
+                    closestDistance = i - currentFloor
+                elif (floor.moveDown and (targetDirection == -1 or targetDirection == 0)):
+                    closestTarget = i
+                    closestTargetDirection = -1
+                    closestDistance = currentFloor - i
+            target = closestTarget
+            targetDirection = closestTargetDirection
         
         self.target = target
         return target, targetDirection
@@ -189,5 +205,5 @@ class FCFSPolicy(Policy):
                 self.futureTargets[-1][1] = 1
 
             self.futureTargets += belowTargetPairs + aboveTargetPairs
-        
+
         return len(newTargets)

@@ -24,7 +24,7 @@ class LOOKPolicy(Policy):
             action = Action.WaitOpen
         elif (self.goingUp):
             # Going up
-            if ((not hasRequestsAbove) and hasRequestsBelow):
+            if ((not hasRequestsAbove) and hasRequestsBelow or currentFloor == elevator.maxFloor):
                 # Change direction, since no requests above
                 self.goingUp = False
                 action = Action.WaitDown
@@ -38,7 +38,8 @@ class LOOKPolicy(Policy):
                 # No one wants to go up, move up
                 action = Action.MoveUp
         else:
-            if ((not hasRequestsBelow) and hasRequestsAbove):
+            # Going down
+            if ((not hasRequestsBelow) and hasRequestsAbove or currentFloor == elevator.minFloor):
                 # Change direction, since no requests below
                 self.goingUp = True
                 action = Action.WaitUp

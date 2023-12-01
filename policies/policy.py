@@ -43,7 +43,7 @@ class Policy():
         if ((not DB.pcyActionUpdate) and DB.pcyActionUpdateSelect and (out.value in DB.pcyActionUpdateSelection)):
             DB.pr("Func","getAction",message="function was called",kwargs=[out],desc=["action"])
 
-        ''' TODO: Move this to debug.py
+        ''' TODO: Move this to debug.py 
         str = f"Elevator {elevator.elevatorIndex} on \033[93mFloor: {currentFloor}\033[0m with {len(elevator.passengerList)} passengers, pAction: {out}, Target: {elevator.target}, TargetDir: {elevator.targetDirection} \n  Floors: ["
         for floor in floorList:
             suffix = ""
@@ -78,7 +78,7 @@ class Policy():
 
     def _hasRequests(self, floorButtons, elevators, elevatorButtons):
         """
-        Returns true if there is any passenger waiting
+        Returns true if there is any passenger waiting and no elevator heading there
         """
         for i, floor in enumerate(floorButtons):
             if (floor.moveUp and self._noElevatorHeading(elevators, i, 1)):

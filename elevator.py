@@ -39,6 +39,7 @@ class Elevator:
         return self.elevatorIndex
 
     def step(self, time, building):
+        self.time = time
         if (DB.elvFctStep and ((time % int(DB.elvFctStepsSkips))==0)):
             DB.pr("Func","step",message="function was called",t=time)
 
@@ -72,14 +73,15 @@ class Elevator:
             self.elevatorButtons[currentFloor] = False
             
             # Check if any passenger wants to enter
-            #print("cur"+str(currentFloor))
             floor = building.floors[currentFloor]
             for p in floor.passengerList:
                 # Check if passenger wants to go in same direction
                 if ((p.endLevel < currentFloor and self.decision == Action.WaitDown) or
                    (p.endLevel > currentFloor and self.decision == Action.WaitUp) or Action.WaitOpen) and self.capacity > len(self.passengerList):
                     # Elevator still has capacity and a passenger wants to enter, thus passenger leaves floor
-                    floor.passengerList.remove(p)
+                    
+                    # Remove passenger and update floor buttons
+                    floor.removePassenger(p, time)
                     
                     if (DB.elvPassengerEntersElevator and ((time % int(DB.elvPassengerEntersElevatorSkips))==0) ):
                         DB.pr("Func","step",message="passenger entered elevator",t=time,kwargs=[p],desc=["passenger"])

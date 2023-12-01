@@ -11,6 +11,8 @@ from building import Building
 from simulation import Simulation
 from simulation_statistics import Objective
 from progress_bar import ProgressBar
+from liveplotter import LivePlotter
+from game_display import GameDisplay
 
 import numpy as np
 import random
@@ -184,6 +186,8 @@ class SimulationPlotter():
         objectiveNames = []
         objectiveAverage=[]
 
+        policyAverageEndResult = []
+
         t = 1
         if (timeScale=="h"):
             t = 60*60
@@ -201,6 +205,7 @@ class SimulationPlotter():
         keyFrames = list(range(start, end))
 
         for i in range(len(policies)):
+            policyEndResult = []
             self.seed = seedStore
             objectiveNames.append(policies[i].name())
             for j in range(len(self.elevatorArgs)):
@@ -212,8 +217,13 @@ class SimulationPlotter():
                 simulation.run(days=1, timeScale=-1)
                 x = (simulation.statistics.getObjective(objective,t,24*60*60//t))
                 objectiveTemp.append(x)
+                y = (simulation.statistics.getObjective(objective))
+                policyEndResult.append(y)
             objectiveData.append(self._extractMean(objectiveTemp))
             objectiveTemp=[]
+            policyAverageEndResult.append(np.mean(policyEndResult))
+        for i in range(len(policies)):
+            print(f"Policy {policies[i].name()} has an average of {policyAverageEndResult[i]} {objective.value} at the end of the simulation")
         plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
         plt.plotNormal(name,save=savePlot)
         
@@ -370,17 +380,19 @@ seed = 1345678
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = RooftopBarDistribution
 
-# Choose a policy for the elevators
-policy = SCANPolicy
+# Choose a policy for the elevators (might be overwritten by function parameters used later)
+policy = PWDPPolicy
 
+# Choose policy parameters (might be overwritten by function parameters used later)
+policyParameters = [0,0,0,0,0,0]
 
 ## CUSTOM SCENARIO SETTINGS
-# Specify floor amount if using a custom scenario
+# Specify floor amount if using a CUSTOM scenario
 floorAmount = 10
 
-# Specify elevator list if using a custom scenario
+# Specify elevator list if using a CUSTOM scenario
 elevatorCapacity = 10
 dist = distribution()
 elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
@@ -396,7 +408,7 @@ if __name__ == "__main__":
         floorAmount = dist.floorAmount
         amountOfElevators = dist.amountOfElevators
         for i in range(amountOfElevators):
-            elevatorArgs.append([0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity])
+            elevatorArgs.append([0, floorAmount-1, [policy, *policyParameters], dist.elevatorCapacity])
     plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
 
 
@@ -405,7 +417,7 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-    plt.policyPlotter2d(Objective.AWT,[LOOKPolicy],averageOf=1)
+    plt.policyPlotter2d(Objective.AWT,[PWDPPolicy],averageOf=10)
     
     #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 

@@ -47,16 +47,14 @@ class Building():
         # Notify listeners
         self.onPassengerCreated.notify_all(passenger, time)
 
-        # Add passenger to floor
-        self.floors[spawn].spawnPassenger(passenger)
+        # Add passenger to floor and update floor buttons
+        self.floors[spawn].spawnPassenger(passenger, time)
 
-        # Press buttons on floor
+        # Press buttons on floor messages
         if(target > spawn):
-            self.floors[spawn].buttonPressed.setMoveUp(True, time)
             if ((DB.bldPressesFloorButtonUp and ((time % int(DB.bldPressesFloorButtonUpStepsSkip))==0))or (DB.bldPressesFloorButton and ((time % int(DB.bldPressesFloorButtonStepsSkip))==0))):
                 DB.pr("Func","spawnPassenger",message="passenger pressed button up",kwargs=[spawn],desc=["floor"],t=time)
         else:
-            self.floors[spawn].buttonPressed.setMoveDown(True, time)
             if ((DB.bldPressesFloorButtonDown and ((time % int(DB.bldPressesFloorButtonDownStepsSkip))==0))or (DB.bldPressesFloorButton and ((time % int(DB.bldPressesFloorButtonStepsSkip))==0))):
                 DB.pr("Func","spawnPassenger",message="passenger pressed button down",kwargs=[spawn],desc=["floor"],t=time)
 
