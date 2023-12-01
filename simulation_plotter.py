@@ -314,8 +314,8 @@ if __name__ == "__main__":
 
 
     plt.paramPlotter3d(Objective.AWT,
-                            [PolicyParameter.ElEVBUTWEIGHT,0,10,10],
-                            [PolicyParameter.COMPWEIGHT,0,10,10],
+                            [PolicyParameter.ElEVBUTWEIGHT,0,10,3],
+                            [PolicyParameter.COMPWEIGHT,0,10,3],
                             averageOf=1,savePlot=True,name="multithreading")
 
 
