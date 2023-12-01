@@ -2,7 +2,9 @@ from parameter import Parameter
 from simulation_statistics import Objective as Objective
 
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import numpy as np
+from datetime import datetime
 
 class Plotter2D():
     def __init__(self, paramData:list,paramName:str, objectiveData:list,objectiveName:list) -> None:
@@ -11,14 +13,13 @@ class Plotter2D():
         self.paramName = paramName
         self.objectiveName = objectiveName
 
-    def plotNormal(self,showMin=False,showMax=False):
-        print(self.objectiveData)
+    def plotNormal(self,name:str,showMin=False,showMax=False,cmap=None,save=False):
         
-        plt.title("TODO")
+        plt.title(name)
         plt.xlabel(self.paramName)
         plt.ylabel("value")
         for i in range(len(self.objectiveData)):
-            plt.plot(self.paramData,self.objectiveData[i],label=self.objectiveName[i])
+            plt.plot(self.paramData,self.objectiveData[i],label=self.objectiveName[i],color = self._getColor(i,len(self.objectiveData),cmap) )
 
         # Find and mark the maximum value
 
@@ -38,7 +39,21 @@ class Plotter2D():
         plt.legend()
 
         # Display the plot
-        plt.show()
+        if (save):
+            current_time = datetime.now().strftime("%H_%M_%S")
+            name = (str(name).lower())+"_"+str(current_time)
+            plt.savefig('plotter/plots/'+str(name)+'.png')
+            plt.close()
+        else:
+            plt.show()
+
+
+    def _getColor(self, index, max,cmapInp):
+        if (cmapInp==None):
+            cmapInp = "viridis"
+        cmap = plt.get_cmap(cmapInp)
+        colors = [cmap(i) for i in np.linspace(0, 1, max)]
+        return colors[max - index - 1]
 
 
 
