@@ -27,7 +27,7 @@ class SimulationPlotter():
         self.elevatorsInit = [0]*len(elevatorArgs)
 
 
-    def continuous_2d_plotter(self,obj:list,param:Parameter,startVal,endVal,steps,averageOf=1):
+    def paramPlotter2d(self,obj:list,param:Parameter,startVal,endVal,steps,averageOf=1,savePlot=False, name="paramPlotter2d"):
         """
         Simulate the parameter param with steps amount of simulations equidistant in [startVal,endVal]
         The averageOf defines how often each step stated above gets executed. The average will be taken 
@@ -61,11 +61,11 @@ class SimulationPlotter():
                 objectiveData[q].append(np.mean(objectiveTemp[q]))
                 objectiveTemp[q]=[]
         plt = P2D(parameterData,param.name(),objectiveData,objectiveNames)
-        plt.plotNormal()
+        plt.plotNormal(name,save=savePlot)
 
         
 
-    def continuous_3d_plotter(self,obj:Objective,param1:list,param2:list,averageOf=0):
+    def paramPlotter3d(self,obj:Objective,param1:list,param2:list,averageOf=0,savePlot=False,name="paramPlotter3d"):
         """
         Simulate two parameters param1 and param2 with steps amount of simulations equidistant 
         in their respective [startVal,endVal] The averageOf defines how often each step stated above gets executed. 
@@ -105,7 +105,38 @@ class SimulationPlotter():
                 objectiveData.append(np.mean(objectiveTemp))
                 objectiveTemp=[]
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
-        plt.plotNormal(showMin=True,showMax=True)       
+        plt.plotNormal(name,showMin=True,showMax=True,save=savePlot)     
+
+    def distrPlotter2d(self,distr,target=False,savePlot=False,name="distrPlotter2d"):
+        distrInit = distr()
+        start = 0
+        end = distrInit.maxTime
+        keyFrames = list(range(start, end + 1))
+        floorAmount = self.floorAmount
+
+        floorNames = []
+        floorTargetData = []
+        floorSpawnData = []
+        
+
+        for i in range(floorAmount):
+            floorNames.append("Floor "+str(i))
+            floorTargetData.append([])
+            floorSpawnData.append([])
+
+
+        for t in range(len(keyFrames)):
+            floorSpawnDistribution, floorTargetDistribution = distrInit.getFloorDistributions(t)
+            for i in range(floorAmount):
+                floorTargetData[i].append(floorTargetDistribution.distribution[i])
+                floorSpawnData[i].append(floorSpawnDistribution.distribution[i])
+        if (target):
+            plt = P2D(keyFrames,"time [s]",floorTargetData,floorNames)
+        else:
+            plt = P2D(keyFrames,"time [s]",floorSpawnData,floorNames)
+        plt.plotNormal(name,cmap="viridis",save=savePlot)
+
+        
 
 
 
@@ -216,7 +247,7 @@ class SimulationPlotter():
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = RooftopBarDistribution
 
 # Choose a policy for the elevators
 policy = SCANPolicy
@@ -247,9 +278,12 @@ plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution)
 ## --- START OF PLOTTER SETTINGS --- ##
 # Call the plotter functions here
 
-plt.continuous_3d_plotter(Objective.AWT,
-                          [PolicyParameter.DIRWEIGHT,0,5,10],
-                          [PolicyParameter.DISTEXPONENT,0,5,10],
-                          averageOf=1)
+plt.paramPlotter3d(Objective.AWT,
+                          [PolicyParameter.DIRWEIGHT,0,5,2],
+                          [PolicyParameter.DISTEXPONENT,0,5,2],
+                          averageOf=1,savePlot=True,name="test1") 
+
+# plt.distrPlotter2d(distribution,savePlot=True)
+
 
 ## --- END OF PLOTTER SETTINGS --- ##
