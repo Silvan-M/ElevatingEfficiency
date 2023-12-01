@@ -8,7 +8,9 @@ class Debug():
     allFalse = True
     skipFactor = 1
 
-    if (skipFactor==0):
+    enableWarnings = False
+
+    if (skipFactor==0 and enableWarnings):
         print(C.warning("[DEBUG] WARNING: Cannot set skipFactor to 0. Automatically set to 1"))
         skipFactor=1
 
