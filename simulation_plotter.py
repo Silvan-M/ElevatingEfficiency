@@ -408,14 +408,10 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-#plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
+    plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,5],[PolicyParameter.DISTWEIGHT,0,5,10,10],5)
 
-
-
-#plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,5],[PolicyParameter.DISTWEIGHT,0,5,10,10],5)
-
-
-    # plt.distrPlotter2d(distribution,savePlot=True)
+    plt.distrPlotter2d(distribution,savePlot=True)
 
 
     ## --- END OF PLOTTER SETTINGS --- ##
