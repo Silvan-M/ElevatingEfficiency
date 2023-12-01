@@ -14,6 +14,7 @@ from progress_bar import ProgressBar
 
 import numpy as np
 import random
+import multiprocessing as mp
 
 class SimulationPlotter():
     def __init__(
@@ -91,29 +92,56 @@ class SimulationPlotter():
         endVal2 = param2[2]
         steps2 = param2[3]
 
+        threads = mp.cpu_count()
+
+        print(f"Plotting {name} with {par1.name()} and {par2.name()} using {threads} threads")
+
         if (name==""):
             name = self.distribution.distributionName+" Scenario"
 
         parameterData1 = np.linspace(startVal1,endVal1,num=steps1)
         parameterData2 = np.linspace(startVal2,endVal2,num=steps2)
-        bar = ProgressBar(len(parameterData1)*averageOf*len(parameterData2),"Simulating: ")
+        bar = ProgressBar(len(parameterData1)*len(parameterData2),"Simulating: ")
 
     
+        pool = mp.Pool()
+        results = []
+
         for i in range(len(parameterData1)):
-            self._updateHandler(par1,parameterData1[i])
             for j in range(len(parameterData2)):
-                self._updateHandler(par1,parameterData1[j])
-                for a in range(averageOf):  
-                    bar.update()
-                    simulation = self._init()
-                    simulation.run(days=1, timeScale=-1)
-                    x = (simulation.statistics.getObjective(objective))
-                    objectiveTemp.append(x)
-                self._delNone(objectiveTemp)
-                objectiveData.append(np.mean(objectiveTemp))
-                objectiveTemp=[]
+                result = pool.apply_async(self._paramPlotter3dWorker, args=(i, j, par1, par2, parameterData1, parameterData2, averageOf, objective, random.randint(0, 1000000)))
+                results.append(result)
+
+        objectiveData = []
+        for result in results:
+            objectiveData.append(result.get())
+            bar.update()
+
+        pool.close()
+        pool.join()
+
+        objectiveData = [result.get() for result in results]
+
+        print(f"Simulation {name} finished.")
+
+        objectiveData = [result.get() for result in results]
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
         plt.plotNormal(name,showMin=True,showMax=True,save=savePlot,interpolation="bilinear")     
+
+    def _paramPlotter3dWorker(self, i, j, par1, par2, parameterData1, parameterData2, averageOf, objective, seed):
+        np.random.seed(seed)
+        random.seed(seed)
+
+        objectiveTemp = []
+        self._updateHandler(par1, parameterData1[i])
+        self._updateHandler(par2, parameterData2[j])
+        for a in range(averageOf):  
+            simulation = self._init()
+            simulation.run(days=1, timeScale=-1)
+            x = (simulation.statistics.getObjective(objective))
+            objectiveTemp.append(x)
+        self._delNone(objectiveTemp)
+        return np.mean(objectiveTemp)
 
     def distrPlotter2d(self,distr,target=False,savePlot=False,name=""):
         distrInit = distr()
@@ -341,7 +369,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = RooftopBarDistribution
+distribution = ShoppingMallDistribution
 
 # Choose a policy for the elevators
 policy = SCANPolicy
@@ -357,7 +385,9 @@ dist = distribution()
 elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
-
+if (seed != -1):
+    random.seed(seed)
+    np.random.seed(seed)
 
 if (not isCustomScenario):
     elevatorArgs = []
@@ -371,8 +401,8 @@ if (not isCustomScenario):
 plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
 
 
-## --- START OF PLOTTER SETTINGS --- ##
-# Call the plotter functions here
+    ## --- START OF PLOTTER SETTINGS --- ##
+    # Call the plotter functions here
 
 plt.policyPlotter2d(Objective.AWT,[SCANPolicy,LOOKPolicy,FCFSPolicy,SSTFPolicy,PWDPPolicy],averageOf=1)
 
@@ -382,7 +412,9 @@ plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,10,10],[PolicyPa
 
 
 
-# plt.distrPlotter2d(distribution,savePlot=True)
 
 
-## --- END OF PLOTTER SETTINGS --- ##
+    # plt.distrPlotter2d(distribution,savePlot=True)
+
+
+    ## --- END OF PLOTTER SETTINGS --- ##

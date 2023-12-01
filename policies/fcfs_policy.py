@@ -1,4 +1,6 @@
 from policies.policy import Policy, Action
+from debug import Debug as DB
+import color as C
 
 class FCFSPolicy(Policy):
     """
@@ -59,10 +61,12 @@ class FCFSPolicy(Policy):
 
         # Safeguarding - Change direction if error occurred
         if ((action == Action.MoveDown or action == Action.WaitDown) and currentFloor == elevator.minFloor):
-            print(f"WARNING: Elevator tried {action} from min floor {currentFloor}, Target: {elevator.target}")
+            if DB.enableWarnings:
+                (C.warning(f"WARNING: Elevator tried {action} from min floor {currentFloor}, Target: {elevator.target}"))
             action = Action.MoveUp
         elif ((action == Action.MoveUp or action == Action.WaitUp) and currentFloor == elevator.maxFloor):
-            print(f"WARNING: Elevator tried {action} from max floor {currentFloor}, Target: {elevator.target}")
+            if DB.enableWarnings:
+                (C.warning(f"WARNING: Elevator tried {action} from max floor {currentFloor}, Target: {elevator.target}"))
             action = Action.MoveDown
         
         # Safeguarding - Print warning if elevator did not follow advertised direction
