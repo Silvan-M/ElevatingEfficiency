@@ -1,6 +1,4 @@
 from mpl_toolkits.mplot3d import Axes3D
-from simulation_statistics import Objective as Objective
-
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
@@ -8,11 +6,18 @@ from scipy.interpolate import interp2d
 from datetime import datetime
 
 class Plotter3D():
-    def __init__(self,param1Data:list,param1Name:str,param2Data:list,param2Name:str,objectiveData:list,ObjectiveName:str) -> None:
-        self.param1Data = param1Data
-        self.param1Name = param1Name
-        self.param2Data = param2Data
-        self.param2Name = param2Name
+    """
+    Creates a Plotter3D object:
+    - paramXData (list)    : parametric Data, will be plotted on the x-axis with label paramXName
+    - paramYData  (list)   : parametric Data, will be plotted on the y-axis with label paramYName
+    - objectiveData (list) : z-values of the graph in the form of a matrix m[len(paramXData)][len(paramYData)], 
+                             will be labelled with objectiveName
+    """
+    def __init__(self,paramXData:list,paramXName:str,paramYData:list,paramYName:str,objectiveData:list,ObjectiveName:str) -> None:
+        self.paramXData = paramXData
+        self.paramXName = paramXName
+        self.paramYData = paramYData
+        self.paramYName = paramYName
         self.objectiveData = objectiveData
         self.objectiveName = ObjectiveName
 
@@ -20,13 +25,28 @@ class Plotter3D():
 
 
     def plotNormal(self,name:str,showMin=False,showMax=False,save=False,interpolation='bilinear'):
-        xi, yi = np.meshgrid(np.linspace(min(self.param1Data), max(self.param1Data),len(self.param1Data)), 
-                             np.linspace(min(self.param2Data), max(self.param2Data), len(self.param1Data)))
+        """
+        Shows the plot with the data stored in member variables:
+        - name (str)          : sets the title of the plot
+        - showMin (bool)      : if True, plots and computes minimum z-value and it's corresponding x- and y-coordinate
+        - showMax (bool)      : if True, plots and computes maximum z-value and it's corresponding x- and y-coordinate
+        - save  (bool)        : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.png", 
+                                where HH,MM,SS are hours, minutes and seconds respectively
+        - interpolation (str) : chooses interpolation mode, options are: 
+                                'none', 'nearest', 'bilinear', 'bicubic', 'spline16',
+                                'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric',
+                                'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos'
+        
+        """
+
+        xi, yi = np.meshgrid(np.linspace(min(self.paramXData), max(self.paramXData),len(self.paramXData)), 
+                             np.linspace(min(self.paramYData), max(self.paramYData), len(self.paramXData)))
 
         # Interpolate the Z values using interp2d
-        f = interp2d(self.param1Data, self.param2Data, self.objectiveData, kind='linear')
+        f = interp2d(self.paramXData, self.paramYData, self.objectiveData, kind='linear')
         zi = f(xi[0, :], yi[:, 0])
 
+        # chooses cmap
         cmap = plt.get_cmap('viridis')
 
         # Use imshow to create a rasterized 2D plot
@@ -34,6 +54,7 @@ class Plotter3D():
         plt.colorbar(label=str(self.objectiveName))
 
 
+        # computes and plots maximum, if showMax
         if showMax:
             max_z_index = np.unravel_index(np.argmax(zi, axis=None), zi.shape)
             max_z_x = xi[max_z_index]
@@ -45,6 +66,7 @@ class Plotter3D():
             print("[Plotter3D] Maximum was found at ("+str(round_max_z_x)+","+str(round_max_z_y)+")")
             plt.plot(max_z_x, max_z_y, marker='x', color='red', label="M("+str(round_max_z_x)+","+str(round_max_z_y)+")")
 
+        # computes and plots maximum, if showMin
         if showMin:
             min_z_index = np.unravel_index(np.argmin(zi, axis=None), zi.shape)
             min_z_x = xi[min_z_index]
@@ -57,8 +79,8 @@ class Plotter3D():
             plt.plot(min_z_x, min_z_y, marker='x', color='blue', label="m("+str(round_min_z_x)+","+str(round_min_z_y)+")")
 
         plt.legend()
-        plt.xlabel(str(self.param1Name))
-        plt.ylabel(str(self.param2Name))
+        plt.xlabel(str(self.paramXName))
+        plt.ylabel(str(self.paramYName))
         plt.title(name)
         if (save):
             current_time = datetime.now().strftime("%H_%M_%S")
@@ -67,5 +89,4 @@ class Plotter3D():
             plt.close()
         else:
             plt.show()
-
 

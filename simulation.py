@@ -3,16 +3,20 @@ from delegate import Delegate
 from debug import Debug as DB
 
 import time
-
+import numpy as np
+import random
 class Simulation():
 
-    def __init__(self, building):
+    def __init__(self, building,seed=-1):
         self.time = 0
         self.onSimulationStarted = Delegate()
         self.onStepEnd = Delegate()
         self.onSimulationFinished = Delegate()
         self.building = building
         self.statistics = SimulationStatistics(self)
+        self.seed = seed
+
+
 
 
     def __str__(self,level=0) -> str:
@@ -29,6 +33,10 @@ class Simulation():
         self.time = self._convertTime(days, hours, minutes, seconds)
 
     def run(self, days=0, hours=0, minutes=0, seconds=0, timeScale = -1):
+        if (self.seed != -1):
+            random.seed(self.seed)
+            np.random.seed(self.seed)
+
         stepAmount = self._convertTime(days, hours, minutes, seconds)
         
         self.onSimulationStarted.notify_all(self, self.time, stepAmount)
