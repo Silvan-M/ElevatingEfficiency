@@ -6,17 +6,17 @@ class PWDPPolicy(Policy):
     Policy which gives each pair of (target, targetDestination)
     or in other words (floor, directionTakenAtFloor) a score,
     based on parameters weighing the terms as described below:
-    - elevatorButtonWeight: Award if elevator button pressed on floor i
-    - timeWeight:           Award elevator and floor buttons which were pressed a long time ago
-    - floorButtonWeight:    Award floor buttons which were pressed
-    - directionWeight:      Award high amount of buttons pressed [above/below] floor i
-    - competitorWeight:     Penalize direction in which other eleavtors are moving
-    - distanceWeight:       Penalize high distance to target
-    - distanceExponent:     Exponent for distance penalty
+    - elevatorButtonWeight:         Award elevator button pressed on floor i
+    - elevatorButtonTimeWeight:     Award elevator buttons which were pressed a long time ago
+    - floorButtonWeight:            Award floor buttons which were pressed
+    - floorButtonTimeWeight:        Award floor buttons which were pressed a long time ago
+    - competitorWeight:             Penalize direction in which other eleavtors are moving
+    - distanceWeight:               Penalize high distance to target
+    - distanceExponent:             Exponent for distance penalty
 
     The score for the i-th floor advertising [Up/Down] is calculated as follows:
     s1 = elevatorButtonWeight * elevatorButtons[i]
-    s2 = timeWeight * elevatorButtonPressed[i] * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime * floorButtons[i].timeSincePressed / maxFloorButtonTime
+    s2 = timeWeight * (elevatorButtonPressed[i] * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime + floorButtons[i].timeSincePressed / maxFloorButtonTime)
     s3 = floorButtonWeight * floorButtons[i].move[Up/Down]
     s4 = directionWeight * (floorButtonsPressed[Above/Below]) / (totalFloorButtonsPressed)
     s5 = competitorWeight * (amountOfElevatorsMoving[Above/Below]) / (totalAmountOfElevators)
@@ -38,7 +38,6 @@ class PWDPPolicy(Policy):
         self.distanceWeight = distanceWeight
         self.distanceExponent = distanceExponent
         self.elevatorButtonLastPressed = None
-        self.minElevatorButtonTime = 0
 
     def name() -> str:
         return  "PWDP Policy"
@@ -49,49 +48,18 @@ class PWDPPolicy(Policy):
         """
         action = Action.Wait
 
-        if (self.prevAction in (Action.WaitUp, Action.WaitDown, Action.WaitOpen, Action.Wait)):
+        # Update last pressed elevator button times
+        self._updateLastPressedTime(elevatorButtons, time)
+
+        if (self.prevAction in (Action.WaitOpen, Action.Wait)):
             # Get new decision if elevator leaves a target or is idle
-            actionToDirection = {
-                Action.Wait: 0,
-                Action.WaitOpen: 0,
-                Action.WaitDown: -1,
-                Action.WaitUp: 1
-            }
-
-            # Update last pressed elevator button times
-            self._updateLastPressedTime(elevatorButtons, time)
-
-            # Get advertised direction from previous action
-            advertisedDirection = actionToDirection.get(self.prevAction, 0)
-            
-            target, targetDirection = currentFloor, 0
-            
-            # Get closest target in advertised direction
-            if self._hasRequests(floorButtons, elevators, elevatorButtons):
-                # There are requests, get highest scored target
-                target, targetDirection = self._getHighestScoredTarget(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection)
-                
-            
-            elevator.target = target
-            elevator.targetDirection = targetDirection
-
-            if (target != -1 and targetDirection != 0):
-                # New target in different floor, move
-                action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
-            else:
-                # No new target or target is current floor, wait
-                action = Action.WaitOpen
+            action = self._getNewAction(currentFloor, floorButtons, elevatorButtons, elevators, elevator, time)
+        elif (self.prevAction in (Action.WaitUp, Action.WaitDown)):
+            # All passengers entered, close doors and move
+            action = Action.MoveUp if (self.prevAction == Action.WaitUp) else Action.MoveDown
         elif (elevator.target == currentFloor or elevator.target == -1):
-            # Elevator has reached target or is idle, wait up or down
-            if (elevator.targetDirection == 1):
-                # Arrived at target, advertise up
-                action = Action.WaitUp
-            elif (elevator.targetDirection == -1):
-                # Arrived at target, advertise down
-                action = Action.WaitDown
-            else:
-                # We arrived at target, but have no further targets, wait
-                action = Action.WaitOpen
+            # Elevator has reached target or is idle, get new target
+            action = self._getNewAction(currentFloor, floorButtons, elevatorButtons, elevators, elevator, time)
         elif (self.prevAction == Action.MoveUp):
             # Not reached target yet, continue moving up
             action = Action.MoveUp
@@ -100,6 +68,28 @@ class PWDPPolicy(Policy):
             action = Action.MoveDown
 
         self.prevAction = action
+        return action
+    
+    def _getNewAction(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
+        """
+        Get the new target floor for the elevator
+        """
+        target = -1
+        
+        # Get closest target in advertised direction
+        if self._hasRequests(floorButtons, elevators, elevatorButtons):
+            # There are requests, get highest scored target
+            target = self._getHighestScoredTarget(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time)
+            
+        elevator.target = target
+
+        if (target != -1):
+            # New target in different floor, move
+            action = Action.WaitUp if (target > currentFloor) else Action.WaitDown
+        else:
+            # No new target or target is current floor, wait
+            action = Action.WaitOpen
+
         return action
     
     def _updateLastPressedTime(self, elevatorButtons, time):
@@ -113,39 +103,24 @@ class PWDPPolicy(Policy):
             self.elevatorButtonMaxTime = 0
 
         for i in range(len(elevatorButtons)):
-            if (elevatorButtons[i]):
+            if (elevatorButtons[i] and self.elevatorButtonLastPressed[i] == -1):
                 self.elevatorButtonLastPressed[i] = time
-                self.minElevatorButtonTime = min(self.minElevatorButtonTime, time)
-            else:
+            elif (not elevatorButtons[i]):
                 self.elevatorButtonLastPressed[i] = -1
     
-    def _timeSinceElevatorButtonPressed(self, i, time):
-        """
-        Get time since elevator button was pressed, returns 0 if button was not pressed
-        """
-        return (self.elevatorButtonLastPressed[i] - time) if (self.elevatorButtonLastPressed[i] != -1) else 0
-
-    def _getHighestScoredTarget(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection):
+    def _getHighestScoredTarget(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, time):
         """
         Get the highest scored `[target, targetDirection]` in the advertised direction, returns `[target, targetDirection]`
         """
-        # Get all scores for each target and targetDirection
-        scores = self._getScores(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection)
+        # Get all scores for each target
+        scores = self._getScores(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time)
 
         # Get highest score
-        highestTarget = -1
-        highestTargetDirection = 0
-        highestScore = -1
-
-        for target, targetDirection, score in scores:
-            if (score > highestScore):
-                highestScore = score
-                highestTarget = target
-                highestTargetDirection = targetDirection
-
-        return highestTarget, highestTargetDirection
+        highestScoreIndex, _ = max(enumerate(scores), key=lambda x: x[1])
+        
+        return highestScoreIndex
     
-    def _getScores(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, time, advertisedDirection):
+    def _getScores(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, time):
         """
         Get all scores for each target and targetDirection, returns `[(target, targetDirection, score)]`
         """
@@ -153,156 +128,107 @@ class PWDPPolicy(Policy):
 
         # Get all scores for each target and targetDirection
         for target in range(len(floorButtons)):
-            if (target <= currentFloor and advertisedDirection == 1) or \
-                (target >= currentFloor and advertisedDirection == -1):
-                # Do not allow targets not in advertised direction
-                continue
-            elif (target == currentFloor):
+            if (target == currentFloor):
                 # Do not allow to go to current floor
+                scores.append(0)
                 continue
-            for targetDirection in (-1, 1):
-                if (target == elevator.minFloor and targetDirection == -1) or \
-                  (target == elevator.maxFloor and targetDirection == 1):
-                    # Do not allow to go to floor below minFloor or above maxFloor
-                    continue 
 
-                score = self._getScore(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-                scores.append((target, targetDirection, score))
+            score = self._getScore(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+            scores.append(score)
         
         return scores
-
-    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    
+    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
         Get score for target and targetDirection
         """
         # Calculate score and firstly get s1, s2, s3, s4, s5, s6
-        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
 
-       # print(f"Target: {target}, TargetDir: {targetDirection}, s1: {s1}, s2: {s2}, s3: {s3}, s4: {s4}, s5: {s5}, s6: {s6}")
         return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
     
-    def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
-        Get s1, weighted amount of people in elevator going to target
+        Get s1, weighted elevator button at target
         """
         return self.elevatorButtonWeight * elevatorButtons[target]
     
-    def _getS2(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS2(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
         Get s2, weighted time since elevator button of target was pressed 
         """
-        # Get max time since elevator button was pressed
-        maxElevatorButtonTime = time - self.minElevatorButtonTime if (self.minElevatorButtonTime != 0) else 1
+        # Calculate the time since each elevator button was last pressed
+        elevatorButtonTimes = (abs(time - self.elevatorButtonLastPressed[i]) for i, button in enumerate(elevatorButtons) if button)
 
-        floorButtonTimePressedSince = time - floorButtons[target].lastPressedUp if (targetDirection == 1) \
-                                   else time - floorButtons[target].lastPressedDown
-        floorButtonPressed = floorButtons[target].moveUp if (targetDirection == 1) \
-                            else floorButtons[target].moveDown
-        
-        maxFloorButtonTime = 0
+        # Get the maximum time, or 1 if no buttons have been pressed
+        maxElevatorButtonTime = max(elevatorButtonTimes, default=1)
 
-        # Get max time since of all floor buttons pressed
-        for i in range(len(floorButtons)):
-            if (time - floorButtons[i].lastPressedDown > maxFloorButtonTime):
-                maxFloorButtonTime = time - floorButtons[i].lastPressedDown
-            if (time - floorButtons[i].lastPressedUp > maxFloorButtonTime):
-                maxFloorButtonTime = time - floorButtons[i].lastPressedUp
+        targetButtonTime = abs(time - self.elevatorButtonLastPressed[target])
 
-        if (maxFloorButtonTime == 0):
-            maxFloorButtonTime = 1
-
-        floorButtonTime = floorButtonTimePressedSince * floorButtonPressed / maxFloorButtonTime
-        elevatorButtonTime = self._timeSinceElevatorButtonPressed(target, time) + elevatorButtons[target] / maxElevatorButtonTime
-
-        return self.timeWeight * elevatorButtonTime * floorButtonTime
+        return 0 if not elevatorButtons[target] else self.timeWeight * (targetButtonTime / max(1, maxElevatorButtonTime))
     
-    def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
-        Get s3, weighted amount of floorButtons pressed in floor going in targetDirection (in the view of target)
-        additionally weighed by time since floor button was pressed
+        Get s3, weighted floor button at target
         """
-        buttonPressed = floorButtons[target].moveUp if (targetDirection == 1) \
-                              else floorButtons[target].moveDown
+        buttonPressed = floorButtons[target].moveUp or floorButtons[target].moveDown
 
         return self.floorButtonWeight * buttonPressed
     
-    def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
-        Get s4, weighted amount of floor buttons pressed (per floor) in targetDirection (in the view of target)
+        Get s4, weighted time since floor button of target was pressed 
         """
-        
-        # Get amount of floor buttons pressed above/below (dependant on targetDirection) target and it's total amount
-        floorButtonsPressed = 0
-        totalFloorButtonsPressed = 0
+        # Calculate the time since each elevator button was last pressed up
+        floorButtonUpTimes = (abs(time - button.lastPressedUp) for button in floorButtons if button.moveUp)
 
-        for i in range(len(floorButtons)):
-            if (i > target and targetDirection == 1) or (i < target and targetDirection == -1):
-                totalFloorButtonsPressed += 1
-                if (floorButtons[i].moveUp or floorButtons[i].moveDown):
-                    # Floor button is pressed in direction targetDirection
-                    floorButtonsPressed += floorButtons[i].moveUp + floorButtons[i].moveDown
+        # Get the maximum time, or 0 if no buttons have been pressed up
+        maxFloorButtonUpTime = max(floorButtonUpTimes, default=1)
 
-        if totalFloorButtonsPressed == 0:
-            # No floor buttons pressed, set to 1 to avoid division by 0
-            totalFloorButtonsPressed = 1
+        # Calculate the time since each elevator button was last pressed down
+        floorButtonDownTimes = (abs(time - button.lastPressedDown) for button in floorButtons if button.moveDown)
 
-        if (not (floorButtons[target].moveUp or floorButtons[target].moveDown) and not(elevatorButtons[target])):
-            floorButtonsPressed = 0
+        # Get the maximum time, or 0 if no buttons have been pressed down
+        maxFloorButtonDownTime = max(floorButtonDownTimes, default=1)
 
-        return self.directionWeight * (floorButtonsPressed) / (totalFloorButtonsPressed)
 
-    def _getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+        # Get the target button
+        targetButton = floorButtons[target]
+
+        # Calculate the time since the button was last pressed up, or 0 if it hasn't been pressed up
+        timeSinceLastUp = abs(time - targetButton.lastPressedUp) if targetButton.moveUp else 0
+
+        # Calculate the time since the button was last pressed down, or 0 if it hasn't been pressed down
+        timeSinceLastDown = abs(time - targetButton.lastPressedDown) if targetButton.moveDown else 0
+
+        # Calculate the maximum of the two times
+        maxTargetTime = max(timeSinceLastUp, timeSinceLastDown)
+
+        return self.timeWeight * (maxTargetTime / max(maxFloorButtonUpTime, maxFloorButtonDownTime, 1))
+    
+
+    def _getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
         Get s5, weighted amount of elevators moving in targetDirection (in the view of target)
         """
-        amountOfElevatorsMoving = 0
-        totalElevatorsMoving = 0
+        # Calculate the distance from each elevator to the current floor, excluding the current elevator
+        elevatorDistances = [abs(e.getCurrentFloor() - currentFloor) for e in elevators if e != elevator]
 
-        for i, e in enumerate(elevators):
-            pos = e.target 
-            totalElevatorsMoving += 1
-            if (pos != -1 and (pos < target and e.targetDirection == 1) or (pos > target and e.targetDirection == -1)):
-                if (i > target and targetDirection == 1) or (i < target and targetDirection == -1):
-                    # Elevator is moving in direction targetDirection
-                    amountOfElevatorsMoving += 1
+        # Get the maximum distance, or 1 if the list is empty
+        maxElevatorDistance = max(elevatorDistances, default=1)
 
-        if totalElevatorsMoving == 0:
-            # No elevators moving, set to 1 to avoid division by 0
-            totalElevatorsMoving = 1
-
-        return self.competitorWeight * amountOfElevatorsMoving / totalElevatorsMoving
+        # Normalize the distances
+        normalizedElevatorDistances = [1 - (distance / max(maxElevatorDistance, 1)) for distance in elevatorDistances]
+        return sum(normalizedElevatorDistances)
     
-    def _getS6(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+
+    def _getS6(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
         Get s6, weighted distance to target
         """
         return abs(currentFloor - target) * self.distanceWeight ** (self.distanceExponent)
-
-    def _printScores(self, scores, amountOfFloors):
-        """
-        Print scores for each target and targetDirection
-        """
-        titleLine = "T: "
-        firstLine = "U: "
-        secondLine = "D: "
-
-        scoreU = [0]*amountOfFloors
-        scoreB = [0]*amountOfFloors
-
-        for target, targetDirection, score in scores:
-            if (targetDirection == 1):
-                scoreU[target] = score
-            else:
-                scoreB[target] = score
-        
-        for i in range(amountOfFloors):
-            titleLine += f"{i:6d} "
-            firstLine += f"{scoreU[i]:6.2f} " if (scoreU[i] != 0) else "       "
-            secondLine += f"{scoreB[i]:6.2f} " if (scoreB[i] != 0) else "       "
-        
-        print(f"{titleLine}\n{firstLine}\n{secondLine}")
