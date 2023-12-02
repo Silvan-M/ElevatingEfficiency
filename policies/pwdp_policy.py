@@ -28,12 +28,12 @@ class PWDPPolicy(Policy):
     Also: The elevator will always follow the direction it advertised
     """
     
-    def __init__(self, elevatorButtonWeight=1, timeWeight=1, floorButtonWeight=1, directionWeight=1, competitorWeight=1,  distanceWeight=1, distanceExponent=1):
+    def __init__(self, elevatorButtonWeight=1, elevatorButtonTimeWeight=1, floorButtonWeight=1, floorButtonTimeWeight=1, competitorWeight=1,  distanceWeight=1, distanceExponent=1):
         self.prevAction = Action.Wait
         self.elevatorButtonWeight = elevatorButtonWeight
-        self.timeWeight = timeWeight
+        self.elevatorButtonTimeWeight = elevatorButtonTimeWeight
         self.floorButtonWeight = floorButtonWeight
-        self.directionWeight = directionWeight
+        self.floorButtonTimeWeight = floorButtonTimeWeight
         self.competitorWeight = competitorWeight
         self.distanceWeight = distanceWeight
         self.distanceExponent = distanceExponent
@@ -170,7 +170,7 @@ class PWDPPolicy(Policy):
 
         targetButtonTime = abs(time - self.elevatorButtonLastPressed[target])
 
-        return 0 if not elevatorButtons[target] else self.timeWeight * (targetButtonTime / max(1, maxElevatorButtonTime))
+        return 0 if not elevatorButtons[target] else self.elevatorButtonWeight * self.elevatorButtonTimeWeight * (targetButtonTime / max(1, maxElevatorButtonTime))
     
     def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
@@ -209,7 +209,7 @@ class PWDPPolicy(Policy):
         # Calculate the maximum of the two times
         maxTargetTime = max(timeSinceLastUp, timeSinceLastDown)
 
-        return self.timeWeight * (maxTargetTime / max(maxFloorButtonUpTime, maxFloorButtonDownTime, 1))
+        return self.floorButtonWeight * self.floorButtonTimeWeight * (maxTargetTime / max(maxFloorButtonUpTime, maxFloorButtonDownTime, 1))
     
 
     def _getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
@@ -217,14 +217,14 @@ class PWDPPolicy(Policy):
         Get s5, weighted amount of elevators moving in targetDirection (in the view of target)
         """
         # Calculate the distance from each elevator to the current floor, excluding the current elevator
-        elevatorDistances = [abs(e.getCurrentFloor() - currentFloor) for e in elevators if e != elevator]
+        elevatorDistances = [len(elevatorButtons) - abs(e.target - target) for e in elevators if e != elevator]
 
         # Get the maximum distance, or 1 if the list is empty
         maxElevatorDistance = max(elevatorDistances, default=1)
 
         # Normalize the distances
-        normalizedElevatorDistances = [1 - (distance / max(maxElevatorDistance, 1)) for distance in elevatorDistances]
-        return sum(normalizedElevatorDistances)
+        normalizedElevatorDistances = [(distance / max(len(elevatorButtons), 1)) for distance in elevatorDistances]
+        return sum(elevatorDistances) * self.competitorWeight
     
 
     def _getS6(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):

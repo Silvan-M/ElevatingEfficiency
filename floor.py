@@ -11,16 +11,16 @@ class ButtonPressed():
         return DB.str("Class","ButtonPressed",kwargs=[self.moveDown,self.moveUp],desc=["moveDown","moveUp"])
     
     def setMoveUp(self, value, time):
-        if (value and self.moveUp == False):
+        if (value and not self.moveUp):
             self.lastPressedUp = time
-        else:
+        elif (not value):
             self.lastPressedUp = -1
         self.moveUp = value
 
     def setMoveDown(self, value, time):
-        if (value and self.moveDown == False):
+        if (value and not self.moveDown):
             self.lastPressedDown = time
-        else:
+        elif (not value):
             self.lastPressedDown = -1
         self.moveDown = value
 
@@ -29,7 +29,6 @@ class ButtonPressed():
             self.lastPressedUp = time
         else:
             self.lastPressedDown = time
-
 
 class Floor():
     def __init__(self, number):
@@ -49,7 +48,7 @@ class Floor():
         self.passengerList.append(passenger)
 
         # Do not update time since no elevator arrived, only spawn
-        self.updateFloorButtons(time, False)
+        self.updateFloorButtons(time)
 
     def removePassenger(self, passenger, time):
         """
@@ -58,9 +57,9 @@ class Floor():
         self.passengerList.remove(passenger)
 
         # Update Time since elevator arrived
-        self.updateFloorButtons(time, True)
+        self.updateFloorButtons(time)
 
-    def updateFloorButtons(self, time, updateTime = False):
+    def updateFloorButtons(self, time):
         """
         Updates the floor buttons based on the passengers on the floor
         """
@@ -69,15 +68,11 @@ class Floor():
         for p in self.passengerList:
             if (p.endLevel > self.number):
                 up = True
-                self.buttonPressed.updateTime(1, time)
             else:
                 down = True
-                self.buttonPressed.updateTime(-1, time)
 
         self.buttonPressed.setMoveUp(up, time)
         self.buttonPressed.setMoveDown(down, time)
         
-        if updateTime:
-            self.buttonPressed.updateTime(1, time)
-            self.buttonPressed.updateTime(-1, time)
+    
 

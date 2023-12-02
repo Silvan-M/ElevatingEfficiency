@@ -92,12 +92,6 @@ class Elevator:
 
                     if (DB.elvPassengerPressedButton and ((time % int(DB.elvPassengerPressedButtonSkips))==0) ):
                         DB.pr("Func","step",message="passenger pressed button",t=time,kwargs=[p.endLevel],desc=["level"])
-                    
-                    # Disable button on floor
-                    if(self.decision == Action.WaitDown):
-                        floor.buttonPressed.setMoveDown(False, time)
-                    else:
-                        floor.buttonPressed.setMoveUp(False, time)
 
                     self.onPassengerEntered.notify_all(p, time)
 

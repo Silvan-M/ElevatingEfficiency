@@ -1,4 +1,4 @@
-from distributions.distribution import TimeSpaceDistribution, TimeDistribution, EqualFloorDistribution, PeakFloorDistribution
+from distributions.distribution import TimeSpaceDistribution, TimeDistribution, EqualFloorDistribution, PeakFloorDistribution, FloorDistribution
 
 class CustomBuildingDistribution(TimeSpaceDistribution):
     """
@@ -11,7 +11,7 @@ class CustomBuildingDistribution(TimeSpaceDistribution):
         maxTimeTyped = 24
 
         # Maximum amount of passengers that can spawn in one timestep
-        maxPassengers = 0.21
+        maxPassengers = 0.23
 
         # Amount of floors
         floorAmount = 10
@@ -22,15 +22,12 @@ class CustomBuildingDistribution(TimeSpaceDistribution):
         # Capacity of elevators
         self.elevatorCapacity = 15
 
-        # Set the amount of passengers that spawn on each floor (time [timeType], spawn distribution, target distribution)
+        # Set the amount of passengers that spawn on each floor equally (time [h], spawn distribution, target distribution)
         data = [
-            (6, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
-            (12, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 10)),
-            (22, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
+            (0, FloorDistribution([0]*7 + [1]*3), FloorDistribution([1]*3 + [0]*7))
         ]
-        
-        # When spawn how many people [0,1] 
-        timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(5, 0.4), (6, 1), (10, 0.6), (11, 0.6), (12, 0.8), (13, 0.8), (14, 0.6), (15, 0.6), (19, 1), (20, 0.4)])
 
-        # Initialize the TimeSpaceDistribution
+        # Shopping mall is open from 08:00 to 21:00, most people come between 10:00 and 18:00, peak at 12:00
+        timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(1, 1)])
+
         super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution, "Custom Distribution")
