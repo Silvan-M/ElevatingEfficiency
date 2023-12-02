@@ -39,7 +39,7 @@ class PWDPPolicy(Policy):
         self.distanceExponent = distanceExponent
         self.elevatorButtonLastPressed = None
 
-    def name() -> str:
+    def name(self) -> str:
         return  "PWDP Policy"
 
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):

@@ -124,8 +124,10 @@ class SimulationPlotter():
             for j in range(len(parameterData1)):
                 objectiveData[i].append([])
                 self.seed = seedStore
-                self._updateHandler(par1, parameterData1[j])
-                self._updateHandler(par2, parameterData2[i])
+
+                for k in range(len(self.elevatorArgs)):
+                    self._updateHandler(par1, parameterData1[j],k)
+                    self._updateHandler(par2, parameterData2[i],k)
 
         
                 for a in range(averageOf):  
@@ -421,7 +423,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = CustomBuildingDistribution
+distribution = ShoppingMallDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -460,7 +462,7 @@ if __name__ == "__main__":
 
     #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,10,5],[PolicyParameter.ELEVBUTWEIGHT,0,10,5],2)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,5],[PolicyParameter.ELEVBUTWEIGHT,0,5,5],2)
 
     #plt.distrPlotter2d(distribution,savePlot=True)
 
