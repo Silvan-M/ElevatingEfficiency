@@ -6,14 +6,14 @@ from scipy.interpolate import interp2d
 from datetime import datetime
 
 class Plotter3D():
+    """
+    Creates a Plotter3D object:
+    - paramXData (list)    : parametric Data, will be plotted on the x-axis with label paramXName
+    - paramYData  (list)   : parametric Data, will be plotted on the y-axis with label paramYName
+    - objectiveData (list) : z-values of the graph in the form of a matrix m[len(paramXData)][len(paramYData)], 
+                             will be labelled with objectiveName
+    """
     def __init__(self,paramXData:list,paramXName:str,paramYData:list,paramYName:str,objectiveData:list,ObjectiveName:str) -> None:
-        """
-        Creates a Plotter3D object:
-        - paramXData (list)    : parametric Data, will be plotted on the x-axis with label paramXName
-        - paramYData  (list)   : parametric Data, will be plotted on the y-axis with label paramYName
-        - objectiveData (list) : z-values of the graph in the form of a matrix m[len(paramXData)][len(paramYData)], 
-                                 will be labelled with objectiveName
-        """
         self.paramXData = paramXData
         self.paramXName = paramXName
         self.paramYData = paramYData

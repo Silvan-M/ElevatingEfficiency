@@ -11,12 +11,12 @@ from building import Building
 from simulation import Simulation
 from simulation_statistics import Objective
 from progress_bar import ProgressBar
-from liveplotter import LivePlotter
-from game_display import GameDisplay
 
 import numpy as np
 import random
 import multiprocessing as mp
+
+
 
 class SimulationPlotter():
     def __init__(
@@ -33,6 +33,10 @@ class SimulationPlotter():
 
         for i in range(len(elevatorArgs)):
             self.elevatorsInit.append([])
+
+        self.TASKSPERTHREAD = 10
+
+
 
 
 
@@ -84,7 +88,7 @@ class SimulationPlotter():
         
         """
         objective = obj
-        objectiveData = []
+        tempRes = []
         objectiveTemp = []
         par1 = param1[0]
         startVal1 = param1[1]
@@ -96,56 +100,80 @@ class SimulationPlotter():
         endVal2 = param2[2]
         steps2 = param2[3]
 
+        simulations = []
+
         threads = mp.cpu_count()
 
-        print(f"Plotting {name} with {par1.name()} and {par2.name()} using {threads} threads")
+        print(f"Plotting {name} with {par1.name()} and {par2.name()} using {threads} threads with {self.TASKSPERTHREAD} simulations per Thread")
 
         if (name==""):
             name = self.distribution.distributionName+" Scenario"
 
         parameterData1 = np.linspace(startVal1,endVal1,num=steps1)
         parameterData2 = np.linspace(startVal2,endVal2,num=steps2)
-        bar = ProgressBar(len(parameterData1)*len(parameterData2),"Simulating: ")
+        bar = ProgressBar((len(parameterData1)*len(parameterData2)*averageOf/self.TASKSPERTHREAD),"Simulating: ")
 
     
         pool = mp.Pool()
+        simulations = []
         results = []
-
-        for i in range(len(parameterData1)):
-            for j in range(len(parameterData2)):
-                result = pool.apply_async(self._paramPlotter3dWorker, args=(i, j, par1, par2, parameterData1, parameterData2, averageOf, objective, random.randint(0, 1000000)))
-                results.append(result)
-
         objectiveData = []
+        seedStore = self.seed
+        
+        for i in range(len(parameterData1)):
+            objectiveData.append([])
+            for j in range(len(parameterData2)):
+                objectiveData[i].append([])
+                self.seed = seedStore
+                self._updateHandler(par1, parameterData1[i])
+                self._updateHandler(par2, parameterData2[j])
+
+        
+                for a in range(averageOf):  
+                    self.seed+=1234
+                    simulation = self._init()
+                    simulations.append((i,j,simulation))
+
+
+        tasks  = self._partitionTasks(simulations)
+
+        for i in range(len(tasks)):
+            result = pool.apply_async(self._paramPlotter3dWorker,args=(tasks[i],obj))
+            results.append(result)
+
+        tempRes = []
+      
         for result in results:
-            objectiveData.append(result.get())
             bar.update()
+            tempRes.append(result.get())
+            
+        tempRes =  self._unpartitionResults(tempRes)
 
         pool.close()
         pool.join()
 
-        objectiveData = [result.get() for result in results]
-
         print(f"Simulation {name} finished.")
 
-        objectiveData = [result.get() for result in results]
+
+
+        for i in range(len(tempRes)):
+            vari = tempRes[i][0]
+            varj = tempRes[i][1]
+            objectiveData[vari][varj].append(tempRes[i][2])
+
+        self._extractMean(objectiveData)
+
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
         plt.plotNormal(name,showMin=True,showMax=True,save=savePlot,interpolation="bilinear")     
 
-    def _paramPlotter3dWorker(self, i, j, par1, par2, parameterData1, parameterData2, averageOf, objective, seed):
-        np.random.seed(seed)
-        random.seed(seed)
-
-        objectiveTemp = []
-        self._updateHandler(par1, parameterData1[i])
-        self._updateHandler(par2, parameterData2[j])
-        for a in range(averageOf):  
-            simulation = self._init()
+    def _paramPlotter3dWorker(self, tuples, obj):
+        result = []
+        for tuple in tuples:
+            simulation=tuple[2]
             simulation.run(days=1, timeScale=-1)
-            x = (simulation.statistics.getObjective(objective))
-            objectiveTemp.append(x)
-        self._delNone(objectiveTemp)
-        return np.mean(objectiveTemp)
+            x = (simulation.statistics.getObjective(obj))
+            result.append((tuple[0],tuple[1],x))
+        return result
 
     def distrPlotter2d(self,distr,target=False,savePlot=False,name=""):
         distrInit = distr()
@@ -228,34 +256,48 @@ class SimulationPlotter():
         plt.plotNormal(name,save=savePlot)
         
 
+    def _partitionTasks(self,input:list):
+        tasks = [[]]
+        currentThread = 0
+        currentAmount = 0
+        while(len(input)>0):
+            if (currentAmount>=self.TASKSPERTHREAD):
+                currentAmount = 0
+                currentThread +=1
+                tasks.append([])
+            else:
+                tasks[currentThread].append(input.pop())
+                currentAmount +=1
+        return tasks
 
+    def _unpartitionResults(self,input:list):
+        out = []
+        for x in range(len(input)):
+            for y in range(len(input[x])):
+                out.append(input[x][y])
+        return out
 
 
         
     def _extractMean(self,input:list):
         """
-        Extracts the mean of the columns of a matrix represented by input. 
-        Individual None values get deleted in a column. When column only consists of 
-        None, average will be marked with -1, such that we can handle that case later.
+        TODO
+
         """
         if (len(input)==0 or input==None):
             raise BaseException("List cannot be empty or of length 0")
+          
+        for x in range(len(input)):
+            for y in range(len(input[x])):
+                avgTemp=[]
+                for c in range(len(input[x][y])):
+                    avgTemp.append(input[x][y])
+                self._delNone(avgTemp)
+                if (len(avgTemp)==0):
+                    avgTemp.append(-1) 
+                input[x][y] = np.mean(avgTemp)
         
-        avg = []
-        avgTemp=[]
 
-        xLen = len(input)
-        yLen = len(input[0])
-        
-        for y in range(yLen):
-            for x in range(xLen):
-                avgTemp.append(input[x][y])
-            self._delNone(avgTemp)
-            if (len(avgTemp)==0):
-                avgTemp.append(-1)
-            avg.append(np.mean(avgTemp))
-            avgTemp=[]
-        return avg
 
 
 
@@ -264,10 +306,10 @@ class SimulationPlotter():
         """
         Initialises an experiment with the current member variables as arguments. 
         The arguments are:
-        - elevatorArgs : stores the arguments of the i-th elevator in elevatorArgs[i]
-        - distrType : stores the scenario [ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution]
+        - elevatorArgs      : stores the arguments of the i-th elevator in elevatorArgs[i]
+        - distrType         : stores the scenario [ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution]
         - self.distribution : stores the distribution
-        - self.floorAmount : stores the floor amount
+        - self.floorAmount  : stores the floor amount
         """
         if (self.seed != -1):
             random.seed(self.seed)
@@ -278,7 +320,7 @@ class SimulationPlotter():
             elevators.append(Elevator(self.elevatorArgs[i][0],self.elevatorArgs[i][1],self.elevatorsInit[i],self.elevatorArgs[i][3]))
 
         building = Building(elevators,self.floorAmount,self.distribution)
-        return Simulation(building)
+        return Simulation(building,self.seed)
 
 
     def _initPolicy(self,i):
@@ -417,11 +459,11 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-    plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
+    #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,2],[PolicyParameter.DISTWEIGHT,0,5,2],1)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,5],[PolicyParameter.DISTWEIGHT,0,5,5],2)
 
     #plt.distrPlotter2d(distribution,savePlot=True)
 
