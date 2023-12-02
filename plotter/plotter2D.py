@@ -29,7 +29,7 @@ class Plotter2D():
         - showMin (bool)        : if True, plots and computes minimum z-value and it's corresponding x- and y-coordinate
         - showMax (bool)        : if True, plots and computes maximum z-value and it's corresponding x- and y-coordinate
         - cmap (str)            : sets cmap, which defines color. Options: https://matplotlib.org/stable/users/explain/colors/colormaps.html
-        - save  (bool)          : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.png", 
+        - save  (bool)          : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.pdf", 
                                   where HH,MM,SS are hours, minutes and seconds respectively
         - ignoreNegValue (bool) : if True, automatically ignores negative values. simulatiom_plotter.py marks None with -1
                                   This might occur when the distribution is really low and no passengers spawn and thus 
@@ -86,7 +86,7 @@ class Plotter2D():
         if (save):
             current_time = datetime.now().strftime("%H_%M_%S")
             name = (str(name).lower())+"_"+str(current_time)
-            plt.savefig('plotter/plots/'+str(name)+'.png')
+            plt.savefig('plotter/plots/'+str(name)+'.pdf')
             plt.close()
         else:
             plt.show()

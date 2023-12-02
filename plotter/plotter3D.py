@@ -85,7 +85,7 @@ class Plotter3D():
         if (save):
             current_time = datetime.now().strftime("%H_%M_%S")
             name = (str(name).lower())+"_"+str(current_time)
-            plt.savefig('plotter/plots/'+str(name)+'.png')
+            plt.savefig('plotter/plots/'+str(name)+'.pdf')
             plt.close()
         else:
             plt.show()
