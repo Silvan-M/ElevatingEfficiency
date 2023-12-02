@@ -1,6 +1,6 @@
 from policies import Policy
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution
+from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution, CustomBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyParameter
 from exceptions import Exceptions as EXC
@@ -104,15 +104,14 @@ class SimulationPlotter():
 
         threads = mp.cpu_count()
 
-        print(f"Plotting {name} with {par1.name()} and {par2.name()} using {threads} threads with {self.TASKSPERTHREAD} simulations per Thread")
+        printName = name if name != "" else self.distribution.distributionName+" Scenario"
+        print(f"Plotting {printName} with {par1.name()} and {par2.name()} using {threads} threads with {self.TASKSPERTHREAD} simulations per Thread.")
 
         if (name==""):
             name = self.distribution.distributionName+" Scenario"
 
         parameterData1 = np.linspace(startVal1,endVal1,num=steps1)
         parameterData2 = np.linspace(startVal2,endVal2,num=steps2)
-        bar = ProgressBar((len(parameterData1)*len(parameterData2)*averageOf//self.TASKSPERTHREAD),"Simulating: ")
-
     
         pool = mp.Pool()
         simulations = []
@@ -120,22 +119,24 @@ class SimulationPlotter():
         objectiveData = []
         seedStore = self.seed
         
-        for i in range(len(parameterData1)):
+        for i in range(len(parameterData2)):
             objectiveData.append([])
-            for j in range(len(parameterData2)):
+            for j in range(len(parameterData1)):
                 objectiveData[i].append([])
                 self.seed = seedStore
-                self._updateHandler(par1, parameterData1[i])
-                self._updateHandler(par2, parameterData2[j])
+                self._updateHandler(par1, parameterData1[j])
+                self._updateHandler(par2, parameterData2[i])
 
         
                 for a in range(averageOf):  
                     self.seed+=1234
                     simulation = self._init()
-                    simulations.append((i,j,simulation))
-
+                    simulations.append((j,i,simulation))
 
         tasks  = self._partitionTasks(simulations)
+
+        bar = ProgressBar(len(tasks),"Simulating: ")
+        bar.show()
 
         for i in range(len(tasks)):
             result = pool.apply_async(self._paramPlotter3dWorker,args=(tasks[i],obj))
@@ -144,7 +145,6 @@ class SimulationPlotter():
         tempRes = []
       
         for result in results:
-            
             tempRes.append(result.get())
             bar.update()
             
@@ -155,12 +155,10 @@ class SimulationPlotter():
 
         print(f"Simulation {name} finished.")
 
-
-
         for i in range(len(tempRes)):
             vari = tempRes[i][0]
             varj = tempRes[i][1]
-            objectiveData[vari][varj].append(tempRes[i][2])
+            objectiveData[varj][vari].append(tempRes[i][2])
 
         self._extractMean(objectiveData)
 
@@ -417,13 +415,13 @@ class SimulationPlotter():
 
 # Choose a seed
 
-seed = 1345678
+seed = -1
 
 # Choose whether to use a standard scenario or a custom scenario
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = CustomBuildingDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -461,10 +459,8 @@ if __name__ == "__main__":
     # Call the plotter functions here
 
     #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
-    
-    #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,5],[PolicyParameter.DISTWEIGHT,0,5,5],1)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,5],[PolicyParameter.ELEVBUTWEIGHT,0,10,5],2)
 
     #plt.distrPlotter2d(distribution,savePlot=True)
 
