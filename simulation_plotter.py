@@ -34,7 +34,7 @@ class SimulationPlotter():
         for i in range(len(elevatorArgs)):
             self.elevatorsInit.append([])
 
-        self.TASKSPERTHREAD = 10
+        self.TASKSPERTHREAD = 4
 
 
 
