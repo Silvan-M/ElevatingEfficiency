@@ -111,7 +111,7 @@ class SimulationPlotter():
 
         parameterData1 = np.linspace(startVal1,endVal1,num=steps1)
         parameterData2 = np.linspace(startVal2,endVal2,num=steps2)
-        bar = ProgressBar((len(parameterData1)*len(parameterData2)*averageOf/self.TASKSPERTHREAD),"Simulating: ")
+        bar = ProgressBar((len(parameterData1)*len(parameterData2)*averageOf//self.TASKSPERTHREAD),"Simulating: ")
 
     
         pool = mp.Pool()
@@ -144,8 +144,9 @@ class SimulationPlotter():
         tempRes = []
       
         for result in results:
-            bar.update()
+            
             tempRes.append(result.get())
+            bar.update()
             
         tempRes =  self._unpartitionResults(tempRes)
 
@@ -463,7 +464,7 @@ if __name__ == "__main__":
     
     #plt.paramPlotter2d([Objective.AWT],PolicyParameter.DIRWEIGHT,0,5,2,2)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,5],[PolicyParameter.DISTWEIGHT,0,5,5],2)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DIRWEIGHT,0,5,5],[PolicyParameter.DISTWEIGHT,0,5,5],1)
 
     #plt.distrPlotter2d(distribution,savePlot=True)
 
