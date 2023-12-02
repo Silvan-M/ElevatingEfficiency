@@ -62,10 +62,10 @@ class PWDPPolicy(Policy):
             action = self._getNewAction(currentFloor, floorButtons, elevatorButtons, elevators, elevator, time)
         elif (self.prevAction == Action.MoveUp):
             # Not reached target yet, continue moving up
-            action = Action.MoveUp
+            action = Action.WaitUp if (floorButtons[currentFloor].moveUp or elevatorButtons[currentFloor]) else Action.MoveUp
         elif (self.prevAction == Action.MoveDown):
             # Not reached target yet, continue moving down
-            action = Action.MoveDown
+            action = Action.WaitDown if (floorButtons[currentFloor].moveDown or elevatorButtons[currentFloor]) else Action.MoveDown
 
         self.prevAction = action
         return action
