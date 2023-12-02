@@ -33,10 +33,10 @@ class ElevatorParameter(Enum):
 
 class PolicyParameter(Enum):
     POLICY= -1 
-    ElEVBUTWEIGHT = 1
-    TIMEWEIGHT = 2
+    ELEVBUTWEIGHT = 1
+    ELEVBUTTIMEWEIGHT = 2
     FLOORBUTWEIGHT = 3
-    DIRWEIGHT = 4
+    FLOORBUTTIMEWEIGHT = 4
     COMPWEIGHT = 5
     DISTWEIGHT =  6
     DISTEXPONENT = 7

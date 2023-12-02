@@ -52,26 +52,24 @@ class PWDPPolicyEnhanced(PWDPPolicy):
         
     
     # Override functions from PWDPPolicy, rest of the logic remains exactly the same
-    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getScore(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
         Get score for target and targetDirection
         """
         # Calculate score and firstly get s1, s2, s3, s4, s5, s6
-        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
-        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time)
+        s1 = self._getS1(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s2 = self._getS2(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s3 = self._getS3(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s4 = self._getS4(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s5 = self._getS5(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
+        s6 = self._getS6(currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time)
 
         if (elevator.capacity == len(elevator.passengerList)):
             s3 = 0
-            s4 = 0
-            s5 = 0
 
         return (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
 
-    def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS1(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
         Get s1, weighed amount of people in elevator going to target
         """
@@ -83,40 +81,11 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     
         return self.peopleInElevatorButtonWeight * amount
     
-    def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
+    def _getS3(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
         """
-        Get s3, weighed amount of people in floor moving in target direction
+        Get s3, weighed amount of people in floor moving
         """
-        amountOfPeopleInFloorMovingInTargetDir = 0
-        for p in self._floorList[target].passengerList:
-            if (p.endLevel > target and targetDirection == Action.MoveUp) or \
-               (p.endLevel < target and targetDirection == Action.MoveDown):
-                amountOfPeopleInFloorMovingInTargetDir += 1
+        amountOfPeopleInFloorMovingInTargetDir = len(self._floorList[target].passengerList)
         
         return self.peopleFloorWeight * amountOfPeopleInFloorMovingInTargetDir
-    
-    def _getS4(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, targetDirection, time):
-        """
-        Get s4, weighed amount of people in target direction normalized
-        """
-        amount = 0
-        totalAmount = 0
-
-        for target in range(len(self._floorList)):
-            totalAmount += len(self._floorList[target].passengerList)
-            if (targetDirection == 1 and target <= currentFloor):
-                continue
-            elif (targetDirection == -1 and target >= currentFloor):
-                continue
-            elif (target == currentFloor):
-                continue
-            
-            amount += len(self._floorList[target].passengerList)
-
-        if (totalAmount == 0):
-            totalAmount = 1
-
-        # Amount of people in target direction normalized
-        amountPeopleTargetDirection = amount / totalAmount
-        return self.directionWeight * amountPeopleTargetDirection
     
