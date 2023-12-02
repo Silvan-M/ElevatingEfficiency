@@ -5,14 +5,15 @@ import copy
 from datetime import datetime
 
 class Plotter2D():
+    """
+    Creates a Plotter2D object:
+    - paramData (list)     : parametric Data, will be plotted on the x-axis with label paramName
+    - objectiveData (list) : multiple curves, each stored by y-values in the form of a objectiveData[i] = list[len(paramData)], 
+                             will be labelled with respective objectiveName[i]
+    - specVal (list)       : special values will be plotted in red and labelled specValName
+    """
     def __init__(self, paramData:list,paramName:str, objectiveData:list,objectiveName:list,yLabel="value",specVal=[],specValName="") -> None:
-        """
-        Creates a Plotter2D object:
-        - paramData (list)     : parametric Data, will be plotted on the x-axis with label paramName
-        - objectiveData (list) : multiple curves, each stored by y-values in the form of a objectiveData[i] = list[len(paramData)], 
-                                 will be labelled with respective objectiveName[i]
-        - specVal (list)       : special values will be plotted in red and labelled specValName
-        """
+
         self.paramData = paramData
         self.objectiveData = objectiveData
         self.paramName = paramName
