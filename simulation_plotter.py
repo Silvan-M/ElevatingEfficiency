@@ -493,7 +493,7 @@ if __name__ == "__main__":
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Multiple Policy Parameter Comparison
-    runMultiple = True
+    runMultiple = False
     fromVal, toVal, steps = 1, 11, 10
     avgOf = 1
     parameters = [
