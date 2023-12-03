@@ -483,16 +483,24 @@ if __name__ == "__main__":
     # IMPORTANT: Keep indentiation of the following lines
     # Call the plotter functions here
 
-    #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
+    # Type Policy Comparison
+    # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
+    
+    # Type Time Distribution
+    # plt.distrPlotter2d(distribution,savePlot=True)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,30],[PolicyParameter.ELEVBUTWEIGHT,0,5,30],2,savePlot=True)
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,0,5,30],[PolicyParameter.ELEVBUTTIMEWEIGHT,0,5,30],2,savePlot=True)
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.DISTEXPONENT,0,5,30],2,savePlot=True)
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.COMPWEIGHT,0,5,30],2,savePlot=True)
-    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.FLOORBUTWEIGHT,0,5,30],2,savePlot=True)
+    # Type Policy Parameter Comparison
+    #     plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
-    #plt.distrPlotter2d(distribution,savePlot=True)
-
+    # Type Multiple Policy Parameter Comparison
+    parameters = [
+        (PolicyParameter.ELEVBUTWEIGHT, PolicyParameter.FLOORBUTWEIGHT),
+        (PolicyParameter.ELEVBUTWEIGHT, PolicyParameter.ELEVBUTTIMEWEIGHT),
+        (PolicyParameter.COMPWEIGHT, PolicyParameter.COMPWEIGHT),
+        (PolicyParameter.FLOORBUTTIMEWEIGHT, PolicyParameter.FLOORBUTWEIGHT),
+        ]
+    
+    for p1, p2 in parameters:
+        plt.paramPlotter3d(Objective.AWT,[p1,1,11,10],[p2,1,11,10],2,savePlot=True)
 
     ## --- END OF PLOTTER SETTINGS --- ##
