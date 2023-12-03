@@ -32,7 +32,7 @@ distribution = ResidentialBuildingDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
 policy = PWDPPolicy
-policyArguments = [1,1,1,1,1,1,1]
+policyArguments = []
 
 # Start simulation at a specific time
 hours, minutes, seconds = 12, 0, 0

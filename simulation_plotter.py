@@ -162,7 +162,7 @@ class SimulationPlotter():
             varj = tempRes[i][1]
             objectiveData[varj][vari].append(tempRes[i][2])
 
-        self._extractMean(objectiveData)
+        self._extractMean3d(objectiveData)
 
         plt = P3D(parameterData1,par1.name(),parameterData2,par2.name(),objectiveData,objective.value)
         plt.plotNormal(name,showMin=True,showMax=True,save=savePlot,interpolation="bilinear")     
@@ -236,7 +236,7 @@ class SimulationPlotter():
         for i in range(len(policies)):
             policyEndResult = []
             self.seed = seedStore
-            objectiveNames.append(policies[i].name())
+            objectiveNames.append(policies[i]().name())
             for j in range(len(self.elevatorArgs)):
                 self._updateHandler(PolicyParameter.POLICY,policies[i],j)
             for a in range(averageOf):
@@ -252,7 +252,7 @@ class SimulationPlotter():
             objectiveTemp=[]
             policyAverageEndResult.append(np.mean(policyEndResult))
         for i in range(len(policies)):
-            print(f"Policy {policies[i].name()} has an average of {policyAverageEndResult[i]} {objective.value} at the end of the simulation")
+            print(f"Policy {policies[i]().name()} has an average of {policyAverageEndResult[i]} {objective.value} at the end of the simulation")
         plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
         plt.plotNormal(name,save=savePlot)
         
@@ -282,8 +282,32 @@ class SimulationPlotter():
         
     def _extractMean(self,input:list):
         """
-        TODO
+        Extracts the mean of the columns of a matrix represented by input. 
+        Individual None values get deleted in a column. When column only consists of 
+        None, average will be marked with -1, such that we can handle that case later.
+        """
+        if (len(input)==0 or input==None):
+            raise BaseException("List cannot be empty or of length 0")
+        
+        avg = []
+        avgTemp=[]
 
+        xLen = len(input)
+        yLen = len(input[0])
+        
+        for y in range(yLen):
+            for x in range(xLen):
+                avgTemp.append(input[x][y])
+            self._delNone(avgTemp)
+            if (len(avgTemp)==0):
+                avgTemp.append(-1)
+            avg.append(np.mean(avgTemp))
+            avgTemp=[]
+        return avg
+        
+    def _extractMean3d(self,input:list):
+        """
+        TODO
         """
         if (len(input)==0 or input==None):
             raise BaseException("List cannot be empty or of length 0")
@@ -297,7 +321,6 @@ class SimulationPlotter():
                 if (len(avgTemp)==0):
                     avgTemp.append(-1) 
                 input[x][y] = np.mean(avgTemp)
-        
 
 
 
@@ -462,7 +485,12 @@ if __name__ == "__main__":
 
     #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,5],[PolicyParameter.ELEVBUTWEIGHT,0,5,5],2)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,5],[PolicyParameter.FLOORBUTTIMEWEIGHT,0,5,5],2,savePlot=True)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,30],[PolicyParameter.ELEVBUTWEIGHT,0,5,30],2,savePlot=True)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,0,5,30],[PolicyParameter.ELEVBUTTIMEWEIGHT,0,5,30],2,savePlot=True)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.DISTEXPONENT,0,5,30],2,savePlot=True)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.COMPWEIGHT,0,5,30],2,savePlot=True)
+    #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.FLOORBUTWEIGHT,0,5,30],2,savePlot=True)
 
     #plt.distrPlotter2d(distribution,savePlot=True)
 

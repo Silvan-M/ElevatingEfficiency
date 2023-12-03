@@ -3,29 +3,28 @@ from policies.policy import Policy, Action
 class PWDPPolicy(Policy):
     """
     PWDP Policy (Parameterized Weighted Decision Policy)
-    Policy which gives each pair of (target, targetDestination)
-    or in other words (floor, directionTakenAtFloor) a score,
-    based on parameters weighing the terms as described below:
+    Policy which evaluates each floor by giving it a score using the following parameters:
     - elevatorButtonWeight:         Award elevator button pressed on floor i
     - elevatorButtonTimeWeight:     Award elevator buttons which were pressed a long time ago
     - floorButtonWeight:            Award floor buttons which were pressed
     - floorButtonTimeWeight:        Award floor buttons which were pressed a long time ago
-    - competitorWeight:             Penalize direction in which other eleavtors are moving
+    - competitorWeight:             Penalize if other elevators are heading to floor i
     - distanceWeight:               Penalize high distance to target
     - distanceExponent:             Exponent for distance penalty
 
     The score for the i-th floor advertising [Up/Down] is calculated as follows:
     s1 = elevatorButtonWeight * elevatorButtons[i]
-    s2 = timeWeight * (elevatorButtonPressed[i] * timeSinceElevatorButtonPressed(i) / maxElevatorButtonTime + floorButtons[i].timeSincePressed / maxFloorButtonTime)
-    s3 = floorButtonWeight * floorButtons[i].move[Up/Down]
-    s4 = directionWeight * (floorButtonsPressed[Above/Below]) / (totalFloorButtonsPressed)
-    s5 = competitorWeight * (amountOfElevatorsMoving[Above/Below]) / (totalAmountOfElevators)
+    s2 = elevatorButtons[i] * elevatorButtonWeight * elevatorButtonTimeWeight * (targetButtonTime / max(1, maxElevatorButtonTime))
+    s3 = floorButtonWeight * buttonPressed
+    s4 = floorButtonWeight * floorButtonTimeWeight * (maxFloorButtonTime[i] / max(maxAllFloorButtonTime, 1))
+    s5 = sum(elevatorDistances) * competitorWeight
     s6 = distanceWeight^(distanceExponent) * abs(currentFloor - i)
 
     Then the i-th floor advertising [Up/Down] will have score:
     Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
 
-    Also: The elevator will always follow the direction it advertised
+    The elevator will then choose the highest scored floor, set it as target, and move to it. 
+    Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.
     """
     
     def __init__(self, elevatorButtonWeight=1, elevatorButtonTimeWeight=1, floorButtonWeight=1, floorButtonTimeWeight=1, competitorWeight=1,  distanceWeight=1, distanceExponent=1):
@@ -207,9 +206,9 @@ class PWDPPolicy(Policy):
         timeSinceLastDown = abs(time - targetButton.lastPressedDown) if targetButton.moveDown else 0
 
         # Calculate the maximum of the two times
-        maxTargetTime = max(timeSinceLastUp, timeSinceLastDown)
+        maxTargetFloorButtonTime = max(timeSinceLastUp, timeSinceLastDown)
 
-        return self.floorButtonWeight * self.floorButtonTimeWeight * (maxTargetTime / max(maxFloorButtonUpTime, maxFloorButtonDownTime, 1))
+        return self.floorButtonWeight * self.floorButtonTimeWeight * (maxTargetFloorButtonTime / max(maxFloorButtonUpTime, maxFloorButtonDownTime, 1))
     
 
     def _getS5(self, currentFloor, floorButtons, elevator, elevators, elevatorButtons, target, time):
@@ -219,11 +218,6 @@ class PWDPPolicy(Policy):
         # Calculate the distance from each elevator to the current floor, excluding the current elevator
         elevatorDistances = [len(elevatorButtons) - abs(e.target - target) for e in elevators if e != elevator]
 
-        # Get the maximum distance, or 1 if the list is empty
-        maxElevatorDistance = max(elevatorDistances, default=1)
-
-        # Normalize the distances
-        normalizedElevatorDistances = [(distance / max(len(elevatorButtons), 1)) for distance in elevatorDistances]
         return sum(elevatorDistances) * self.competitorWeight
     
 

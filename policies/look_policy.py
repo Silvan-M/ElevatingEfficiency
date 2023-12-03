@@ -10,7 +10,7 @@ class LOOKPolicy(Policy):
         self.prevAction = Action.Wait
         self.goingUp = True
 
-    def name() -> str:
+    def name(self) -> str:
         return  "LOOK Policy"
 
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
