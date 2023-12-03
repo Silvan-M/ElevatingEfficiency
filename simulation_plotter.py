@@ -452,7 +452,7 @@ distribution = ShoppingMallDistribution
 policy = PWDPPolicy
 
 # Choose policy parameters (might be overwritten by function parameters used later)
-policyParameters = [0,0,0,0,0,0]
+policyParameters = [1,1,1,1,1,1,1]
 
 ## CUSTOM SCENARIO SETTINGS
 # Specify floor amount if using a CUSTOM scenario
@@ -461,7 +461,7 @@ floorAmount = 10
 # Specify elevator list if using a CUSTOM scenario
 elevatorCapacity = 10
 dist = distribution()
-elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1], dist.elevatorCapacity]] 
+elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1,1], dist.elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
 if __name__ == "__main__":
@@ -485,7 +485,7 @@ if __name__ == "__main__":
 
     #plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
 
-    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,5],[PolicyParameter.FLOORBUTTIMEWEIGHT,0,5,5],2,savePlot=True)
+    plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
     #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.FLOORBUTWEIGHT,0,5,30],[PolicyParameter.ELEVBUTWEIGHT,0,5,30],2,savePlot=True)
     #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,0,5,30],[PolicyParameter.ELEVBUTTIMEWEIGHT,0,5,30],2,savePlot=True)
     #plt.paramPlotter3d(Objective.AWT,[PolicyParameter.DISTWEIGHT,0,5,30],[PolicyParameter.DISTEXPONENT,0,5,30],2,savePlot=True)
