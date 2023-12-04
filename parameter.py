@@ -58,7 +58,21 @@ class PolicyParameter(Enum):
         elif (self.value == 7):
             return "distance exponent"
 
-
+    def shortName(self):
+        if (self.value==1):
+            return "ebw"
+        elif (self.value == 2):
+            return "ebtw"
+        elif (self.value == 3):
+            return "fbw"
+        elif (self.value == 4):
+            return "fbtw"
+        elif (self.value == 5):
+            return "cw"
+        elif (self.value == 6):
+            return "dw"
+        elif (self.value == 7):
+            return "dexp"
     
     def case(self):
         return 2 

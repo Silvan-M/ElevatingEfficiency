@@ -15,6 +15,7 @@ import distributions
 import numpy as np
 import random
 import multiprocessing as mp
+from datetime import datetime
 
 
 
@@ -176,6 +177,24 @@ class SimulationPlotter():
             x = (simulation.statistics.getObjective(obj))
             result.append((tuple[0],tuple[1],x))
         return result
+    
+    def paramPlotter3dPermutations(self, obj:Objective, fromVal:int, toVal:int, steps:int, avgOf=1):
+        P = PolicyParameter
+        parameters = [P.ELEVBUTTIMEWEIGHT, P.ELEVBUTWEIGHT, P.FLOORBUTTIMEWEIGHT, P.FLOORBUTWEIGHT, P.COMPWEIGHT, P.DISTEXPONENT, P.DISTWEIGHT]
+        tot = len(parameters)*len(parameters)-len(parameters)
+        iter = 1
+        current_time = datetime.now().strftime("%H_%M_%S")
+        distrNameWithoutSpaces = self.distribution.distributionName.replace(" ", "-")
+        
+        for p1 in parameters:
+            for p2 in parameters:
+                if (p1!=p2):
+                    name = f"{p1.shortName()}-vs-{p2.shortName()}-{distrNameWithoutSpaces}-{current_time}"
+                    print(f"PLOTTING {iter}/{tot}: {name}")
+                    self.paramPlotter3d(obj,[p1, fromVal, toVal, steps],[p2, fromVal, toVal, steps], avgOf, savePlot=True, name=name)
+                    iter+=1
+
+        print(f"Finished plotting {tot} permutations.")
 
     def distrPlotter2d(self,distr,target=False,savePlot=False,name=""):
         distrInit = distr()
@@ -503,8 +522,11 @@ if __name__ == "__main__":
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
+    # Policy Parameter Permutation Comparison
+    # plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 10, avgOf=1)
+
     # Multiple Policy Parameter Comparison
-    runMultiple = True
+    runMultiple = False
     fromVal, toVal, steps = 1, 11, 10
     avgOf = 1
     
