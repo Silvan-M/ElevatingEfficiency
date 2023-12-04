@@ -179,6 +179,9 @@ class SimulationPlotter():
         return result
     
     def paramPlotter3dPermutations(self, obj:Objective, fromVal:int, toVal:int, steps:int, avgOf=1):
+        """
+        Plots all permutations of the parameters in PolicyParameter.
+        """
         P = PolicyParameter
         parameters = [P.ELEVBUTTIMEWEIGHT, P.ELEVBUTWEIGHT, P.FLOORBUTTIMEWEIGHT, P.FLOORBUTWEIGHT, P.COMPWEIGHT, P.DISTEXPONENT, P.DISTWEIGHT]
         tot = len(parameters)*len(parameters)-len(parameters)
@@ -186,6 +189,8 @@ class SimulationPlotter():
         current_time = datetime.now().strftime("%H_%M_%S")
         distrNameWithoutSpaces = self.distribution.distributionName.replace(" ", "-")
         
+        print("Starting to plot all parameter permutations.")
+
         for p1 in parameters:
             for p2 in parameters:
                 if (p1!=p2):
@@ -523,7 +528,7 @@ if __name__ == "__main__":
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Policy Parameter Permutation Comparison
-    # plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 10, avgOf=1)
+    plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 10, avgOf=1)
 
     # Multiple Policy Parameter Comparison
     runMultiple = False

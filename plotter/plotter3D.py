@@ -1,5 +1,6 @@
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from scipy.interpolate import interp2d
@@ -37,7 +38,9 @@ class Plotter3D():
         """
 
         if save:
-            plt.use('Agg')
+            print("[Plotter3D] Saving plot...")
+            # Force matplotlib to not use any Xwindows backend, to guarantee thread safety. 
+            matplotlib.use('Agg')
             plt.ioff()
 
         xi, yi = np.meshgrid(np.linspace(min(self.paramXData), max(self.paramXData),len(self.paramXData)), 
