@@ -23,9 +23,10 @@ class SimulationPlotter():
         self,
         elevatorArgs=[[0, 9, [LOOKPolicy], 10]], 
         distrType=ShoppingMallDistribution,
-        seed = -1):
+        seed = -1,
+        distrInit = None):
         
-        self.distribution = distrType()
+        self.distribution = distrType() if (distrInit==None) else distrInit
         self.floorAmount = self.distribution.floorAmount
         self.seed = seed
         self.elevatorArgs = elevatorArgs
@@ -208,7 +209,7 @@ class SimulationPlotter():
             plt = P2D(keyFrames,"time [s]",floorSpawnData,floorNames)
         plt.plotNormal(name,cmap="viridis",save=savePlot)
     
-    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="m",averageOf=1,savePlot=False,name=""):
+    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="h",averageOf=1,savePlot=False,name=""):
         bar = ProgressBar(len(policies)*averageOf,"Simulating: ")
         objectiveData = []
         objectiveTemp = []
@@ -434,6 +435,17 @@ class SimulationPlotter():
             if (lst[i]==None):
                 lst.pop(i)
 
+    def _genTuple(self,param:Parameter):
+        P = PolicyParameter
+        parameters = [P.ELEVBUTTIMEWEIGHT, P.ELEVBUTWEIGHT, P.FLOORBUTTIMEWEIGHT, P.FLOORBUTWEIGHT, P.COMPWEIGHT, P.DISTEXPONENT, P.DISTWEIGHT]
+
+        out = []
+        for i in parameters:
+            if (i!=param):
+                out.append((param,i))
+        return out
+
+
 
 ## --- START OF SCENARIO SETTINGS --- ##
 ## MAIN SCENARIO SETTINGS
@@ -446,7 +458,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = RooftopBarDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -474,7 +486,7 @@ if __name__ == "__main__":
         amountOfElevators = dist.amountOfElevators
         for i in range(amountOfElevators):
             elevatorArgs.append([0, floorAmount-1, [policy, *policyParameters], dist.elevatorCapacity])
-    plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
+    plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed,distrInit=dist)
 
 
     ## --- START OF PLOTTER SETTINGS --- ##
@@ -492,16 +504,16 @@ if __name__ == "__main__":
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Multiple Policy Parameter Comparison
-    runMultiple = False
+    runMultiple = True
     fromVal, toVal, steps = 1, 11, 10
     avgOf = 1
+    
     parameters = [
         (PolicyParameter.ELEVBUTWEIGHT, PolicyParameter.FLOORBUTWEIGHT),
         (PolicyParameter.ELEVBUTWEIGHT, PolicyParameter.ELEVBUTTIMEWEIGHT),
         (PolicyParameter.COMPWEIGHT, PolicyParameter.COMPWEIGHT),
         (PolicyParameter.FLOORBUTTIMEWEIGHT, PolicyParameter.FLOORBUTWEIGHT),
     ]
-    
     if runMultiple:
         for p1, p2 in parameters:
             plt.paramPlotter3d(Objective.AWT,[p1, fromVal, toVal, steps],[p2, fromVal, toVal, steps], avgOf,savePlot=True)

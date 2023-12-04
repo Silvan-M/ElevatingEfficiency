@@ -23,10 +23,11 @@ class ProgressBar:
 
         mins, sec = divmod(remaining, 60)
         time_str = f"{int(mins):02}:{sec:05.2f}"
+        end = "\n" if self.current_count == self.total else "\r"
 
         print(
             f"{self.prefix}[{'█' * x}{'.' * (self.size - x)}] {self.current_count}/{self.total} Est wait {time_str}",
-            end='\r', file=self.out, flush=True
+            end=end, file=self.out, flush=True
         )
 
         return self.current_count
