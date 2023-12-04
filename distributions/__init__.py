@@ -8,3 +8,5 @@ from .shopping_mall_distribution import ShoppingMallDistribution
 from .rooftop_bar_distribution import RooftopBarDistribution
 from .residential_building_distribution import ResidentialBuildingDistribution
 from .custom_building_distribution import CustomBuildingDistribution
+from .high_density_distribution import HighDensityDistribution
+from .low_density_distribution import LowDensityDistribution

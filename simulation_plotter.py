@@ -1,6 +1,5 @@
 from policies import Policy
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution, CustomBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyParameter
 from exceptions import Exceptions as EXC
@@ -11,6 +10,7 @@ from building import Building
 from simulation import Simulation
 from simulation_statistics import Objective
 from progress_bar import ProgressBar
+import distributions
 
 import numpy as np
 import random
@@ -22,7 +22,7 @@ class SimulationPlotter():
     def __init__(
         self,
         elevatorArgs=[[0, 9, [LOOKPolicy], 10]], 
-        distrType=ShoppingMallDistribution,
+        distrType=distributions.ShoppingMallDistribution,
         seed = -1,
         distrInit = None):
         
@@ -458,7 +458,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = RooftopBarDistribution
+distribution = distributions.RooftopBarDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy

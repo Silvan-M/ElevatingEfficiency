@@ -6,9 +6,9 @@ from simulation_statistics import Objective
 from liveplotter import LivePlotter
 from game_display import GameDisplay
 from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
-from distributions import ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution, CustomBuildingDistribution
 from debug import Debug as DB
 from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
+import distributions
 import random
 import numpy as np
 
@@ -18,7 +18,7 @@ import numpy as np
 showGui = True
 
 # Show live plot
-showLivePlot = True
+showLivePlot = False
 
 # Set seed for random number generator (if -1, no seed is set)
 seed = 1
@@ -28,7 +28,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution()
+distribution = distributions.LowDensityDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
 policy = PWDPPolicy
