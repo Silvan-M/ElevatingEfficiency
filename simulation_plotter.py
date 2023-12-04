@@ -434,6 +434,17 @@ class SimulationPlotter():
             if (lst[i]==None):
                 lst.pop(i)
 
+    def _genTuple(self,param:Parameter):
+        P = PolicyParameter
+        parameters = [P.ELEVBUTTIMEWEIGHT, P.ELEVBUTWEIGHT, P.FLOORBUTTIMEWEIGHT, P.FLOORBUTWEIGHT, P.COMPWEIGHT, P.DISTEXPONENT, P.DISTWEIGHT]
+
+        out = []
+        for i in parameters:
+            if (i!=param):
+                out.append((param,i))
+        return out
+
+
 
 ## --- START OF SCENARIO SETTINGS --- ##
 ## MAIN SCENARIO SETTINGS
@@ -446,7 +457,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = RooftopBarDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -492,16 +503,16 @@ if __name__ == "__main__":
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Multiple Policy Parameter Comparison
-    runMultiple = False
+    runMultiple = True
     fromVal, toVal, steps = 1, 11, 10
     avgOf = 1
+    
     parameters = [
         (PolicyParameter.ELEVBUTWEIGHT, PolicyParameter.FLOORBUTWEIGHT),
         (PolicyParameter.ELEVBUTWEIGHT, PolicyParameter.ELEVBUTTIMEWEIGHT),
         (PolicyParameter.COMPWEIGHT, PolicyParameter.COMPWEIGHT),
         (PolicyParameter.FLOORBUTTIMEWEIGHT, PolicyParameter.FLOORBUTWEIGHT),
     ]
-    
     if runMultiple:
         for p1, p2 in parameters:
             plt.paramPlotter3d(Objective.AWT,[p1, fromVal, toVal, steps],[p2, fromVal, toVal, steps], avgOf,savePlot=True)
