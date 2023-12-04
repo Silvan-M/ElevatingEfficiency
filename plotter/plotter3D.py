@@ -21,9 +21,6 @@ class Plotter3D():
         self.objectiveData = objectiveData
         self.objectiveName = ObjectiveName
 
-    
-
-
     def plotNormal(self,name:str,showMin=False,showMax=False,save=False,interpolation='bilinear'):
         """
         Shows the plot with the data stored in member variables:
@@ -38,6 +35,10 @@ class Plotter3D():
                                 'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos'
         
         """
+
+        if save:
+            plt.use('Agg')
+            plt.ioff()
 
         xi, yi = np.meshgrid(np.linspace(min(self.paramXData), max(self.paramXData),len(self.paramXData)), 
                              np.linspace(min(self.paramYData), max(self.paramYData), len(self.paramXData)))
