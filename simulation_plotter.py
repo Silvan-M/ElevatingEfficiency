@@ -23,9 +23,10 @@ class SimulationPlotter():
         self,
         elevatorArgs=[[0, 9, [LOOKPolicy], 10]], 
         distrType=ShoppingMallDistribution,
-        seed = -1):
+        seed = -1,
+        distrInit = None):
         
-        self.distribution = distrType()
+        self.distribution = distrType() if (distrInit==None) else distrInit
         self.floorAmount = self.distribution.floorAmount
         self.seed = seed
         self.elevatorArgs = elevatorArgs
@@ -208,7 +209,7 @@ class SimulationPlotter():
             plt = P2D(keyFrames,"time [s]",floorSpawnData,floorNames)
         plt.plotNormal(name,cmap="viridis",save=savePlot)
     
-    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="m",averageOf=1,savePlot=False,name=""):
+    def policyPlotter2d(self,objective:Objective,policies:list,timeScale="h",averageOf=1,savePlot=False,name=""):
         bar = ProgressBar(len(policies)*averageOf,"Simulating: ")
         objectiveData = []
         objectiveTemp = []
@@ -474,7 +475,7 @@ if __name__ == "__main__":
         amountOfElevators = dist.amountOfElevators
         for i in range(amountOfElevators):
             elevatorArgs.append([0, floorAmount-1, [policy, *policyParameters], dist.elevatorCapacity])
-    plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed)
+    plt = SimulationPlotter(elevatorArgs=elevatorArgs, distrType=distribution,seed=seed,distrInit=dist)
 
 
     ## --- START OF PLOTTER SETTINGS --- ##
@@ -492,7 +493,7 @@ if __name__ == "__main__":
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Multiple Policy Parameter Comparison
-    runMultiple = False
+    runMultiple = True
     fromVal, toVal, steps = 1, 11, 10
     avgOf = 1
     parameters = [
