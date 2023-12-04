@@ -200,8 +200,8 @@ class SimulationPlotter():
         for t in range(len(keyFrames)):
             floorSpawnDistribution, floorTargetDistribution = distrInit.getFloorDistributions(t)
             for i in range(floorAmount):
-                floorTargetData[i].append(floorTargetDistribution.distribution[i])
-                floorSpawnData[i].append(floorSpawnDistribution.distribution[i])
+                floorTargetData[i].append(floorTargetDistribution.distribution[i]*distrInit.getTimeDistribution(t))
+                floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*distrInit.getTimeDistribution(t))
         if (target):
             plt = P2D(keyFrames,"time [s]",floorTargetData,floorNames)
         else:
@@ -446,7 +446,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ShoppingMallDistribution
+distribution = ResidentialBuildingDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -486,8 +486,8 @@ if __name__ == "__main__":
     # Policy Comparison
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
-    # Time Distribution
-    # plt.distrPlotter2d(distribution,savePlot=True)
+    # Space/Time Distribution
+    plt.distrPlotter2d(distribution, savePlot=False, target=False)
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)

@@ -40,7 +40,7 @@ class ResidentialBuildingDistribution(TimeSpaceDistribution):
         # Set the amount of passengers that spawn on each floor (time [h], spawn distribution, target distribution)
         data = [
             (5, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 10)),
-            (6, PeakFloorDistribution(floorAmount, 0, 10/10), PeakFloorDistribution(floorAmount, 0, 10)),
+            (6, PeakFloorDistribution(floorAmount, 0, 1/10), PeakFloorDistribution(floorAmount, 0, 10)),
             (10, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 10)),
             (11, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 10)),
             (12, PeakFloorDistribution(floorAmount, 0, 10), PeakFloorDistribution(floorAmount, 0, 1/10)),
