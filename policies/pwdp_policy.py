@@ -76,7 +76,7 @@ class PWDPPolicy(Policy):
         target = -1
         
         # Get closest target in advertised direction
-        if self._hasRequests(floorButtons, elevators, elevatorButtons):
+        if self._hasRequestsExceptCurrent(floorButtons, elevators, elevatorButtons, currentFloor):
             # There are requests, get highest scored target
             target = self._getHighestScoredTarget(currentFloor, floorButtons, elevator, elevators, elevatorButtons, time)
             

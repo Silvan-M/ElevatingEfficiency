@@ -90,6 +90,24 @@ class Policy():
                 return True
         return False
     
+    def _hasRequestsExceptCurrent(self, floorButtons, elevators, elevatorButtons, currentFloor):
+        """
+        Returns true if there is any passenger waiting and no elevator heading there
+        """
+        for i, floor in enumerate(floorButtons):
+            if currentFloor == i:
+                continue
+            if (floor.moveUp and self._noElevatorHeading(elevators, i, 1)):
+                return True
+            elif (floor.moveDown and self._noElevatorHeading(elevators, i, -1)):
+                return True
+        for i, button in enumerate(elevatorButtons):
+            if currentFloor == i:
+                continue
+            if (button):
+                return True
+        return False
+    
     def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
         """
         Internal implementation of how the policy decides what action to take
