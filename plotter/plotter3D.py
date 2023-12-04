@@ -38,7 +38,6 @@ class Plotter3D():
         """
 
         if save:
-            print("[Plotter3D] Saving plot...")
             # Force matplotlib to not use any Xwindows backend, to guarantee thread safety. 
             matplotlib.use('Agg')
             plt.ioff()
