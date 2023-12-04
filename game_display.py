@@ -63,7 +63,7 @@ def format_time(seconds):
     minutes, seconds = divmod(remainder, 60)
 
     # Create a formatted string
-    time_string = "{:02.0f}:{:02.0f}:{:02.0f}".format(days, hours, minutes, seconds)
+    time_string = "{:02.0f}:{:02.0f}".format(hours, minutes)
 
     return time_string
 
