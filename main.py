@@ -5,9 +5,9 @@ from simulation_statistics import SimulationStatistics
 from simulation_statistics import Objective
 from liveplotter import LivePlotter
 from game_display import GameDisplay
-from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
 from debug import Debug as DB
 from parameter import Parameter,TimeDistrParameter,ElevatorParameter,PolicyParameter
+import policies
 import distributions
 import random
 import numpy as np
@@ -31,7 +31,7 @@ isCustomScenario = False
 distribution = distributions.LowDensityDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
-policy = PWDPPolicy
+policy = policies.PWDPPolicy
 policyArguments = [1,1,1,1,1,1,1]
 
 # Start simulation at a specific time
