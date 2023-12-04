@@ -446,7 +446,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = ResidentialBuildingDistribution
+distribution = ShoppingMallDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -460,8 +460,7 @@ floorAmount = 10
 
 # Specify elevator list if using a CUSTOM scenario
 elevatorCapacity = 10
-dist = distribution()
-elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1,1], dist.elevatorCapacity]] 
+elevatorArgs = [[0, floorAmount-1, [policy,1,1,1,1,1,1,1], elevatorCapacity]] 
 
 ## --- END OF SCENARIO SETTINGS --- ##
 if __name__ == "__main__":
@@ -487,7 +486,7 @@ if __name__ == "__main__":
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     # Space/Time Distribution
-    plt.distrPlotter2d(distribution, savePlot=False, target=False)
+    # plt.distrPlotter2d(distribution, savePlot=False, target=False)
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
