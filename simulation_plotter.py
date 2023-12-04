@@ -184,20 +184,21 @@ class SimulationPlotter():
         """
         P = PolicyParameter
         parameters = [P.ELEVBUTTIMEWEIGHT, P.ELEVBUTWEIGHT, P.FLOORBUTTIMEWEIGHT, P.FLOORBUTWEIGHT, P.COMPWEIGHT, P.DISTEXPONENT, P.DISTWEIGHT]
-        tot = len(parameters)*len(parameters)-len(parameters)
+        tot = len(parameters)*(len(parameters)-1)//2
         iter = 1
         current_time = datetime.now().strftime("%H_%M_%S")
         distrNameWithoutSpaces = self.distribution.distributionName.replace(" ", "-")
         
         print("Starting to plot all parameter permutations.")
 
-        for p1 in parameters:
-            for p2 in parameters:
-                if (p1!=p2):
-                    name = f"{p1.shortName()}-vs-{p2.shortName()}-{distrNameWithoutSpaces}-{current_time}"
-                    print(f"PLOTTING {iter}/{tot}: {name}")
-                    self.paramPlotter3d(obj,[p1, fromVal, toVal, steps],[p2, fromVal, toVal, steps], avgOf, savePlot=True, name=name)
-                    iter+=1
+        for i, p1 in enumerate(parameters):
+            for j, p2 in enumerate(parameters):
+                if (j >= i):
+                    continue
+                name = f"{p1.shortName()}-vs-{p2.shortName()}-{distrNameWithoutSpaces}-{current_time}"
+                print(f"PLOTTING {iter}/{tot}: {name}")
+                self.paramPlotter3d(obj,[p1, fromVal, toVal, steps],[p2, fromVal, toVal, steps], avgOf, savePlot=True, name=name)
+                iter+=1
 
         print(f"Finished plotting {tot} permutations.")
 
@@ -482,7 +483,7 @@ seed = -1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.RooftopBarDistribution
+distribution = distributions.ShoppingMallDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -525,10 +526,10 @@ if __name__ == "__main__":
     # plt.distrPlotter2d(distribution, savePlot=False, target=False)
 
     # Policy Parameter Comparison
-    # plt.paramPlotter3d(Objective.AWT,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
+    # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Policy Parameter Permutation Comparison
-    plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 10, avgOf=1)
+    plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 20, avgOf=5)
 
     # Multiple Policy Parameter Comparison
     runMultiple = False
