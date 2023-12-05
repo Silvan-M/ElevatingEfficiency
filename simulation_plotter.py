@@ -477,7 +477,7 @@ class SimulationPlotter():
 
 # Choose a seed
 
-seed = -1
+seed = 1
 
 # Choose whether to use a standard scenario or a custom scenario
 isCustomScenario = False

@@ -28,7 +28,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.LowDensityDistribution()
+distribution = distributions.ShoppingMallDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
 policy = policies.PWDPPolicy
