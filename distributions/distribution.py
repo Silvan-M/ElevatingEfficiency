@@ -105,14 +105,14 @@ class TimeSpaceDistribution():
     maxPassengers: The maximum amount of passengers that can spawn in the entire building once.
     timeType: The type of the time values. Can be "s", "m" or "h".
     data: A list of tuples (time, spawnDistribution, targetDistribution) with the last two parameters being a Distribution object.
-    timeDistribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.
+    peopleDistribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.
 
     Note: The spawnDistribution and targetDistribution of the data parameter contain the probabilities of which floor should be chosen for spawning or as a target.
     """
-    def __init__(self, maxPassengers, timeType, maxTimeTyped, data, timeDistribution, distributionName = "Base distribution"):
+    def __init__(self, maxPassengers, timeType, maxTimeTyped, data, peopleDistribution, distributionName = "Base distribution"):
         self.floorSpawnDistribution = []
         self.floorTargetDistribution = []
-        self.timeDistribution = timeDistribution
+        self.peopleDistribution = peopleDistribution
         self.times = []
         self.probabilities = None
         self.maxPassengers = maxPassengers
@@ -147,8 +147,8 @@ class TimeSpaceDistribution():
         self.floorAmount = len(data[0][1].distribution)
 
         # Check if every distribution has the same amount of floors
-        for (_, spawnDistribution, timeDistribution) in data:
-            if len(spawnDistribution.distribution) != len(timeDistribution.distribution) or \
+        for (_, spawnDistribution, peopleDistribution) in data:
+            if len(spawnDistribution.distribution) != len(peopleDistribution.distribution) or \
                len(spawnDistribution.distribution) != self.floorAmount:
                 raise Exception("Every distribution needs to have the same amount of floors.")
         
@@ -197,7 +197,7 @@ class TimeSpaceDistribution():
         """
         Returns a double amount of the passengers that spawn at the given time.
         """
-        return self.timeDistribution.getInterpolatedProb(time)*self.maxPassengers
+        return self.peopleDistribution.getInterpolatedProb(time)*self.maxPassengers
 
     def getSpawnAmount(self, time):
         """

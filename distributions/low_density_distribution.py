@@ -29,7 +29,7 @@ class LowDensityDistribution(TimeSpaceDistribution):
             (24, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
         ]
 
-        timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(0, 0.5), (24, 0.5)])
+        peopleDistribution = TimeDistribution(timeType, maxTimeTyped, [(0, 0.5), (24, 0.5)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution, "Low Density Distribution")
+        super().__init__(maxPassengers, timeType, maxTimeTyped, data, peopleDistribution, "Low Density Distribution")
