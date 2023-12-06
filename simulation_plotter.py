@@ -246,15 +246,16 @@ class SimulationPlotter():
 
         for t in range(len(keyFrames)):
             floorSpawnDistribution, floorTargetDistribution = distrInit.getFloorDistributions(t)
-            timeData.append(distrInit.getPassengerAmount(t))
+            passengerDistrAtTime = distrInit.passengerDistribution.getInterpolatedProb(t)
+            timeData.append(passengerDistrAtTime)
 
             for i in range(floorAmount):
                 if (plotTime==0):
                     floorTargetData[i].append(floorTargetDistribution.distribution[i])
                     floorSpawnData[i].append(floorSpawnDistribution.distribution[i])
                 else:
-                    floorTargetData[i].append(floorTargetDistribution.distribution[i]*distrInit.getPassengerAmount(t))
-                    floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*distrInit.getPassengerAmount(t))
+                    floorTargetData[i].append(floorTargetDistribution.distribution[i]*passengerDistrAtTime)
+                    floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*passengerDistrAtTime)
 
         
         # Convert to hours
@@ -270,11 +271,11 @@ class SimulationPlotter():
 
         if plotTime==1:
             # Plot only time distribution
-            plt = P2D(keyFrames,"time [h]",[timeData],["Spawn Amount"])
+            plt = P2D(keyFrames,"Time [h]",[timeData],["Spawn Rate Factor"],yLabel="Spawn Rate Factor")
         elif target:
-            plt = P2D(keyFrames,"time [h]",combinedFloorTargetData,curveNames)
+            plt = P2D(keyFrames,"Time [h]",combinedFloorTargetData,curveNames,yLabel="Floor Selection Weight")
         else:
-            plt = P2D(keyFrames,"time [h]",combinedFloorSpawnData,curveNames)
+            plt = P2D(keyFrames,"Time [h]",combinedFloorSpawnData,curveNames,yLabel="Floor Selection Weight")
         plt.plotNormal(name,cmap="winter",save=savePlot,maxVal=24)
     
     def policyPlotter2d(self,objective:Objective,policies:list,timeScale="h",averageOf=1,savePlot=False,name=""):
@@ -322,7 +323,7 @@ class SimulationPlotter():
             policyAverageEndResult.append(np.mean(policyEndResult))
         for i in range(len(policies)):
             print(f"Policy {policies[i]().name()} has an average of {policyAverageEndResult[i]} {objective.value} at the end of the simulation")
-        plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
+        plt = P2D(keyFrames,"Time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
         plt.plotNormal(name,save=savePlot)
         
 
@@ -566,7 +567,7 @@ if __name__ == "__main__":
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     # Space/Time Distribution
-    # plt.distrPlotter2d(distribution, savePlot=True, target=True, plotTime=1, name="Shopping Mall - Passenger Distribution", combineFloors=[(0,9)])
+    # plt.distrPlotter2d(distribution, savePlot=True, target=False, plotTime=0, name="Shopping Mall - Spawn Distribution", combineFloors=[(0,9)])
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
