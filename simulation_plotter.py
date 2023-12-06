@@ -246,15 +246,15 @@ class SimulationPlotter():
 
         for t in range(len(keyFrames)):
             floorSpawnDistribution, floorTargetDistribution = distrInit.getFloorDistributions(t)
-            timeData.append(distrInit.getTimeDistribution(t))
+            timeData.append(distrInit.getNumPassengersTime(t))
 
             for i in range(floorAmount):
                 if (plotTime==0):
                     floorTargetData[i].append(floorTargetDistribution.distribution[i])
                     floorSpawnData[i].append(floorSpawnDistribution.distribution[i])
                 else:
-                    floorTargetData[i].append(floorTargetDistribution.distribution[i]*distrInit.getTimeDistribution(t))
-                    floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*distrInit.getTimeDistribution(t))
+                    floorTargetData[i].append(floorTargetDistribution.distribution[i]*distrInit.getNumPassengersTime(t))
+                    floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*distrInit.getNumPassengersTime(t))
 
         
         # Convert to hours

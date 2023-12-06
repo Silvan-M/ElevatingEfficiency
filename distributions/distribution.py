@@ -193,18 +193,18 @@ class TimeSpaceDistribution():
 
         return self.distribution1, self.distribution2
     
-    def getTimeDistribution(self, time):
+    def getNumPassengersTime(self, time):
         """
-        Returns the time distribution of the passengers that spawn at the given time.
+        Returns a double amount of the passengers that spawn at the given time.
         """
         return self.timeDistribution.getInterpolatedProb(time)*self.maxPassengers
 
     def getSpawnAmount(self, time):
         """
-        Returns the amount of passengers that spawn at the given time.
+        Returns an integer amount of passengers that spawn at the given time using the exponential distribution.
         """
         # Get the interpolated probability of the time distribution
-        amountOfPassengers = self.getTimeDistribution(time)
+        amountOfPassengers = self.getNumPassengersTime(time)
 
         # Use the exponential distribution to get the amount of passengers that spawn (for maxPassengers < 1)
         random_value = round(np.random.exponential(scale=amountOfPassengers))
