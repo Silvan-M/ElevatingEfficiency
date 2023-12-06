@@ -526,7 +526,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.ResidentialBuildingDistribution
+distribution = distributions.ShoppingMallDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -566,7 +566,7 @@ if __name__ == "__main__":
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     # Space/Time Distribution
-    # plt.distrPlotter2d(distribution, savePlot=False, target=False, plotTime=2, savefig=True)
+    # plt.distrPlotter2d(distribution, savePlot=True, target=True, plotTime=1, name="Residential Building - Time Distribution")
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
