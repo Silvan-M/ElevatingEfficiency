@@ -22,7 +22,7 @@ class Plotter2D():
         self.specialValues = specVal
         self.specialValuesName = specValName
 
-    def plotNormal(self,name:str,showMin=False,showMax=False,cmap=None,save=False,ignoreNegValue=True):
+    def plotNormal(self,name:str,showMin=False,showMax=False,cmap=None,save=False,ignoreNegValue=True, maxVal=None):
         """
         Shows the plot with the data stored in member variables:
         - name (str)            : sets the title of the plot
@@ -81,6 +81,9 @@ class Plotter2D():
             plt.plot(self.paramData,self.specialValues,label = self.specialValuesName,color="red")
 
         plt.legend()
+
+        if maxVal != None:
+            plt.xlim(0,maxVal)
 
         # Display or save the plot
         if (save):

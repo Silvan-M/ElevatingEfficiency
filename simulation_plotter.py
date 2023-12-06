@@ -202,37 +202,80 @@ class SimulationPlotter():
 
         print(f"Finished plotting {tot} permutations.")
 
-    def distrPlotter2d(self,distr,target=False,savePlot=False,name=""):
+    def distrPlotter2d(self,distr,target=False,savePlot=False,name="",combineFloors=None,plotTime=0):
+        """
+        Plots the distribution of the simulation. The target parameter specifies whether the target or spawn distribution should be plotted.
+        Combine floors specifies which floors should be combined, input a list of indices tuples of ranges. 
+        If None, all floors will be plotted individually.
+
+        If plotTime=0, only the floor distribution will be plotted.
+        If plotTime=1, only the time distribution will be plotted.
+        If plotTime=2, both will be plotted.
+        """
         distrInit = distr()
         start = 0
         end = distrInit.maxTime
         keyFrames = list(range(start, end + 1))
         floorAmount = self.floorAmount
 
+        if (combineFloors==None):
+            combineFloors = [(i,i) for i in range(floorAmount)]
+
         if (name==""):
             name = self.distribution.distributionName+" Scenario"
 
-        floorNames = []
+        curveNames = []
         floorTargetData = []
         floorSpawnData = []
-        
+
 
         for i in range(floorAmount):
-            floorNames.append("Floor "+str(i))
             floorTargetData.append([])
             floorSpawnData.append([])
 
+        
+        if plotTime==0 or plotTime==2:
+            for i in range(len(combineFloors)):
+                if (i < len(combineFloors)-1 and combineFloors[i][0] != combineFloors[i][1]):
+                    curveNames.append("Floor "+str(combineFloors[i][0])+"-"+str(combineFloors[i][1]))
+                else:
+                    curveNames.append("Floor "+str(combineFloors[i][0]))
+
+
+        timeData = []
 
         for t in range(len(keyFrames)):
             floorSpawnDistribution, floorTargetDistribution = distrInit.getFloorDistributions(t)
+            timeData.append(distrInit.getTimeDistribution(t))
+
             for i in range(floorAmount):
-                floorTargetData[i].append(floorTargetDistribution.distribution[i]*distrInit.getTimeDistribution(t))
-                floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*distrInit.getTimeDistribution(t))
-        if (target):
-            plt = P2D(keyFrames,"time [s]",floorTargetData,floorNames)
+                if (plotTime==0):
+                    floorTargetData[i].append(floorTargetDistribution.distribution[i])
+                    floorSpawnData[i].append(floorSpawnDistribution.distribution[i])
+                else:
+                    floorTargetData[i].append(floorTargetDistribution.distribution[i]*distrInit.getTimeDistribution(t))
+                    floorSpawnData[i].append(floorSpawnDistribution.distribution[i]*distrInit.getTimeDistribution(t))
+
+        
+        # Convert to hours
+        keyFrames = [x/3600 for x in keyFrames]
+
+        # Combine floors
+        combinedFloorTargetData = []
+        combinedFloorSpawnData = []
+
+        for i,_ in combineFloors:
+            combinedFloorTargetData.append(floorTargetData[i])
+            combinedFloorSpawnData.append(floorSpawnData[i])
+
+        if plotTime==1:
+            # Plot only time distribution
+            plt = P2D(keyFrames,"time [h]",[timeData],["Spawn Amount"])
+        elif target:
+            plt = P2D(keyFrames,"time [h]",combinedFloorTargetData,curveNames)
         else:
-            plt = P2D(keyFrames,"time [s]",floorSpawnData,floorNames)
-        plt.plotNormal(name,cmap="viridis",save=savePlot)
+            plt = P2D(keyFrames,"time [h]",combinedFloorSpawnData,curveNames)
+        plt.plotNormal(name,cmap="winter",save=savePlot,maxVal=24)
     
     def policyPlotter2d(self,objective:Objective,policies:list,timeScale="h",averageOf=1,savePlot=False,name=""):
         bar = ProgressBar(len(policies)*averageOf,"Simulating: ")
@@ -483,7 +526,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.ShoppingMallDistribution
+distribution = distributions.ResidentialBuildingDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicy
@@ -523,13 +566,13 @@ if __name__ == "__main__":
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     # Space/Time Distribution
-    # plt.distrPlotter2d(distribution, savePlot=False, target=False)
+    # plt.distrPlotter2d(distribution, savePlot=False, target=False, plotTime=2, savefig=True)
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Policy Parameter Permutation Comparison
-    plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 20, avgOf=5)
+    # plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 20, avgOf=5)
 
     # Multiple Policy Parameter Comparison
     runMultiple = False

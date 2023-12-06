@@ -18,7 +18,7 @@ import numpy as np
 showGui = True
 
 # Show live plot
-showLivePlot = False
+showLivePlot = True
 
 # Set seed for random number generator (if -1, no seed is set)
 seed = 1
@@ -28,11 +28,11 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.ShoppingMallDistribution()
+distribution = distributions.RooftopBarDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
-policy = policies.PWDPPolicy
-policyArguments = [1,1,1,1,1,1,1]
+policy = policies.FCFSPolicy
+policyArguments = []
 
 # Start simulation at a specific time
 hours, minutes, seconds = 15, 0, 0
