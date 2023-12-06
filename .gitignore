@@ -35,6 +35,12 @@ share/python-wheels/
 *.manifest
 *.spec
 
+# DS Store files also in all directories
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

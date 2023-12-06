@@ -235,11 +235,11 @@ class SimulationPlotter():
 
         
         if plotTime==0 or plotTime==2:
-            for i in range(len(combineFloors)):
-                if (i < len(combineFloors)-1 and combineFloors[i][0] != combineFloors[i][1]):
-                    curveNames.append("Floor "+str(combineFloors[i][0])+"-"+str(combineFloors[i][1]))
+            for below, above in combineFloors:
+                if below != above:
+                    curveNames.append(f"Floor {below}-{above}")
                 else:
-                    curveNames.append("Floor "+str(combineFloors[i][0]))
+                    curveNames.append(f"Floor {below}")
 
 
         timeData = []
@@ -566,7 +566,7 @@ if __name__ == "__main__":
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     # Space/Time Distribution
-    # plt.distrPlotter2d(distribution, savePlot=True, target=True, plotTime=1, name="Residential Building - Time Distribution")
+    plt.distrPlotter2d(distribution, savePlot=True, target=True, plotTime=0, name="Shopping Mall - Target Distribution", combineFloors=[(0,9)])
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
