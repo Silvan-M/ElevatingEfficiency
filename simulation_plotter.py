@@ -566,7 +566,7 @@ if __name__ == "__main__":
     # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
     
     # Space/Time Distribution
-    plt.distrPlotter2d(distribution, savePlot=True, target=True, plotTime=0, name="Shopping Mall - Target Distribution", combineFloors=[(0,9)])
+    # plt.distrPlotter2d(distribution, savePlot=True, target=True, plotTime=1, name="Shopping Mall - Passenger Distribution", combineFloors=[(0,9)])
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
