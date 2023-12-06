@@ -40,6 +40,9 @@ class Plotter2D():
         plt.title(name)
         plt.xlabel(self.paramName)
         plt.ylabel(self.yLabel)
+
+        if save:
+            plt.ioff()
         
 
         paramDataMod = copy.deepcopy(self.paramData)
