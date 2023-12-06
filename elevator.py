@@ -60,7 +60,7 @@ class Elevator:
 
             # Check if any passenger wants to leave
             for p in self.passengerList:
-                if(p.endLevel == currentFloor or self.decision == Action.WaitOpen):
+                if(p.endLevel == currentFloor):
                     if (DB.elvPassengerLeavesElevator and ((time % int(DB.elvPassengerLeavesElevatorSkips))==0)):
                         DB.pr("Func","step",message="passenger left elevator",t=time,kwargs=[p],desc=["passenger"])
 

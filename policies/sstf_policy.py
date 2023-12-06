@@ -22,17 +22,8 @@ class SSTFPolicy(Policy):
         """
         action = Action.Wait
 
-        if (self.prevAction in (Action.WaitUp, Action.WaitDown, Action.WaitOpen, Action.Wait)):
-            # Get new decision if elevator leaves a target or is idle
-            actionToDirection = {
-                Action.Wait: 0,
-                Action.WaitOpen: 0,
-                Action.WaitDown: -1,
-                Action.WaitUp: 1
-            }
-
-            # Get advertised direction from previous action
-            advertisedDirection = actionToDirection.get(self.prevAction, 0)
+        if (elevator.target == currentFloor or elevator.target == -1):
+            # Get new decision if elevator arrived at target or is idle
             
             # Initilize target
             target, targetDirection = -1, 0
@@ -40,33 +31,22 @@ class SSTFPolicy(Policy):
             # Get closest target in advertised direction
             if (self._hasRequests(floorButtons, elevators, elevatorButtons)):
                 # Has requests, set new target
-                target, targetDirection = self._getClosestTarget(currentFloor, floorButtons, elevatorButtons, advertisedDirection)
+                target, targetDirection = self._getClosestTarget(currentFloor, floorButtons, elevatorButtons, elevator.targetDirection)
             
             elevator.target = target
             elevator.targetDirection = targetDirection
 
             if (target != -1):
                 # New target in different floor, move
-                action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
+                action = Action.WaitUp if (target > currentFloor) else Action.WaitDown
             else:
                 # No new target or target is current floor, wait
                 action = Action.WaitOpen
-        elif (elevator.target == currentFloor or elevator.target == -1):
-            # Elevator has reached target or is idle, wait up or down
-            if (elevator.targetDirection == 1):
-                # Arrived at target, advertise up
-                action = Action.WaitUp
-            elif (elevator.targetDirection == -1):
-                # Arrived at target, advertise down
-                action = Action.WaitDown
-            else:
-                # We arrived at target, but have no further targets, wait
-                action = Action.WaitOpen
-        elif (self.prevAction == Action.MoveUp):
-            # Not reached target yet, continue moving up
+        elif (self.prevAction in (Action.MoveUp, Action.WaitUp)):
+            # Not reached target yet, continue/start moving up
             action = Action.MoveUp
-        elif (self.prevAction == Action.MoveDown):
-            # Not reached target yet, continue moving down
+        elif (self.prevAction in (Action.MoveDown, Action.WaitDown)):
+            # Not reached target yet, continue/start moving down
             action = Action.MoveDown
 
         self.prevAction = action
