@@ -105,14 +105,14 @@ class TimeSpaceDistribution():
     maxPassengers: The maximum amount of passengers that can spawn in the entire building once.
     timeType: The type of the time values. Can be "s", "m" or "h".
     data: A list of tuples (time, spawnDistribution, targetDistribution) with the last two parameters being a Distribution object.
-    peopleDistribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.
+    passengerDistribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.
 
     Note: The spawnDistribution and targetDistribution of the data parameter contain the probabilities of which floor should be chosen for spawning or as a target.
     """
-    def __init__(self, maxPassengers, timeType, maxTimeTyped, data, peopleDistribution, distributionName = "Base distribution"):
+    def __init__(self, maxPassengers, timeType, maxTimeTyped, data, passengerDistribution, distributionName = "Base distribution"):
         self.floorSpawnDistribution = []
         self.floorTargetDistribution = []
-        self.peopleDistribution = peopleDistribution
+        self.passengerDistribution = passengerDistribution
         self.times = []
         self.probabilities = None
         self.maxPassengers = maxPassengers
@@ -147,8 +147,8 @@ class TimeSpaceDistribution():
         self.floorAmount = len(data[0][1].distribution)
 
         # Check if every distribution has the same amount of floors
-        for (_, spawnDistribution, peopleDistribution) in data:
-            if len(spawnDistribution.distribution) != len(peopleDistribution.distribution) or \
+        for (_, spawnDistribution, passengerDistribution) in data:
+            if len(spawnDistribution.distribution) != len(passengerDistribution.distribution) or \
                len(spawnDistribution.distribution) != self.floorAmount:
                 raise Exception("Every distribution needs to have the same amount of floors.")
         
@@ -193,18 +193,18 @@ class TimeSpaceDistribution():
 
         return self.distribution1, self.distribution2
     
-    def getNumPassengersTime(self, time):
+    def getPassengerAmount(self, time):
         """
         Returns a double amount of the passengers that spawn at the given time.
         """
-        return self.peopleDistribution.getInterpolatedProb(time)*self.maxPassengers
+        return self.passengerDistribution.getInterpolatedProb(time)*self.maxPassengers
 
     def getSpawnAmount(self, time):
         """
         Returns an integer amount of passengers that spawn at the given time using the exponential distribution.
         """
         # Get the interpolated probability of the time distribution
-        amountOfPassengers = self.getNumPassengersTime(time)
+        amountOfPassengers = self.getPassengerAmount(time)
 
         # Use the exponential distribution to get the amount of passengers that spawn (for maxPassengers < 1)
         random_value = round(np.random.exponential(scale=amountOfPassengers))

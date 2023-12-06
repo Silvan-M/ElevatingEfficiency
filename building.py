@@ -20,7 +20,7 @@ class Building():
             elevator.setElevatorIndex(i)
 
     def __str__(self) -> str:
-        out = DB.str("Class","Building",kwargs=[self.elevators,self.distribution,self.floorAmount,self.peopleDistribution,self.floors],desc=["elevators","spawn distribution","target distribution","floor amount","time distribution","floors"])
+        out = DB.str("Class","Building",kwargs=[self.elevators,self.distribution,self.floorAmount,self.passengerDistribution,self.floors],desc=["elevators","spawn distribution","target distribution","floor amount","time distribution","floors"])
         return out
 
     def step(self, time):

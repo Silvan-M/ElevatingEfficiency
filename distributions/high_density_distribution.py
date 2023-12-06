@@ -29,7 +29,7 @@ class HighDensityDistribution(TimeSpaceDistribution):
             (24, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
         ]
 
-        peopleDistribution = TimeDistribution(timeType, maxTimeTyped, [(0, 1), (24, 1)])
+        passengerDistribution = TimeDistribution(timeType, maxTimeTyped, [(0, 1), (24, 1)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, maxTimeTyped, data, peopleDistribution, "High Density Distribution")
+        super().__init__(maxPassengers, timeType, maxTimeTyped, data, passengerDistribution, "High Density Distribution")
