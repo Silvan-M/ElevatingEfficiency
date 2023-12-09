@@ -2,3 +2,5 @@
 *
 # Except this file
 !.gitignore
+!../paramOptimizer/baseParam.txt
+!../paramOptimizer/saveParam.txt
