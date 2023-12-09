@@ -24,8 +24,8 @@ simulationLength = 60*60*6
 
 distribution = distributions.HighDensityDistribution() if num_epochs > 0 else None
 
-loadParams = "paramOptimizer/saveParams.txt"
-storeParams ="paramOptimizer/saveParams.txt"
+loadParams = "paramOptimizer/save_params.txt"
+storeParams ="paramOptimizer/save_params.txt"
 
 def mapParameters(parameters, changedParameter):
     ret = parameters + [1]
