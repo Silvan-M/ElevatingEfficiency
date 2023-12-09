@@ -28,7 +28,7 @@ class PWDPPolicyOptimized(policies.Policy):
     Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.
     """
     
-    def __init__(self, loadPath='paramOptimizer/saveParamsBigSmall.txt'):
+    def __init__(self, loadPath='paramOptimizer/save_params.txt'):
         with open(loadPath, "r") as file:
             lines = file.readlines()
             if lines:
