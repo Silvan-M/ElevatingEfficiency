@@ -9,8 +9,7 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, Normalize
 from matplotlib.cm import ScalarMappable
 
-seed_value = 5  
-random.seed(seed_value)
+
 
 class Sprite(pygame.sprite.Sprite):
     cache = {}

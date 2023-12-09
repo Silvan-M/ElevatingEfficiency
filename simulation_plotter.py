@@ -1,5 +1,5 @@
 from policies import Policy
-from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced
+from policies import LOOKPolicy, SCANPolicy, FCFSPolicy, SSTFPolicy, PWDPPolicy, PWDPPolicyEnhanced, PWDPPolicyOptimized
 from debug import Debug as DB
 from parameter import Parameter,ElevatorParameter,TimeDistrParameter, PolicyParameter
 from exceptions import Exceptions as EXC
@@ -391,6 +391,9 @@ class SimulationPlotter():
         elif (t == PWDPPolicyEnhanced):
             args = self.elevatorArgs[i][2][1:]
             self.elevatorsInit[i] = PWDPPolicyEnhanced(*args)
+        elif (t == PWDPPolicyOptimized):
+            args = self.elevatorArgs[i][2][1:]
+            self.elevatorsInit[i] = PWDPPolicyOptimized(*args)
 
     def _setFloorAmount(self,amount:int):
         self.floorAmount = amount
@@ -486,10 +489,10 @@ isCustomScenario = False
 distribution = distributions.ShoppingMallDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
-policy = PWDPPolicy
+policy = PWDPPolicyOptimized
 
 # Choose policy parameters (might be overwritten by function parameters used later)
-policyParameters = [1,1,1,1,1,1,1]
+policyParameters = []
 
 ## CUSTOM SCENARIO SETTINGS
 # Specify floor amount if using a CUSTOM scenario
@@ -520,7 +523,7 @@ if __name__ == "__main__":
     # Call the plotter functions here
 
     # Policy Comparison
-    # plt.policyPlotter2d(Objective.AWT,[SCANPolicy, LOOKPolicy, FCFSPolicy, PWDPPolicy, PWDPPolicyEnhanced],averageOf=10)
+    plt.policyPlotter2d(Objective.AWT,[PWDPPolicyOptimized, PWDPPolicy],averageOf=10, savePlot=True)
     
     # Space/Time Distribution
     # plt.distrPlotter2d(distribution, savePlot=False, target=False)
@@ -529,7 +532,7 @@ if __name__ == "__main__":
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
 
     # Policy Parameter Permutation Comparison
-    plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 20, avgOf=5)
+    # plt.paramPlotter3dPermutations(Objective.AWT, 0, 10, 20, avgOf=5)
 
     # Multiple Policy Parameter Comparison
     runMultiple = False

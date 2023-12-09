@@ -27,7 +27,6 @@ class CustomBuildingDistribution(TimeSpaceDistribution):
             (0, FloorDistribution([0]*7 + [1]*3), FloorDistribution([1]*3 + [0]*7))
         ]
 
-        # Shopping mall is open from 08:00 to 21:00, most people come between 10:00 and 18:00, peak at 12:00
         timeDistribution = TimeDistribution(timeType, maxTimeTyped, [(1, 1)])
 
         super().__init__(maxPassengers, timeType, maxTimeTyped, data, timeDistribution, "Custom Distribution")
