@@ -325,6 +325,54 @@ class SimulationPlotter():
             print(f"Policy {policies[i]().name()} has an average of {policyAverageEndResult[i]} {objective.value} at the end of the simulation")
         plt = P2D(keyFrames,"Time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
         plt.plotNormal(name,save=savePlot)
+
+    def policyPlotter2dScenarios(self,objective:Objective,policy,scenarios,scenarioNames,timeScale="h",averageOf=1,savePlot=False,name=""):
+        bar = ProgressBar(len(scenarios)*averageOf,"Simulating: ")
+        self._updateHandler(PolicyParameter.POLICY,policy)
+        objectiveData = []
+        objectiveTemp = []
+        objectiveNames = []
+        objectiveAverage=[]
+
+            
+
+        policyAverageEndResult = []
+
+        t = 1
+        if (timeScale=="h"):
+            t = 60*60
+        elif (timeScale=="m"):
+            t = 60
+
+        if (name==""):
+            name ="Different Scenarios"
+
+        distr = self.distribution
+        start = 0
+        end = (distr.maxTime)//t
+        seedStore = self.seed
+
+        keyFrames = list(range(start, end))
+
+        for i in range(len(scenarios)):
+            self.distribution = scenarios[i]()
+            policyEndResult = []
+            self.seed = seedStore
+            objectiveNames.append(scenarioNames[i])
+            for a in range(averageOf):
+                self.seed+=1234  
+                bar.update()
+                simulation = self._init()
+                simulation.run(days=1, timeScale=-1)
+                x = (simulation.statistics.getObjective(objective,t,24*60*60//t))
+                objectiveTemp.append(x)
+                y = (simulation.statistics.getObjective(objective))
+                policyEndResult.append(y)
+            objectiveData.append(self._extractMean(objectiveTemp))
+            objectiveTemp=[]
+            policyAverageEndResult.append(np.mean(policyEndResult))
+        plt = P2D(keyFrames,"time ["+str(timeScale)+"]",objectiveData,objectiveNames,yLabel=objective.value)
+        plt.plotNormal(name,cmap="winter",save=savePlot)
         
 
     def _partitionTasks(self,input:list):
@@ -530,7 +578,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.HighDensityDistribution
+distribution = distributions.RooftopBarDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicyOptimized
@@ -567,7 +615,7 @@ if __name__ == "__main__":
     # Call the plotter functions here
 
     # Policy Comparison
-    plt.policyPlotter2d(Objective.AWT,[PWDPPolicy],averageOf=10, savePlot=False)
+    # plt.policyPlotter2d(Objective.AWT,[PWDPPolicy],averageOf=10, savePlot=False)
     
     # Space/Time Distribution
     # plt.distrPlotter2d(distribution, savePlot=True, target=False, plotTime=0, name="Shopping Mall - Spawn Distribution", combineFloors=[(0,9)])
