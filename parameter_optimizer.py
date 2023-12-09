@@ -18,14 +18,14 @@ currentAWT = 9999
 currentParams = []
 
 num_epochs = 0
-learningRate = 1.05
+learningRate = 1.03
 average_of = 10
 simulationLength = 60*60*6
 
 distribution = distributions.HighDensityDistribution() if num_epochs > 0 else None
 
-loadParams = "paramOptimizer/saveParamsBigSmall.txt"
-storeParams ="paramOptimizer/saveParamsBigSmall.txt"
+loadParams = "paramOptimizer/saveParams.txt"
+storeParams ="paramOptimizer/saveParams.txt"
 
 def mapParameters(parameters, changedParameter):
     ret = parameters + [1]
