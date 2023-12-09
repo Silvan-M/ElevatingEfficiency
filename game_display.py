@@ -132,10 +132,11 @@ class SimulationStepInfo():
     
 
 class GameDisplay():
-    def __init__(self, simulation, scale):
+    def __init__(self, simulation, scale, start_paused=False):
         simulation.onStepEnd.add_listener(self.step)
         simulation.onSimulationStarted.add_listener(self.startSimulation)
         self.scale = scale
+        self.paused = start_paused
 
     def startSimulation(self, simulation, startTime, stepAmount):
         building = simulation.building
@@ -312,19 +313,34 @@ class GameDisplay():
         self.screen.blit(text_surface, text_rect)
     
 
-
+    def pauseButtonPressed(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+                return True
+        return False
 
     def step(self, simulation, time):
+        self.paused = self.paused or self.pauseButtonPressed()
+
+        if(self.paused):
+            self.renderText("Game Paused", (16 * self.scale, self.screenTileAmount[1] * self.totScale - 16*self.scale), -1)
+            pygame.display.flip()
+
+        while self.paused:
+            if(self.pauseButtonPressed()):
+                self.paused = False
+                break
+            
+
         building = simulation.building
         lastStepInfo = self.stepInfo
         self.stepInfo = SimulationStepInfo(building)
         if(lastStepInfo != None):
             self.applyDifferences(self.stepInfo, lastStepInfo)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
 
         #Sprites
         self.setBackground(simulation.time)

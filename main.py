@@ -16,9 +16,10 @@ import numpy as np
 ## MAIN SETTINGS
 # Show gui
 showGui = True
+startPaused = False
 
 # Show live plot
-showLivePlot = True
+showLivePlot = False
 
 # Set seed for random number generator (if -1, no seed is set)
 seed = 1
@@ -84,7 +85,7 @@ if (DB.mnSetup):
     print(simulation)
 
 if (showGui):
-    game = GameDisplay(simulation, windowSize)
+    game = GameDisplay(simulation, windowSize, startPaused)
 
 if (showLivePlot):
     livePlot = LivePlotter(simulation, [Objective.AWT, Objective.AWTSD, Objective.ACE, Objective.AMP])
