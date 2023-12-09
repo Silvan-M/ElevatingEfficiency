@@ -132,7 +132,7 @@ class SimulationStepInfo():
     
 
 class GameDisplay():
-    def __init__(self, simulation, scale, start_paused=True):
+    def __init__(self, simulation, scale, start_paused=False):
         simulation.onStepEnd.add_listener(self.step)
         simulation.onSimulationStarted.add_listener(self.startSimulation)
         self.scale = scale
@@ -324,6 +324,11 @@ class GameDisplay():
 
     def step(self, simulation, time):
         self.paused = self.paused or self.pauseButtonPressed()
+
+        if(self.paused):
+            self.renderText("Game Paused", (16 * self.scale, self.screenTileAmount[1] * self.totScale - 16*self.scale), -1)
+            pygame.display.flip()
+
         while self.paused:
             if(self.pauseButtonPressed()):
                 self.paused = False
@@ -336,10 +341,6 @@ class GameDisplay():
         if(lastStepInfo != None):
             self.applyDifferences(self.stepInfo, lastStepInfo)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
 
         #Sprites
         self.setBackground(simulation.time)
