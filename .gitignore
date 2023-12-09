@@ -7,8 +7,8 @@ __pycache__/
 *.so
 *.txt
 !requirements.txt
-!paramOptimizer/baseParam.txt
-!paramOptimizer/saveParam.txt
+!paramOptimizer/baseParams.txt
+!paramOptimizer/saveParams.txt
 
 # Distribution / packaging
 .Python
