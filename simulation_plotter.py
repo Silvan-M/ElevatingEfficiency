@@ -530,7 +530,7 @@ seed = 1
 isCustomScenario = False
 
 # Select from one of the three standard scenarios (ShoppingMall, Rooftop, Residential)
-distribution = distributions.ShoppingMallDistribution
+distribution = distributions.HighDensityDistribution
 
 # Choose a policy for the elevators (might be overwritten by function parameters used later)
 policy = PWDPPolicyOptimized
@@ -567,7 +567,7 @@ if __name__ == "__main__":
     # Call the plotter functions here
 
     # Policy Comparison
-    plt.policyPlotter2d(Objective.AWT,[PWDPPolicyOptimized, PWDPPolicy],averageOf=10, savePlot=True)
+    plt.policyPlotter2d(Objective.AWT,[PWDPPolicy],averageOf=10, savePlot=False)
     
     # Space/Time Distribution
     # plt.distrPlotter2d(distribution, savePlot=True, target=False, plotTime=0, name="Shopping Mall - Spawn Distribution", combineFloors=[(0,9)])
