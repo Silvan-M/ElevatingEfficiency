@@ -168,8 +168,8 @@ for param_values in params_transposed:
 
 # Customize the first y-axis
 ax1.set_xlabel('Time')
-ax1.set_ylabel('Parameter Values', color='tab:blue')
-ax1.tick_params('y', colors='tab:blue')
+ax1.set_ylabel('Parameter Values', color='tab:grey')
+ax1.tick_params('y')
 ax1.legend(['ElevatorButtonWeight', 'ElevatorButtonTimeWeight', 'FloorButtonWeight', 'FloorButtonTimeWeight', 'competitorWeight', 'distanceWeight']) 
 # ax1.legend(['ElevatorButtonTimeWeight', 'FloorButtonTimeWeight', 'competitorWeight', 'distanceWeight']) 
 
@@ -178,7 +178,7 @@ ax2 = ax1.twinx()
 
 # Plot scores on the secondary y-axis
 minAWT = min(awtOverTime)
-ax2.plot(awtOverTime, color='tab:grey', marker='s', alpha=0)
+ax2.plot(awtOverTime, marker='s', alpha=0)
 ax2.set_ylabel('AWT', color='tab:grey')
 ax2.tick_params('y')
 ax2.fill_between(np.arange(len(awtOverTime)), minAWT - 2, awtOverTime, color='gray', alpha=0.3)
@@ -187,5 +187,5 @@ ax2.autoscale(axis='y')
 # Plot a transparent grey area for the scores
 
 # Customize the plot
-plt.title('Parameter Values Over Time')
+plt.title('Parameter Values Over Epochs')
 plt.show()
