@@ -106,7 +106,7 @@ class Plotter2D():
         
         """
         if (cmapInp==None):
-            cmapInp = "viridis"
+            cmapInp = "winter"
         cmap = plt.get_cmap(cmapInp)
         colors = [cmap(i) for i in np.linspace(0, 1, max)]
         return colors[max - index - 1]

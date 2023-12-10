@@ -615,10 +615,10 @@ if __name__ == "__main__":
     # Call the plotter functions here
 
     # Policy Comparison
-    # plt.policyPlotter2d(Objective.AWT,[PWDPPolicy],averageOf=10, savePlot=False)
+    plt.policyPlotter2d(Objective.AWT,[SCANPolicy, FCFSPolicy, PWDPPolicy, LOOKPolicy],averageOf=10, savePlot=False)
     
     # Space/Time Distribution
-    # plt.distrPlotter2d(distribution, savePlot=True, target=False, plotTime=0, name="Shopping Mall - Spawn Distribution", combineFloors=[(0,9)])
+    # plt.distrPlotter2d(distribution, savePlot=False, target=False, plotTime=0, combineFloors=[(0,0),(1,9)])
 
     # Policy Parameter Comparison
     # plt.paramPlotter3d(Objective.ATTD,[PolicyParameter.ELEVBUTWEIGHT,1,6,5],[PolicyParameter.FLOORBUTWEIGHT,1,6,5],2,savePlot=True)
