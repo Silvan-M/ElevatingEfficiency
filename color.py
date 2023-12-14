@@ -9,11 +9,14 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-    def error(text:str):
-        return Colors.FAIL+text+Colors.ENDC
-    def warning(text:str):
-        return Colors.WARNING+text+Colors.ENDC
-    def ok(text:str):
-        return Colors.OKGREEN+text+Colors.ENDC
-    def info(text:str):
-        return Colors.OKCYAN+text+Colors.ENDC
+    def error(text: str):
+        return Colors.FAIL + text + Colors.ENDC
+
+    def warning(text: str):
+        return Colors.WARNING + text + Colors.ENDC
+
+    def ok(text: str):
+        return Colors.OKGREEN + text + Colors.ENDC
+
+    def info(text: str):
+        return Colors.OKCYAN + text + Colors.ENDC
