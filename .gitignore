@@ -7,6 +7,7 @@ __pycache__/
 *.so
 *.txt
 !requirements.txt
+!paramOptimizer/**/*.txt
 
 # Distribution / packaging
 .Python
@@ -34,6 +35,12 @@ share/python-wheels/
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+
+# DS Store files also in all directories
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 
 # Installer logs
 pip-log.txt

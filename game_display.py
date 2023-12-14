@@ -9,13 +9,19 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, Normalize
 from matplotlib.cm import ScalarMappable
 
-seed_value = 5  
-random.seed(seed_value)
 
 class Sprite(pygame.sprite.Sprite):
     cache = {}
 
-    def __init__(self, image_path, initial_position, sprite_size, color=(255, 255, 255)):
+    def __init__(
+        self,
+        image_path,
+        initial_position,
+        sprite_size,
+        color=(
+            255,
+            255,
+            255)):
         super().__init__()
 
         self.image = None
@@ -23,9 +29,10 @@ class Sprite(pygame.sprite.Sprite):
             self.image = self.cache[(image_path, color)]
         else:
             original_image = pygame.image.load(image_path)
-            original_image = pygame.transform.scale(original_image, sprite_size)
+            original_image = pygame.transform.scale(
+                original_image, sprite_size)
 
-            color_multiplier = mul(color, 1.0/255)
+            color_multiplier = mul(color, 1.0 / 255)
             self.image = pygame.Surface(sprite_size, pygame.SRCALPHA)
             for y in range(sprite_size[1]):
                 for x in range(sprite_size[0]):
@@ -43,18 +50,22 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.topleft = initial_position
 
 
-#Vector operations
+# Vector operations
 def add(v1, v2):
     return tuple(a + r for a, r in zip(v1, v2))
 
+
 def mul(v1, c):
-    return tuple(e * c for e in v1)    
+    return tuple(e * c for e in v1)
+
 
 def vround(v1):
-    return tuple(round(e) for e in v1)   
+    return tuple(round(e) for e in v1)
+
 
 def lerp(v1, v2, a):
-    tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
+    return tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
+
 
 def format_time(seconds):
     # Calculate days, hours, minutes, and seconds
@@ -71,17 +82,18 @@ def format_time(seconds):
 def get_color_at_time(data, time):
     # Ensure data is sorted by time
     sorted_data = sorted(data, key=lambda x: x[0])
-    
+
     # Extract times and colors
     times, colors = zip(*sorted_data)
-    
+
     # Find the index where time should be inserted to maintain sorted order
     idx = next((i for i, t in enumerate(times) if t >= time), len(times) - 1)
-    
-    # Interpolate between the colors at idx-1 and idx based on the relative position of time
+
+    # Interpolate between the colors at idx-1 and idx based on the relative
+    # position of time
     t1, c1 = times[idx - 1], colors[idx - 1]
     t2, c2 = times[idx], colors[idx]
-    
+
     alpha = (time - t1) / (t2 - t1)
 
     c1_rgb = mcolors.to_rgb(c1)
@@ -95,215 +107,258 @@ def get_color_at_time(data, time):
 
     return interpolated_color
 
-class SpriteEntity():
-    def __init__(self, front, back, screenLoc, spriteSize, front_color=(255, 255, 255), back_color=(255, 255, 255)):
-        self.front = Sprite(front, screenLoc, spriteSize, front_color)
-        self.back = Sprite(back, screenLoc, spriteSize, back_color)
-        self.screenLoc = screenLoc
-        self.targetPos = screenLoc
 
-    def updateScreenLoc(self, screenLoc):
-        self.screenLoc = screenLoc
-        self.front.rect.topleft = screenLoc
-        self.back.rect.topleft = screenLoc
+class SpriteEntity():
+    def __init__(
+        self,
+        front,
+        back,
+        screen_loc,
+        sprite_size,
+        front_color=(
+            255,
+            255,
+            255),
+        back_color=(
+            255,
+            255,
+            255)):
+        self.front = Sprite(front, screen_loc, sprite_size, front_color)
+        self.back = Sprite(back, screen_loc, sprite_size, back_color)
+        self.screen_loc = screen_loc
+        self.target_pos = screen_loc
+
+    def update_screen_loc(self, screen_loc):
+        self.screen_loc = screen_loc
+        self.front.rect.topleft = screen_loc
+        self.back.rect.topleft = screen_loc
 
 
 class PassengerInfo():
-    def __init__(self, inElevator, index, target):
-        self.inElevator = inElevator
+    def __init__(self, in_elevator, index, target):
+        self.in_elevator = in_elevator
         self.index = index
         self.target = target
 
     def equal(self, other):
-        return self.index == other.index and self.inElevator == other.inElevator
+        return self.index == other.index and self.in_elevator == other.in_elevator
+
 
 class SimulationStepInfo():
     def __init__(self, building):
         self.passengers = {}
-        self.elevatorHeights = {}
+        self.elevator_heights = {}
 
         for f in building.floors:
-            for p in f.passengerList:
-                self.passengers[p.id] = PassengerInfo(False, f.number, p.endLevel)
+            for p in f.passenger_list:
+                self.passengers[p.id] = PassengerInfo(
+                    False, f.number, p.end_level)
 
         for e in building.elevators:
-            for p in e.passengerList:
-                self.passengers[p.id] = PassengerInfo(True, e.elevatorIndex, p.endLevel)
-            self.elevatorHeights[e.elevatorIndex] = e.currentHeight
-    
+            for p in e.passenger_list:
+                self.passengers[p.id] = PassengerInfo(
+                    True, e.elevator_index, p.end_level)
+            self.elevator_heights[e.elevator_index] = e.current_height
+
 
 class GameDisplay():
-    def __init__(self, simulation, scale):
-        simulation.onStepEnd.add_listener(self.step)
-        simulation.onSimulationStarted.add_listener(self.startSimulation)
+    def __init__(self, simulation, scale, start_paused=False):
+        simulation.on_step_end.add_listener(self.step)
+        simulation.on_simulation_started.add_listener(self.start_simulation)
         self.scale = scale
+        self.paused = start_paused
 
-    def startSimulation(self, simulation, startTime, stepAmount):
+    def start_simulation(self, simulation, start_time, step_amount):
         building = simulation.building
-        self.timeStepAmount = startTime + stepAmount
-        self.tileSize = 32
-        self.totScale = round(self.tileSize*self.scale)
+        self.time_step_amount = start_time + step_amount
+        self.tile_size = 32
+        self.tot_scale = round(self.tile_size * self.scale)
 
-        self.floorAmount = building.floorAmount
-        self.additionalBuildingWidth = 3
-        self.buildingMargin = (2,1)
-        self.elevatorAmount = len(building.elevators)
-        self.buildingWidth = self.elevatorAmount + self.additionalBuildingWidth * 2
-        self.screenTileAmount = add(mul(self.buildingMargin, 2), (self.buildingWidth, self.floorAmount))
+        self.floor_amount = building.floor_amount
+        self.additional_building_width = 3
+        self.building_margin = (2, 1)
+        self.elevator_amount = len(building.elevators)
+        self.building_width = self.elevator_amount + self.additional_building_width * 2
+        self.screen_tile_amount = add(
+            mul(self.building_margin, 2), (self.building_width, self.floor_amount))
 
         pygame.init()
 
-        self.screen = pygame.display.set_mode(mul(self.screenTileAmount, self.totScale))
+        self.screen = pygame.display.set_mode(
+            mul(self.screen_tile_amount, self.tot_scale))
         pygame.display.set_caption("Elevating efficiency")
 
-        self.passengerClothes = './Sprites/Passenger_Clothes.png'
-        self.passengerSkin = './Sprites/Passenger_Skin.png'
+        self.passenger_clothes = './Sprites/Passenger_Clothes.png'
+        self.passenger_skin = './Sprites/Passenger_Skin.png'
 
-        self.elevatorBack = './Sprites/ElevatorBack.png'
-        self.elevatorFront = './Sprites/ElevatorFront.png'
+        self.elevator_back = './Sprites/ElevatorBack.png'
+        self.elevator_front = './Sprites/ElevatorFront.png'
 
-        self.roomBack = './Sprites/Room_Back_Filled.png'
-        self.backElevator = './Sprites/Room_Back_Filled.png'
-        self.roomBackWindow = './Sprites/Room_Back_Window.png'
+        self.room_back = './Sprites/Room_Back_Filled.png'
+        self.back_elevator = './Sprites/Room_Back_Filled.png'
+        self.room_back_window = './Sprites/Room_Back_Window.png'
 
-        self.frontElevator = './Sprites/Room_Front_Elevator.png'
-        self.roomFrontWindow = './Sprites/Room_Front_Window.png'
-        self.roomFrontSideL = './Sprites/Room_Front_SideLeft.png'
-        self.roomFrontSideR = './Sprites/Room_Front_SideRight.png'
+        self.front_elevator = './Sprites/Room_Front_Elevator.png'
+        self.room_front_window = './Sprites/Room_Front_Window.png'
+        self.room_front_side_l = './Sprites/Room_Front_SideLeft.png'
+        self.room_front_side_r = './Sprites/Room_Front_SideRight.png'
 
-        self.whiteTile = './Sprites/White.png'
+        self.white_tile = './Sprites/White.png'
 
-        self.allSprites = pygame.sprite.Group()
-        self.floorColors = []
+        self.all_sprites = pygame.sprite.Group()
+        self.floor_colors = []
 
+        self.grey_color = (100, 100, 100)
 
-#        self.backgroundColor = interpolateColors(colors, times)
-        self.greyColor = (100, 100, 100)
+        # Building
+        building_offset = mul(self.building_margin, self.tot_scale)
+        for y in range(self.floor_amount):
+            self.floor_colors.append(self.get_floor_color(y, self.floor_amount))
 
-        #Building
-        buildingOffset = mul(self.buildingMargin, self.totScale)
-        for y in range(self.floorAmount):
-            self.floorColors.append(self.getFloorColor(y, self.floorAmount))
-
-            for x in range(self.buildingWidth):
-                spriteBack = self.roomBackWindow
-                spriteFront = self.roomFrontWindow
+            for x in range(self.building_width):
+                sprite_back = self.room_back_window
+                sprite_front = self.room_front_window
                 if x == 0:
-                    spriteBack = self.roomBack
-                    spriteFront = self.roomFrontSideL
-                elif x == self.buildingWidth - 1:
-                    spriteBack = self.roomBack
-                    spriteFront = self.roomFrontSideR
-                elif (x >= self.additionalBuildingWidth and x < self.buildingWidth - self.additionalBuildingWidth):
-                    spriteBack = self.backElevator
-                    spriteFront = self.frontElevator
-                loc = add(buildingOffset, (x * self.totScale, y * self.totScale))
-                self.allSprites.add(Sprite(spriteBack, loc, (self.totScale, self.totScale), self.floorColors[y]))
-                self.allSprites.add(Sprite(spriteFront, loc, (self.totScale, self.totScale)))
+                    sprite_back = self.room_back
+                    sprite_front = self.room_front_side_l
+                elif x == self.building_width - 1:
+                    sprite_back = self.room_back
+                    sprite_front = self.room_front_side_r
+                elif (x >= self.additional_building_width and x < self.building_width - self.additional_building_width):
+                    sprite_back = self.back_elevator
+                    sprite_front = self.front_elevator
+                loc = add(
+                    building_offset,
+                    (x * self.tot_scale,
+                     y * self.tot_scale))
+                self.all_sprites.add(
+                    Sprite(
+                        sprite_back,
+                        loc,
+                        (self.tot_scale,
+                         self.tot_scale),
+                        self.floor_colors[y]))
+                self.all_sprites.add(
+                    Sprite(
+                        sprite_front, loc, (self.tot_scale, self.tot_scale)))
 
-        #Elevators
+        # Elevators
         self.elevators = {}
         for e in building.elevators:
-            ele = SpriteEntity(self.elevatorFront, self.elevatorBack, (0,0), (self.totScale,self.totScale))
-            self.elevators[e.elevatorIndex] = ele
-            self.allSprites.add(ele.back)
-            self.allSprites.add(ele.front)
+            ele = SpriteEntity(
+                self.elevator_front, self.elevator_back, (0, 0), (self.tot_scale, self.tot_scale))
+            self.elevators[e.elevator_index] = ele
+            self.all_sprites.add(ele.back)
+            self.all_sprites.add(ele.front)
 
-        #Ground
-        for y in range(self.buildingMargin[1]):
-            for x in range(self.screenTileAmount[0]):
-                loc = (x * self.totScale, (self.screenTileAmount[1] - y - 1) * self.totScale)
-                self.allSprites.add(Sprite(self.whiteTile, loc, (self.totScale, self.totScale), self.greyColor))
+        # Ground
+        for y in range(self.building_margin[1]):
+            for x in range(self.screen_tile_amount[0]):
+                loc = (
+                    x * self.tot_scale,
+                    (self.screen_tile_amount[1] - y - 1) * self.tot_scale)
+                self.all_sprites.add(
+                    Sprite(
+                        self.white_tile,
+                        loc,
+                        (self.tot_scale,
+                         self.tot_scale),
+                        self.grey_color))
 
         self.passengers = {}
-        self.stepInfo = None
+        self.step_info = None
 
-    def getFloorColor(self, floorIndex, floorAmount):
+    def get_floor_color(self, floor_index, floor_amount):
         cmap = plt.get_cmap('bone')
-        colors = [cmap(i) for i in np.linspace(0, 1, floorAmount)]
-        rgb_color = mcolors.to_rgb(colors[floorAmount - floorIndex - 1])
+        colors = [cmap(i) for i in np.linspace(0, 1, floor_amount)]
+        rgb_color = mcolors.to_rgb(colors[floor_amount - floor_index - 1])
         return tuple(int(val * 255) for val in rgb_color)
 
+    def get_shaft_location(self, elevator_index):
+        return self.additional_building_width + elevator_index
 
-    def getShaftLocation(self, elevatorIndex):
-        return self.additionalBuildingWidth + elevatorIndex
-    
-    def getPassengerYCoord(self, passengerInfo):
-        if(passengerInfo.inElevator):
-            return self.elevators[passengerInfo.index].screenLoc[1] + (10 * self.scale)
+    def get_passenger_y_coord(self, passenger_info):
+        if (passenger_info.in_elevator):
+            return self.elevators[passenger_info.index].screen_loc[1] + \
+                (10 * self.scale)
         else:
-            return ((self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]) * self.totScale + (11 * self.scale)
+            return ((self.floor_amount - 1 - passenger_info.index) +
+                    self.building_margin[1]) * self.tot_scale + (11 * self.scale)
 
-            
-    def getRandomPassengerLocation(self, passengerInfo):
-        if(passengerInfo.inElevator):
-            return ((random.uniform(0.05, .65) + self.getShaftLocation(passengerInfo.index) + self.buildingMargin[0]) * self.totScale, 
-                    self.getPassengerYCoord(passengerInfo))
+    def get_random_passenger_location(self, passenger_info):
+        if (passenger_info.in_elevator):
+            return ((random.uniform(0.05, .65) +
+                     self.get_shaft_location(passenger_info.index) +
+                     self.building_margin[0]) *
+                    self.tot_scale, self.get_passenger_y_coord(passenger_info))
         else:
-            return mul((random.uniform(0.5, self.buildingWidth - .5) + self.buildingMargin[0], 
-                          (self.floorAmount - 1 - passengerInfo.index) + self.buildingMargin[1]), 
-                          self.totScale)
+            return mul(
+                (random.uniform(
+                    0.5,
+                    self.building_width - .5) + self.building_margin[0],
+                    (self.floor_amount - 1 - passenger_info.index) + self.building_margin[1]),
+                self.tot_scale)
 
-
-    def setBackground(self, time):
-        colors = [(0,"midnightblue"), (5.5, "cornflowerblue"), (6, "lightsalmon"), (7, "skyblue"), (12, "lightskyblue"), (18, "powderblue"), (18.5, "orangered"), (19, "navy"), (24, "midnightblue")]
+    def set_background(self, time):
+        colors = [(0, "midnightblue"), (5.5, "cornflowerblue"), (6, "lightsalmon"), (7, "skyblue"),
+                  (12, "lightskyblue"), (18, "powderblue"), (18.5, "orangered"), (19, "navy"), (24, "midnightblue")]
         hour = (time / 60 / 60) % 24
         col = mul(get_color_at_time(colors, hour), 255)
         grey = (128, 128, 128)
         alpha = .4
         interpolated_color = (
-        col[0] + alpha * (grey[0] - col[0]),
-        col[1] + alpha * (grey[1] - col[1]),
-        col[2] + alpha * (grey[2] - col[2]),
+            col[0] + alpha * (grey[0] - col[0]),
+            col[1] + alpha * (grey[1] - col[1]),
+            col[2] + alpha * (grey[2] - col[2]),
         )
         self.screen.fill(interpolated_color)
 
-    def applyDifferences(self, stepInfo, lastStepInfo):
-        for key in stepInfo.elevatorHeights:
-            val = stepInfo.elevatorHeights[key]
+    def apply_differences(self, step_info, last_step_info):
+        for key in step_info.elevator_heights:
+            val = step_info.elevator_heights[key]
             elevator = self.elevators[key]
-            elevator.updateScreenLoc(mul(
-                (self.getShaftLocation(key) + self.buildingMargin[0], 
-                (self.floorAmount - 1 - val/100) + self.buildingMargin[1]), 
-                self.totScale))
-            
-            #Did not move this turn, open door
-            if(val == lastStepInfo.elevatorHeights[key]):
-                elevator.back.rect.topleft = (-50,-50)
+            elevator.update_screen_loc(mul(
+                (self.get_shaft_location(key) + self.building_margin[0],
+                 (self.floor_amount - 1 - val / 100) + self.building_margin[1]),
+                self.tot_scale))
 
-        for key in stepInfo.passengers:
-            val = stepInfo.passengers[key]
-            if(key not in self.passengers):     #Spawn new passenger
-                loc = self.getRandomPassengerLocation(val)
-                pas = SpriteEntity(self.passengerClothes, self.passengerSkin, loc, vround(mul((10,19), self.scale)), self.floorColors[self.floorAmount-1-val.target])
+            # Did not move this turn, open door
+            if (val == last_step_info.elevator_heights[key]):
+                elevator.back.rect.topleft = (-50, -50)
+
+        for key in step_info.passengers:
+            val = step_info.passengers[key]
+            if (key not in self.passengers):  # Spawn new passenger
+                loc = self.get_random_passenger_location(val)
+                pas = SpriteEntity(self.passenger_clothes, self.passenger_skin, loc, vround(
+                    mul((10, 19), self.scale)), self.floor_colors[self.floor_amount - 1 - val.target])
                 self.passengers[key] = pas
-                self.allSprites.add(pas.back)
-                self.allSprites.add(pas.front)
+                self.all_sprites.add(pas.back)
+                self.all_sprites.add(pas.front)
 
-            elif not val.equal(lastStepInfo.passengers[key]):  #Switched floor
-                loc = self.getRandomPassengerLocation(val)
-                self.passengers[key].updateScreenLoc(loc)
+            elif not val.equal(last_step_info.passengers[key]):  # Switched floor
+                loc = self.get_random_passenger_location(val)
+                self.passengers[key].update_screen_loc(loc)
 
-            else:                                              #Height update
+            else:  # Height update
                 p = self.passengers[key]
-                loc = (p.screenLoc[0], self.getPassengerYCoord(val))
-                p.updateScreenLoc(loc)
+                loc = (p.screen_loc[0], self.get_passenger_y_coord(val))
+                p.update_screen_loc(loc)
 
-        for key in lastStepInfo.passengers:
-            if key not in stepInfo.passengers:          #Passenger removed
+        for key in last_step_info.passengers:
+            if key not in step_info.passengers:  # Passenger removed
                 val = self.passengers[key]
-                self.allSprites.remove(val.front)
-                self.allSprites.remove(val.back)
+                self.all_sprites.remove(val.front)
+                self.all_sprites.remove(val.back)
 
-            
-    def renderText(self, txt, loc, alignement=0):
+    def render_text(self, txt, loc, alignment=0):
         font = pygame.font.Font(None, round(24 * self.scale))
-        text_surface = font.render(txt, True, (255,255,255))
+        text_surface = font.render(txt, True, (255, 255, 255))
         text_rect = text_surface.get_rect()
 
-        if(alignement == 0):
+        if alignment == 0:
             text_rect.center = loc
-        elif(alignement == 1):
+        elif alignment == 1:
             text_rect.right = loc[0]
             text_rect.centery = loc[1]
         else:
@@ -311,43 +366,75 @@ class GameDisplay():
             text_rect.centery = loc[1]
 
         self.screen.blit(text_surface, text_rect)
-    
 
-
-
-    def step(self, simulation, time):
-        building = simulation.building
-        lastStepInfo = self.stepInfo
-        self.stepInfo = SimulationStepInfo(building)
-        if(lastStepInfo != None):
-            self.applyDifferences(self.stepInfo, lastStepInfo)
-
+    def pause_button_pressed(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                return True
+        return False
 
-        #Sprites
-        self.setBackground(simulation.time)
-        self.allSprites.update()
-        self.allSprites.draw(self.screen)
+    def step(self, simulation, time):
+        self.paused = self.paused or self.pause_button_pressed()
 
-        #Text
+        if self.paused:
+            self.render_text("Game Paused", (16 *
+                                             self.scale, self.screen_tile_amount[1] *
+                                             self.tot_scale -
+                                             16 *
+                                             self.scale), -
+                             1)
+            pygame.display.flip()
+
+        while self.paused:
+            if self.pause_button_pressed():
+                self.paused = False
+                break
+
+        building = simulation.building
+        last_step_info = self.step_info
+        self.step_info = SimulationStepInfo(building)
+        if last_step_info is not None:
+            self.apply_differences(self.step_info, last_step_info)
+
+        # Sprites
+        self.set_background(simulation.time)
+        self.all_sprites.update()
+        self.all_sprites.draw(self.screen)
+
+        # Text
         for f in building.floors:
-            y_coor = ((self.floorAmount - 1 - f.number) + self.buildingMargin[1]) * self.totScale + 16 * self.scale
-            self.renderText(str(len(f.passengerList)), (-16 * self.scale + self.buildingMargin[0] * self.totScale, y_coor))
-                            
+            y_coor = ((self.floor_amount - 1 - f.number) +
+                      self.building_margin[1]) * self.tot_scale + 16 * self.scale
+            self.render_text(str(len(f.passenger_list)), (-16 * self.scale +
+                            self.building_margin[0] * self.tot_scale, y_coor))
+
         for e in building.elevators:
-            self.renderText(str(len(e.passengerList)), ((self.getShaftLocation(e.elevatorIndex) + self.buildingMargin[0]) * self.totScale + 16 * self.scale, 
-                                                        self.screenTileAmount[1] * self.totScale - 16*self.scale))
-        
+            self.render_text(str(len(e.passenger_list)), ((self.get_shaft_location(e.elevator_index) +
+                                                          self.building_margin[0]) *
+                                                         self.tot_scale +
+                                                         16 *
+                                                         self.scale, self.screen_tile_amount[1] *
+                                                         self.tot_scale -
+                                                         16 *
+                                                         self.scale))
+
         # Time display
-        self.renderText(f"{format_time(simulation.time)}", (self.screenTileAmount[0] * self.totScale - 16 * self.scale, 16 * self.scale), 1)
-        
+        self.render_text(
+            f"{format_time(simulation.time)}",
+            (self.screen_tile_amount[0] *
+             self.tot_scale -
+             16 *
+             self.scale,
+             16 *
+             self.scale),
+            1)
+
         # Name display
-        self.renderText(building.distribution.distributionName, (16 * self.scale, 16 * self.scale), -1)
-        
+        self.render_text(building.distribution.distribution_name,
+                        (16 * self.scale, 16 * self.scale), -1)
+
         # Update the display
         pygame.display.flip()
-        
-

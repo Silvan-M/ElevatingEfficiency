@@ -1,9 +1,10 @@
-from policies.policy import Policy, Action
+from policies.policy import Action
+import policies
 
 
-class PWDPPolicy(Policy):
+class PWDPPolicyOptimized(policies.Policy):
     """
-    PWDP Policy (Parameterized Weighted Decision Policy)
+    PWDP Policy Optimized (Parameterized Weighted Decision Policy)
     Policy which evaluates each floor by giving it a score using the following parameters:
     - elevator_button_weight:         Award elevator button pressed on floor i
     - elevator_button_time_weight:    Award elevator buttons which were pressed a long time ago
@@ -28,27 +29,28 @@ class PWDPPolicy(Policy):
     Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.
     """
 
-    def __init__(
-            self,
-            elevator_button_weight=1,
-            elevator_button_time_weight=1,
-            floor_button_weight=1,
-            floor_button_time_weight=1,
-            competitor_weight=1,
-            distance_weight=1,
-            distance_exponent=1):
+    def __init__(self, loadPath='paramOptimizer/save_params.txt'):
+        with open(loadPath, "r") as file:
+            lines = file.readlines()
+            if lines:
+                l = lines[-1].strip().split(',')
+
+                self.elevator_button_weight = (float)(l[1])
+                self.elevator_button_time_weight = (float)(l[2])
+                self.floor_button_weight = (float)(l[3])
+                self.floor_button_time_weight = (float)(l[4])
+                self.competitor_weight = (float)(l[5])
+                self.distance_weight = (float)(l[6])
+            else:
+                print("File is empty.")
+
         self.prev_action = Action.WAIT
-        self.elevator_button_weight = elevator_button_weight
-        self.elevator_button_time_weight = elevator_button_time_weight
-        self.floor_button_weight = floor_button_weight
-        self.floor_button_time_weight = floor_button_time_weight
-        self.competitor_weight = competitor_weight
-        self.distance_weight = distance_weight
-        self.distance_exponent = distance_exponent
+
+        self.distance_exponent = 1
         self.elevatorButtonLastPressed = None
 
     def name(self) -> str:
-        return "PWDP Policy"
+        return "PWDP Policy Optimized"
 
     def _decide(
             self,

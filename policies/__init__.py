@@ -10,3 +10,4 @@ from .look_policy import LOOKPolicy
 from .sstf_policy import SSTFPolicy
 from .pwdp_policy import PWDPPolicy
 from .pwdp_policy_Enhanced import PWDPPolicyEnhanced
+from .pwdp_policy_optimized import PWDPPolicyOptimized

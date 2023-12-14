@@ -6,132 +6,158 @@ from itertools import groupby
 from operator import attrgetter
 from enum import Enum
 
+
 class Objective(Enum):
-    AWT = "average waiting time" # average waiting time
+    AWT = "average waiting time"  # average waiting time
     AWTSD = "standard deviation of waiting time" # average waiting time's standard deviation
-    ATTD = "average time to destination" # average time to destination
-    ACE = "average crowededness" # average crowdedness in elevator
-    AMP = "amount of people" # amount of people spawned
+    ATTD = "average time to destination"  # average time to destination
+    ACE = "average crowededness"  # average crowdedness in elevator
+    AMP = "amount of people"  # amount of people spawned
+
 
 class SimulationStatistics():
-    
+
     def __init__(self, simulation):
-        simulation.onSimulationStarted.add_listener(self.onSimulationStarted)
-        simulation.onStepEnd.add_listener(self.onStepEnd)
-        self.finishedTasks = {}
+        simulation.on_simulation_started.add_listener(
+            self.on_simulation_started)
+        simulation.on_step_end.add_listener(self.on_step_end)
+        self.finished_tasks = {}
         self.crowdedness = []
 
-    def onSimulationStarted(self, simulation, startTime, stepAmount):
+    def on_simulation_started(self, simulation, start_time, step_amount):
         building = simulation.building
-        simulation.onSimulationFinished.add_listener(self.onSimulationFinished)
-        building.onPassengerCreated.add_listener(self.onPassengerCreated)
+        simulation.on_simulation_finished.add_listener(
+            self.on_simulation_finished)
+        building.on_passenger_created.add_listener(self.on_passenger_created)
         for e in building.elevators:
-            e.onPassengerEntered.add_listener(self.onPassengerEntered)
-            e.onPassengerExited.add_listener(self.onPassengerExited)
+            e.on_passenger_entered.add_listener(self.on_passenger_entered)
+            e.on_passenger_exited.add_listener(self.on_passenger_exited)
 
-    def onStepEnd(self, simulation, time):
+    def on_step_end(self, simulation, time):
         building = simulation.building
-        count = sum(len(e.passengerList) for e in building.elevators)
+        count = sum(len(e.passenger_list) for e in building.elevators)
         self.crowdedness.append(count / len(building.elevators))
 
-    def onSimulationFinished(self, simulation):
+    def on_simulation_finished(self, simulation):
         time = simulation.time
         # Augment data for those who didn't finish in time
-        for t in self.finishedTasks:
-            val = self.finishedTasks[t]
-            if val.waitingTime < 0:
-                val.waitingTime = time - val.startTime
-            if val.totalTime < 0:         
-                val.totalTime = time - val.startTime
+        for t in self.finished_tasks:
+            val = self.finished_tasks[t]
+            if val.waiting_time < 0:
+                val.waiting_time = time - val.start_time
+            if val.total_time < 0:
+                val.total_time = time - val.start_time
 
-        self.writeToFile("results.txt")
+        self.write_to_file("results.txt")
 
-    def onPassengerCreated(self, passenger, time):
-        self.finishedTasks[passenger.id] = FinishInfo(passenger.id, passenger.startLevel, passenger.endLevel, passenger.startTime)
+    def on_passenger_created(self, passenger, time):
+        self.finished_tasks[passenger.id] = FinishInfo(
+            passenger.id, passenger.start_level, passenger.end_level, passenger.start_time)
 
-    def onPassengerEntered(self, passenger, time):
-        self.finishedTasks[passenger.id].waitingTime = time - passenger.startTime
-        
+    def on_passenger_entered(self, passenger, time):
+        self.finished_tasks[passenger.id].waiting_time = time - \
+            passenger.start_time
 
-    def onPassengerExited(self, passenger, time):
-        self.finishedTasks[passenger.id].totalTime = time - passenger.startTime
-    
-    def writeToFile(self, filename):
+    def on_passenger_exited(self, passenger, time):
+        self.finished_tasks[passenger.id].total_time = time - passenger.start_time
+
+    def write_to_file(self, filename):
         with open(filename, 'w', newline='') as csvfile:
-            fieldnames = ['PassengerID', 'Start', 'Target', 'StartTime', 'WaitingTime', 'TotalTime']
+            fieldnames = [
+                'PassengerID',
+                'Start',
+                'Target',
+                'StartTime',
+                'WaitingTime',
+                'TotalTime']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-            for task in self.finishedTasks.values():
+            for task in self.finished_tasks.values():
                 writer.writerow({'PassengerID': task.id,
-                                    'Start': task.start,
-                                    'Target': task.target,
-                                    'StartTime': task.startTime,
-                                    'WaitingTime': task.waitingTime,
-                                    'TotalTime': task.totalTime})
+                                 'Start': task.start,
+                                 'Target': task.target,
+                                 'StartTime': task.start_time,
+                                 'WaitingTime': task.waiting_time,
+                                 'TotalTime': task.total_time})
 
-    def calculateAverageWaitingTime(self, fromTime=-1, toTime=sys.maxsize):
-        waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
+    def calculate_average_waiting_time(self, from_time=-1, to_time=sys.maxsize):
+        waiting_times = [task.waiting_time for task in self.finished_tasks.values(
+        ) if task.start_time >= from_time and task.start_time <= to_time]
         return statistics.mean(waiting_times) if waiting_times else None
 
-    def calculateStdDevWaitingTime(self, fromTime=-1, toTime=sys.maxsize):
-        waiting_times = [task.waitingTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
-        return statistics.stdev(waiting_times) if len(waiting_times) > 1 else None
-    
-    def calculateAmountPeopleSpawned(self, fromTime=-1, toTime=sys.maxsize):
-        return len([task for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime])
-    
-    def calculateAverageTimeToDestination(self, fromTime=-1, toTime=sys.maxsize):
-        total_times = [task.totalTime for task in self.finishedTasks.values() if task.startTime >= fromTime and task.startTime <= toTime]
+    def calculate_std_dev_waiting_time(self, from_time=-1, to_time=sys.maxsize):
+        waiting_times = [task.waiting_time for task in self.finished_tasks.values(
+        ) if task.start_time >= from_time and task.start_time <= to_time]
+        return statistics.stdev(waiting_times) if len(
+            waiting_times) > 1 else None
+
+    def calculate_amount_people_spawned(self, from_time=-1, to_time=sys.maxsize):
+        return len([task for task in self.finished_tasks.values()
+                   if task.start_time >= from_time and task.start_time <= to_time])
+
+    def calculate_average_time_to_destination(
+            self, from_time=-1, to_time=sys.maxsize):
+        total_times = [task.total_time for task in self.finished_tasks.values(
+        ) if task.start_time >= from_time and task.start_time <= to_time]
         return statistics.mean(total_times) if total_times else None
-    
-    def calculateAverageCrowdedness(self, fromTime=-1, toTime=sys.maxsize):
-        return statistics.mean(self.crowdedness[fromTime:toTime]) if self.crowdedness else None
-    
-    def calculateAverageCrowdednessPerFloor(self):
-        sorted_finish_info = sorted(self.finishedTasks.values(), key=attrgetter('start'))
 
-        grouped_finish_info = {key: list(group) for key, group in groupby(sorted_finish_info, key=attrgetter('start'))}
+    def calculate_average_crowdedness(self, from_time=-1, to_time=sys.maxsize):
+        return statistics.mean(
+            self.crowdedness[from_time:to_time]) if self.crowdedness else None
 
-        mean_values = {key: statistics.mean(info.totalTime for info in group) for key, group in grouped_finish_info.items()}
-        
+    def calculate_average_crowdedness_per_floor(self):
+        sorted_finish_info = sorted(
+            self.finished_tasks.values(),
+            key=attrgetter('start'))
+
+        grouped_finish_info = {
+            key: list(group) for key,
+            group in groupby(
+                sorted_finish_info,
+                key=attrgetter('start'))}
+
+        mean_values = {
+            key: statistics.mean(
+                info.total_time for info in group) for key,
+            group in grouped_finish_info.items()}
+
         return mean_values
 
-    
-    def getObjective(self,obj : Objective, timestep=-1, timestepAmount=24):
-        maxTime = max([task.startTime for task in self.finishedTasks.values()])
-        timestep = maxTime if timestep == -1 else timestep
+    def get_objective(self, obj: Objective, timestep=-1, timestep_amount=24):
+        max_time = max(
+            [task.start_time for task in self.finished_tasks.values()])
+        timestep = max_time if timestep == -1 else timestep
         result = None
 
         if (obj == Objective.AWT):
-            result = [self.calculateAverageWaitingTime(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+            result = [
+                self.calculate_average_waiting_time(i * timestep, (i + 1) * timestep - 1) for i in range((max_time + timestep -1) // timestep)]
         elif (obj == Objective.AWTSD):
-            result = [self.calculateStdDevWaitingTime(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+            result = [
+                self.calculate_std_dev_waiting_time(i * timestep, (i + 1) * timestep - 1) for i in range((max_time + timestep - 1) // timestep)]
         elif (obj == Objective.ACE):
-            result = [self.calculateAverageCrowdedness(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+            result = [
+                self.calculate_average_crowdedness(i * timestep, (i + 1) * timestep - 1) for i in range((max_time + timestep - 1) // timestep)]
         elif (obj == Objective.AMP):
-            result = [self.calculateAmountPeopleSpawned(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
+            result = [
+                self.calculate_amount_people_spawned(i * timestep, (i + 1) * timestep - 1) for i in range((max_time + timestep - 1) // timestep)]
         elif (obj == Objective.ATTD):
-            result = [self.calculateAverageTimeToDestination(i*timestep, (i+1)*timestep-1) for i in range((maxTime+timestep-1)//timestep)]
-        
-        while (len(result) < timestepAmount):
+            result = [
+                self.calculate_average_time_to_destination(i * timestep, (i + 1) * timestep - 1) for i in range((max_time + timestep - 1) // timestep)]
+
+        while (len(result) < timestep_amount):
             result.append(None)
-        return result if timestep != maxTime else result[0]
-    
-    def getObjectives(self,objs : [Objective], timestep=-1):
-        return [self.getObjective(obj, timestep) for obj in objs]
+        return result if timestep != max_time else result[0]
+
+    def get_objectives(self, objs: [Objective], timestep=-1):
+        return [self.get_objective(obj, timestep) for obj in objs]
+
 
 class FinishInfo():
-    def __init__(self, id, start, target, startTime):
+    def __init__(self, id, start, target, start_time):
         self.id = id
         self.start = start
         self.target = target
-        self.startTime = startTime
-        self.waitingTime = -1
-        self.totalTime = -1
-
-
-
-
-        
-
-    
+        self.start_time = start_time
+        self.waiting_time = -1
+        self.total_time = -1

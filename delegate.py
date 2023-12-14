@@ -1,11 +1,17 @@
 from debug import Debug as DB
 
+
 class Delegate:
     def __init__(self):
         self.listeners = []
-    def __str__(self) -> str:
-        return DB.str("Class","Delegate",kwargs=[self.listeners],desc=["listeners"])
 
+    def __str__(self) -> str:
+        return DB.str(
+            "Class",
+            "Delegate",
+            kwargs=[
+                self.listeners],
+            desc=["listeners"])
 
     def add_listener(self, listener):
         self.listeners.append(listener)
