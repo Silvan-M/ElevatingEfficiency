@@ -2,48 +2,50 @@ from enum import Enum
 
 
 class Parameter(Enum):
-    FLOORAMOUNT = 1
-    SPWDSTRTYPE = 2
-    TARDSTRTYPE = 3
+    FLOOR_AMOUNT = 1
+    SPWD_STR_TYPE = 2
+    TAR_DSTR_TYPE = 3
 
     def case(self):
         return 0
-    
+
     def name(self):
-        if (self.value==1):
+        if (self.value == 1):
             return "amount of floors"
         elif (self.value == 5):
             return "spawn every "
 
+
 class ElevatorParameter(Enum):
-    MINFLOOR = 0
-    MAXFLOOR = 1
+    MIN_FLOOR = 0
+    MAX_FLOOR = 1
 
     CAPACITY = 3
+
     def case(self):
         return 1
 
     def name(self):
-        if (self.value==0):
+        if (self.value == 0):
             return "min floor"
         elif (self.value == 1):
             return "max floor "
         elif (self.value == 3):
             return "capacity"
 
+
 class PolicyParameter(Enum):
-    POLICY= -1 
-    ELEVBUTWEIGHT = 1
-    ELEVBUTTIMEWEIGHT = 2
-    FLOORBUTWEIGHT = 3
-    FLOORBUTTIMEWEIGHT = 4
-    COMPWEIGHT = 5
-    DISTWEIGHT =  6
-    DISTEXPONENT = 7
-   
-   
+    POLICY = -1
+    ELEV_BUT_WEIGHT = 1
+    ELEV_BUT_TIME_WEIGHT = 2
+    FLOOR_BUT_WEIGHT = 3
+    FLOOR_BUT_TIME_WEIGHT = 4
+    COMP_WEIGHT = 5
+    DIST_WEIGHT = 6
+    DIST_EXPONENT = 7
+
     def name(self):
-        if (self.value==1):
+        if (self.value == 1):
             return "elevator button weight"
         elif (self.value == 2):
             return "elevator button time weight"
@@ -58,8 +60,8 @@ class PolicyParameter(Enum):
         elif (self.value == 7):
             return "distance exponent"
 
-    def shortName(self):
-        if (self.value==1):
+    def short_name(self):
+        if (self.value == 1):
             return "ebw"
         elif (self.value == 2):
             return "ebtw"
@@ -73,21 +75,15 @@ class PolicyParameter(Enum):
             return "dw"
         elif (self.value == 7):
             return "dexp"
-    
+
     def case(self):
-        return 2 
+        return 2
+
 
 class TimeDistrParameter(Enum):
-    MAXPASSENGER = 1
-    TIMETYPE = 2
-    ADDPOINT = 3
+    MAX_PASSENGER = 1
+    TIME_TYPE = 2
+    ADD_POINT = 3
+
     def case(self):
         return 3
-
-
-    
-
-    
-
-
-

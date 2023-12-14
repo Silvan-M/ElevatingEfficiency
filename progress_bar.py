@@ -1,6 +1,7 @@
 import sys
 import time
 
+
 class ProgressBar:
     def __init__(self, total, prefix="", size=60, out=sys.stdout):
         self.total = total
@@ -17,9 +18,10 @@ class ProgressBar:
     def update(self, start=False):
         if not start:
             self.current_count += 1
-        
+
         x = int(self.size * self.current_count / self.total)
-        remaining = ((time.time() - self.start_time) / max(1, self.current_count)) * (self.total - self.current_count)
+        remaining = ((time.time() - self.start_time) / max(1,
+                                                           self.current_count)) * (self.total - self.current_count)
 
         mins, sec = divmod(remaining, 60)
         time_str = f"{int(mins):02}:{sec:05.2f}"
@@ -27,9 +29,8 @@ class ProgressBar:
 
         print(
             f"{self.prefix}[{'█' * x}{'.' * (self.size - x)}] {self.current_count}/{self.total} Est wait {time_str}",
-            end=end, file=self.out, flush=True
-        )
+            end=end,
+            file=self.out,
+            flush=True)
 
         return self.current_count
-
-

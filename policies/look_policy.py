@@ -1,75 +1,98 @@
 from policies.policy import Policy, Action
 
+
 class LOOKPolicy(Policy):
     """
     LOOK Policy
     Move up and down, stop at every floor if someone is waiting
     Change direction if no requests in current direction
     """
+
     def __init__(self):
-        self.prevAction = Action.Wait
-        self.goingUp = True
+        self.prev_action = Action.WAIT
+        self.going_up = True
 
     def name(self) -> str:
-        return  "LOOK Policy"
+        return "LOOK Policy"
 
-    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
-        action = Action.Wait
+    def _decide(
+            self,
+            current_floor,
+            floor_buttons,
+            elevator_buttons,
+            elevators,
+            elevator,
+            time):
+        action = Action.WAIT
 
-        hasRequestsAbove = self._hasRequestsAbove(currentFloor, floorButtons, elevatorButtons, elevator)
-        hasRequestsBelow = self._hasRequestsBelow(currentFloor, floorButtons, elevatorButtons, elevator)
-        
-        if (not self._hasRequests(floorButtons, elevators, elevatorButtons)):
+        has_requests_above = self._has_requests_above(
+            current_floor, floor_buttons, elevator_buttons, elevator)
+        has_requests_below = self._has_requests_below(
+            current_floor, floor_buttons, elevator_buttons, elevator)
+
+        if (not self._has_requests(floor_buttons, elevators, elevator_buttons)):
             # No requests, wait
-            action = Action.WaitOpen
-        elif (self.goingUp):
+            action = Action.WAIT_OPEN
+        elif (self.going_up):
             # Going up
-            if ((not hasRequestsAbove) and hasRequestsBelow or currentFloor == elevator.maxFloor):
+            if ((not has_requests_above)
+                    and has_requests_below or current_floor == elevator.max_floor):
                 # Change direction, since no requests above
-                self.goingUp = False
-                action = Action.WaitDown
-            elif (self.prevAction == Action.WaitUp):
+                self.going_up = False
+                action = Action.WAIT_DOWN
+            elif (self.prev_action == Action.WAIT_UP):
                 # Waited on floor, now move up
-                action = Action.MoveUp
-            elif (floorButtons[currentFloor].moveUp or elevatorButtons[currentFloor]):
+                action = Action.MOVE_UP
+            elif (floor_buttons[current_floor].move_up or elevator_buttons[current_floor]):
                 # Wait on floor, since someone wants to go up
-                action = Action.WaitUp
+                action = Action.WAIT_UP
             else:
                 # No one wants to go up, move up
-                action = Action.MoveUp
+                action = Action.MOVE_UP
         else:
             # Going down
-            if ((not hasRequestsBelow) and hasRequestsAbove or currentFloor == elevator.minFloor):
+            if ((not has_requests_below)
+                    and has_requests_above or current_floor == elevator.min_floor):
                 # Change direction, since no requests below
-                self.goingUp = True
-                action = Action.WaitUp
-            elif (self.prevAction == Action.WaitDown):
+                self.going_up = True
+                action = Action.WAIT_UP
+            elif (self.prev_action == Action.WAIT_DOWN):
                 # Waited on floor, now move down
-                action = Action.MoveDown
-            elif (floorButtons[currentFloor].moveDown or elevatorButtons[currentFloor]):
+                action = Action.MOVE_DOWN
+            elif (floor_buttons[current_floor].move_down or elevator_buttons[current_floor]):
                 # Wait on floor, since someone wants to go down
-                action = Action.WaitDown
+                action = Action.WAIT_DOWN
             else:
                 # No one wants to go down, move down
-                action = Action.MoveDown
+                action = Action.MOVE_DOWN
 
-        self.prevAction = action
+        self.prev_action = action
         return action
-    
-    def _hasRequestsAbove(self, currentFloor, floorButtons, elevatorButtons, elevator):
+
+    def _has_requests_above(
+            self,
+            current_floor,
+            floor_buttons,
+            elevator_buttons,
+            elevator):
         """
         Returns true if there are requests above the current floor
         """
-        for i in range(currentFloor+1, elevator.maxFloor+1):
-            if (floorButtons[i].moveUp or floorButtons[i].moveDown or elevatorButtons[i]):
+        for i in range(current_floor + 1, elevator.max_floor + 1):
+            if (floor_buttons[i].move_up or floor_buttons[i].move_down or elevator_buttons[i]):
                 return True
         return False
-    
-    def _hasRequestsBelow(self, currentFloor, floorButtons, elevatorButtons, elevator):
+
+    def _has_requests_below(
+            self,
+            current_floor,
+            floor_buttons,
+            elevator_buttons,
+            elevator):
         """
         Returns true if there are requests below the current floor
         """
-        for i in range(elevator.minFloor, currentFloor):
-            if (floorButtons[i].moveUp or floorButtons[i].moveDown or elevatorButtons[i]):
+        for i in range(elevator.min_floor, current_floor):
+            if (floor_buttons[i].move_up or floor_buttons[i].move_down or elevator_buttons[i]):
                 return True
         return False

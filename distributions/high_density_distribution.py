@@ -1,5 +1,6 @@
 from distributions.distribution import TimeSpaceDistribution, TimeDistribution, EqualFloorDistribution, PeakFloorDistribution
 
+
 class HighDensityDistribution(TimeSpaceDistribution):
     """
     High Density Distribution Scenario
@@ -7,29 +8,38 @@ class HighDensityDistribution(TimeSpaceDistribution):
     Equal start and target distribution for the whole day.
     High amount of passengers
     """
+
     def __init__(self):
-        timeType = "h"
-        maxTimeTyped = 24
+        time_type = "h"
+        max_time_typed = 24
 
         # Maximum amount of passengers that can spawn in one timestep
-        maxPassengers = 0.21
+        max_passengers = 0.21
 
         # Amount of floors
-        floorAmount = 10
+        floor_amount = 10
 
         # Amount of elevators
-        self.amountOfElevators = 2
+        self.amount_of_elevators = 2
 
         # Capacity of elevators
-        self.elevatorCapacity = 15
+        self.elevator_capacity = 15
 
-        # Set the amount of passengers that spawn on each floor (time [h], spawn distribution, target distribution)
+        # Set the amount of passengers that spawn on each floor (time [h],
+        # spawn distribution, target distribution)
         data = [
-            (0, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
-            (24, EqualFloorDistribution(floorAmount), EqualFloorDistribution(floorAmount)),
+            (0, EqualFloorDistribution(floor_amount), EqualFloorDistribution(floor_amount)),
+            (24, EqualFloorDistribution(floor_amount), EqualFloorDistribution(floor_amount)),
         ]
 
-        passengerDistribution = TimeDistribution(timeType, maxTimeTyped, [(0, 1), (24, 1)])
+        passenger_distribution = TimeDistribution(
+            time_type, max_time_typed, [(0, 1), (24, 1)])
 
         # Initialize the TimeSpaceDistribution
-        super().__init__(maxPassengers, timeType, maxTimeTyped, data, passengerDistribution, "High Density Distribution")
+        super().__init__(
+            max_passengers,
+            time_type,
+            max_time_typed,
+            data,
+            passenger_distribution,
+            "High Density Distribution")

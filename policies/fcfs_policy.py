@@ -2,208 +2,242 @@ from policies.policy import Policy, Action
 from debug import Debug as DB
 from color import Colors as C
 
+
 class FCFSPolicy(Policy):
     """
     First Come First Serve Policy
     Elevator will (directly) go to the first floor that was requested,
     then then it will go to the closest destination in the same direction and carries out until done.
     """
+
     def __init__(self):
-        self.prevAction = Action.Wait
-        self.futureTargets = [] # [[target, direction], ...]]
+        self.prev_action = Action.WAIT
+        self.future_targets = []  # [[target, direction], ...]]
 
     def name(self) -> str:
-        return  "FCFS Policy"
+        return "FCFS Policy"
 
-    def _decide(self, currentFloor, floorButtons, elevatorButtons, elevators, elevator, time):
+    def _decide(
+            self,
+            current_floor,
+            floor_buttons,
+            elevator_buttons,
+            elevators,
+            elevator,
+            time):
         """
         Determine which action the elevator should take
         """
-        action = Action.Wait
+        action = Action.WAIT
 
-        if (self.prevAction in (Action.WaitUp, Action.WaitDown, Action.WaitOpen, Action.Wait)):
+        if (self.prev_action in (Action.WAIT_UP,
+                                Action.WAIT_DOWN, Action.WAIT_OPEN, Action.WAIT)):
             # Get new decision if elevator leaves a target or is idle
-            target, targetDirection = -1, 0
-            
-            # If has requests get next target
-            if (self._hasRequests(floorButtons, elevators, elevatorButtons)):
-                target, targetDirection = self._setNextTarget(floorButtons, elevatorButtons, elevator, currentFloor)
-                
-            elevator.target = target
-            elevator.targetDirection = targetDirection
+            target, target_direction = -1, 0
 
-            if (target == currentFloor):
+            # If has requests get next target
+            if (self._has_requests(floor_buttons, elevators, elevator_buttons)):
+                target, target_direction = self._set_next_target(
+                    floor_buttons, elevator_buttons, elevator, current_floor)
+
+            elevator.target = target
+            elevator.target_direction = target_direction
+
+            if (target == current_floor):
                 # New target is current floor, open doors
-                action = Action.WaitOpen
+                action = Action.WAIT_OPEN
             elif (target != -1):
                 # New target in different floor, move
-                action = Action.MoveUp if (target > currentFloor) else Action.MoveDown
+                action = Action.MOVE_UP if (
+                    target > current_floor) else Action.MOVE_DOWN
             else:
                 # No new target or target is current floor, wait
-                action = Action.WaitOpen
+                action = Action.WAIT_OPEN
 
-            if ((self.prevAction == Action.WaitDown and action == Action.MoveUp) or 
-                (self.prevAction == Action.WaitUp and action == Action.MoveDown)):
-                action = Action.Wait
-        elif (elevator.target == currentFloor or elevator.target == -1):
-            # Was Action.MoveUp or Action.MoveDown, elevator has reached target or is idle, wait up or down
-            if (elevator.targetDirection == 1):
+            if ((self.prev_action == Action.WAIT_DOWN and action == Action.MOVE_UP) or (
+                    self.prev_action == Action.WAIT_UP and action == Action.MOVE_DOWN)):
+                action = Action.WAIT
+        elif (elevator.target == current_floor or elevator.target == -1):
+            # Was Action.MOVE_UP or Action.MOVE_DOWN, elevator has reached target
+            # or is idle, wait up or down
+            if (elevator.target_direction == 1):
                 # Arrived at target, advertise up
-                action = Action.WaitUp
-            elif (elevator.targetDirection == -1):
+                action = Action.WAIT_UP
+            elif (elevator.target_direction == -1):
                 # Arrived at target, advertise down
-                action = Action.WaitDown
+                action = Action.WAIT_DOWN
             else:
                 # We arrived at target, but have no further targets, wait
-                action = Action.WaitOpen
-        elif (self.prevAction == Action.MoveUp):
+                action = Action.WAIT_OPEN
+        elif (self.prev_action == Action.MOVE_UP):
             # Not reached target yet, continue moving up
-            action = Action.MoveUp
-        elif (self.prevAction == Action.MoveDown):
+            action = Action.MOVE_UP
+        elif (self.prev_action == Action.MOVE_DOWN):
             # Not reached target yet, continue moving down
-            action = Action.MoveDown
+            action = Action.MOVE_DOWN
 
         # Safeguarding - Change direction if error occurred
-        if ((action == Action.MoveDown or action == Action.WaitDown) and currentFloor == elevator.minFloor):
-            if DB.enableWarnings:
-                (C.warning(f"WARNING: Elevator tried {action} from min floor {currentFloor}, Target: {elevator.target}"))
-            action = Action.MoveUp
-        elif ((action == Action.MoveUp or action == Action.WaitUp) and currentFloor == elevator.maxFloor):
-            if DB.enableWarnings:
-                (C.warning(f"WARNING: Elevator tried {action} from max floor {currentFloor}, Target: {elevator.target}"))
-            action = Action.MoveDown
-        
-        # Safeguarding - Print warning if elevator did not follow advertised direction
-        if ((self.prevAction == Action.WaitDown and action == Action.MoveUp) or 
-            (self.prevAction == Action.WaitUp and action == Action.MoveDown)):
-            if DB.enableWarnings and elevator.elevatorIndex == 1:
-                print(C.warning(f"WARNING: Elevator did not follow advertised direction, {self.prevAction} -> {action}, time: {elevator.time}"))
+        if ((action == Action.MOVE_DOWN or action == Action.WAIT_DOWN)
+                and current_floor == elevator.min_floor):
+            if DB.enable_warnings:
+                (C.warning(
+                    f"WARNING: Elevator tried {action} from min floor {current_floor}, Target: {elevator.target}"))
+            action = Action.MOVE_UP
+        elif ((action == Action.MOVE_UP or action == Action.WAIT_UP) and current_floor == elevator.max_floor):
+            if DB.enable_warnings:
+                (C.warning(
+                    f"WARNING: Elevator tried {action} from max floor {current_floor}, Target: {elevator.target}"))
+            action = Action.MOVE_DOWN
 
-        self.prevAction = action
+        # Safeguarding - Print warning if elevator did not follow advertised
+        # direction
+        if ((self.prev_action == Action.WAIT_DOWN and action == Action.MOVE_UP) or (
+                self.prev_action == Action.WAIT_UP and action == Action.MOVE_DOWN)):
+            if DB.enable_warnings and elevator.elevator_index == 1:
+                print(C.warning(
+                    f"WARNING: Elevator did not follow advertised direction, {self.prev_action} -> {action}, time: {elevator.time}"))
+
+        self.prev_action = action
         return action
-    
-    def _setNextTarget(self, floorButtons, elevatorButtons, elevator, currentFloor):
+
+    def _set_next_target(
+            self,
+            floor_buttons,
+            elevator_buttons,
+            elevator,
+            current_floor):
         """
-        Set next target for elevator, returns `[target, targetDirection]`
+        Set next target for elevator, returns `[target, target_direction]`
         """
         target = -1
-        targetDirection = 0
+        target_direction = 0
 
-        # Process newly pressed elevatorButtons
-        self._updateFutureTargets(elevatorButtons, elevator, currentFloor)
-        
+        # Process newly pressed elevator_buttons
+        self._update_future_targets(elevator_buttons, elevator, current_floor)
+
         # Check if there are still future targets (of passengers in elevator)
-        while ((target == -1 or target == currentFloor) and len(self.futureTargets) > 0):
-                target, targetDirection = self.futureTargets[0]
-                self.futureTargets = self.futureTargets[1:]
+        while ((target == -1 or target == current_floor)
+               and len(self.future_targets) > 0):
+            target, target_direction = self.future_targets[0]
+            self.future_targets = self.future_targets[1:]
 
-        if (target != -1 and target != currentFloor):
-            # Found target, If no future targets left, advertise no direction at arrival
-            if (len(self.futureTargets) == 0):
-                targetDirection = 0
-        elif (target == -1 or target == currentFloor):
+        if (target != -1 and target != current_floor):
+            # Found target, If no future targets left, advertise no direction
+            # at arrival
+            if (len(self.future_targets) == 0):
+                target_direction = 0
+        elif (target == -1 or target == current_floor):
             # Did not find target, Check if there are passengers (outside of elevator) waiting
             # Find closest passenger in same direction
-            closestTarget = -1
-            closestTargetDirection = 0
-            closestDistance = float('inf')
-            for i, floor in enumerate(floorButtons):
-                if (abs(currentFloor - i) >= closestDistance):
+            closest_target = -1
+            closest_target_direction = 0
+            closest_distance = float('inf')
+            for i, floor in enumerate(floor_buttons):
+                if (abs(current_floor - i) >= closest_distance):
                     continue
-                elif (floor.moveUp and (targetDirection == 1 or targetDirection == 0)):
-                    closestTarget = i
-                    closestTargetDirection = 1
-                    closestDistance = i - currentFloor
-                elif (floor.moveDown and (targetDirection == -1 or targetDirection == 0)):
-                    closestTarget = i
-                    closestTargetDirection = -1
-                    closestDistance = currentFloor - i
-            target = closestTarget
-            targetDirection = closestTargetDirection
-        
+                elif (floor.move_up and (target_direction == 1 or target_direction == 0)):
+                    closest_target = i
+                    closest_target_direction = 1
+                    closest_distance = i - current_floor
+                elif (floor.move_down and (target_direction == -1 or target_direction == 0)):
+                    closest_target = i
+                    closest_target_direction = -1
+                    closest_distance = current_floor - i
+            target = closest_target
+            target_direction = closest_target_direction
+
         self.target = target
-        return target, targetDirection
-    
-    def _checkTarget(self, target):
+        return target, target_direction
+
+    def _check_target(self, target):
         """
-        Check if target is already in futureTargets
+        Check if target is already in future_targets
         """
-        for t, _ in self.futureTargets:
+        for t, _ in self.future_targets:
             if (t == target):
                 return True
         return False
-    
-    def _updateFutureTargets(self, elevatorButtons, elevator, currentFloor):
+
+    def _update_future_targets(self, elevator_buttons, elevator, current_floor):
         """
-        Determine new targets for elevator and update futureTargets accordingly
+        Determine new targets for elevator and update future_targets accordingly
         Returns amount of new targets
         """
-        newTargets = []
+        new_targets = []
         # Check if passengers with new target are in elevator
-        for i, button in enumerate(elevatorButtons):
-            if (button and not self._checkTarget(i)):
-                newTargets.append(i)
+        for i, button in enumerate(elevator_buttons):
+            if (button and not self._check_target(i)):
+                new_targets.append(i)
 
         # If no new targets, return
-        if (not newTargets):
+        if (not new_targets):
             return 0
-        
-        # Add new targets (due to FCFS as last priority) to futureTargets
-        newTargets.sort()
-        lastTarget = self.futureTargets[-1][0] if (len(self.futureTargets) > 0) else currentFloor
-        lastDirection = self.futureTargets[-1][1] if (len(self.futureTargets) > 0) else 1 # Prefer up if empty
 
-        # Split array into two parts (above and below lastTarget)
-        firstAbove = -1
-        for i in range(len(newTargets)):
-            if (newTargets[i] < lastTarget):
+        # Add new targets (due to FCFS as last priority) to future_targets
+        new_targets.sort()
+        last_target = self.future_targets[-1][0] if (
+            len(self.future_targets) > 0) else current_floor
+        # Prefer up if empty
+        last_direction = self.future_targets[-1][1] if (
+            len(self.future_targets) > 0) else 1
+
+        # Split array into two parts (above and below last_target)
+        first_above = -1
+        for i in range(len(new_targets)):
+            if (new_targets[i] < last_target):
                 continue
-            elif (newTargets[i] > lastTarget):
-                firstAbove = i
+            elif (new_targets[i] > last_target):
+                first_above = i
                 break
-        
-        belowTargets, aboveTargets = [], []
 
-        if (firstAbove == -1):  
-            # No targets above lastTarget, add all targets below
-            belowTargets = newTargets
+        below_targets, above_targets = [], []
+
+        if (first_above == -1):
+            # No targets above last_target, add all targets below
+            below_targets = new_targets
         else:
-            belowTargets = newTargets[:firstAbove]
-            aboveTargets = newTargets[firstAbove:]
+            below_targets = new_targets[:first_above]
+            above_targets = new_targets[first_above:]
 
-        # Sort belowTargets in descending order
-        belowTargets.reverse()
+        # Sort below_targets in descending order
+        below_targets.reverse()
 
-        # Create pairs of target and direction for futureTargets
-        belowTargetPairs = [[target, -1] for target in belowTargets]
-        aboveTargetPairs = [[target, 1] for target in aboveTargets]
+        # Create pairs of target and direction for future_targets
+        below_target_pairs = [[target, -1] for target in below_targets]
+        above_target_pairs = [[target, 1] for target in above_targets]
 
-        if (elevator.minFloor in belowTargets):
-            # If minFloor is in belowTargets, change direction of last belowTarget
-            belowTargetPairs[-1][1] = 1
-        elif (elevator.maxFloor in aboveTargets):
-            # If maxFloor is in aboveTargets, change direction of last aboveTarget
-            aboveTargetPairs[-1][1] = -1
+        if (elevator.min_floor in below_targets):
+            # If min_floor is in below_targets, change direction of last
+            # belowTarget
+            below_target_pairs[-1][1] = 1
+        elif (elevator.max_floor in above_targets):
+            # If max_floor is in above_targets, change direction of last
+            # aboveTarget
+            above_target_pairs[-1][1] = -1
 
-        if (lastDirection == 1):
-            # If last direction was up, add aboveTargets first
-            if (belowTargetPairs and aboveTargetPairs):
-                # If we have belowTargets and aboveTargets, change direction of last aboveTarget
-                aboveTargetPairs[-1][1] = -1
-            elif (belowTargetPairs and self.futureTargets):
-                # If we have belowTargets and no aboveTargets, change direction of last futureTarget (if exists)
-                self.futureTargets[-1][1] = -1
+        if (last_direction == 1):
+            # If last direction was up, add above_targets first
+            if (below_target_pairs and above_target_pairs):
+                # If we have below_targets and above_targets, change direction of
+                # last aboveTarget
+                above_target_pairs[-1][1] = -1
+            elif (below_target_pairs and self.future_targets):
+                # If we have below_targets and no above_targets, change direction
+                # of last futureTarget (if exists)
+                self.future_targets[-1][1] = -1
 
-            self.futureTargets += aboveTargetPairs + belowTargetPairs
+            self.future_targets += above_target_pairs + below_target_pairs
         else:
-            # If last direction was down, add belowTargets first
-            if (aboveTargetPairs and belowTargetPairs):
-                # If we have aboveTargets and belowTargets, change direction of last belowTarget
-                belowTargetPairs[-1][1] = 1
-            elif (aboveTargetPairs and self.futureTargets):
-                # If we have aboveTargets and no belowTargets, change direction of last futureTarget (if exists)
-                self.futureTargets[-1][1] = 1
+            # If last direction was down, add below_targets first
+            if (above_target_pairs and below_target_pairs):
+                # If we have above_targets and below_targets, change direction of
+                # last belowTarget
+                below_target_pairs[-1][1] = 1
+            elif (above_target_pairs and self.future_targets):
+                # If we have above_targets and no below_targets, change direction
+                # of last futureTarget (if exists)
+                self.future_targets[-1][1] = 1
 
-            self.futureTargets += belowTargetPairs + aboveTargetPairs
+            self.future_targets += below_target_pairs + above_target_pairs
 
-        return len(newTargets)
+        return len(new_targets)
