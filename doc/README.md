@@ -5,3 +5,5 @@ cd docs
 sphinx-apidoc -o . .. ../main.py
 make html
 ```
+
+And then simply push. The documentation will be automatically updated on GitHub Pages via the GitHub Action.
