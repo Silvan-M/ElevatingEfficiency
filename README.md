@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ## Usage
 To run the simulation first set the parameters in the main.py file. 
 Important parameters are:
-- `distribution`: The distribution of the passengers arrival times. Here you can choose one the scenarios Shopping Mall, Residential Building and Rooftop Bar.
+- `distribution`: The distribution of the passengers arrival times. Here you can choose one the scenarios Shopping Mall, Residential Building or Rooftop Bar.
 - `policy`: The policy that is used to control the elevators. Here you can choose from one of the 4 letter policies e.g. `FCFSPolicy`.
 - `policy_arguments`: The arguments that are passed to the policy, only use for `PWDPPolicy`, leave blank for others.
 - `hours, minutes, seconds`: The duration of the simulation.
