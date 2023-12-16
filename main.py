@@ -32,11 +32,11 @@ is_custom_scenario = False
 distribution = distributions.ResidentialBuildingDistribution()
 
 # Choose a policy for the elevators (Do not initialize the policy, only pass the class)
-policy = policies.PWDPPolicyOptimized
+policy = policies.PWDPPolicy
 policy_arguments = []
 
 # Start simulation at a specific time
-hours, minutes, seconds = 21, 0, 0
+hours, minutes, seconds = 12, 0, 0
 
 
 # CUSTOM SCENARIO SETTINGS
