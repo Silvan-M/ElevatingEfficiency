@@ -20,7 +20,7 @@ class PWDPPolicyOptimized(policies.Policy):
         s5 = sum(elevator_distances) * competitor_weight
         s6 = distance_weight^(distance_exponent) * abs(current_floor - i)
 
-    Then the i-th floor advertising \[Up/Down\] will have score:
+    Then the i-th floor advertising [Up/Down] will have score:
 
     .. code-block:: python
         
