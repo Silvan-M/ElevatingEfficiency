@@ -23,7 +23,7 @@ average_of = 10
 simulation_length = 60 * 60 * 6
 
 # Enable gradient descent
-gradient_descent = True
+gradient_descent = False
 
 # Enable plotting
 plot = False
