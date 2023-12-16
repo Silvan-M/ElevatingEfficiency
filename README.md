@@ -29,4 +29,6 @@ Then run the following command in the terminal from the project directory (depen
 To plot simulations, call the corresponding functions in the `simulation_plotter.py` file.
 
 Then run the following command in the terminal from the project directory (depending on the python installation, you might need to use python3 instead of python):
-```python simulation_plotter.py```
+```bash
+python simulation_plotter.py
+```
