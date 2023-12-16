@@ -18,8 +18,6 @@ class PWDPPolicy(Policy):
         s5 = sum(elevator_distances) * competitor_weight
         s6 = distance_weight^(distance_exponent) * abs(current_floor - i)
 
-    Then the i-th floor advertising \[Up/Down\] will have score:
-
     .. code-block:: python
         
         Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
