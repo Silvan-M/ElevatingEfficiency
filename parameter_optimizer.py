@@ -22,6 +22,9 @@ learning_rate = 1.03
 average_of = 10
 simulation_length = 60 * 60 * 6
 
+# Enable gradient descent
+gradient_descent = True
+
 # Enable plotting
 plot = False
 
@@ -120,52 +123,55 @@ def write_result(awt, params):
     with open(store_params, "a") as file:
         file.write(s + "\n")
 
+if plot or gradient_descent:
+    # Load parameters
+    with open(load_params, "r") as file:
+        lines = file.readlines()
+        if lines:
+            l = lines[-1].strip().split(',')
 
-# Load parameters
-with open(load_params, "r") as file:
-    lines = file.readlines()
-    if lines:
-        l = lines[-1].strip().split(',')
+            current_awt = float(l[0])
+            current_params = [float(value) for value in l[1:]]
+        else:
+            print("File is empty.")
 
-        current_awt = float(l[0])
-        current_params = [float(value) for value in l[1:]]
-    else:
-        print("File is empty.")
+    min_jump = 1
+    max_jump = 1
+    for i in range(num_epochs):
+        if not gradient_descent:
+            continue
 
-min_jump = 1
-max_jump = 1
-for i in range(num_epochs):
-    pro = product(
-        range(average_of), range(
-            len(current_params)), [
-            min_jump, max_jump])
+        pro = product(
+            range(average_of), range(
+                len(current_params)), [
+                min_jump, max_jump])
 
-    # Run simulations
-    simulations = {}
-    for a in range(average_of):
-        p = (i, -1, 1)
-        simulations[p] = create_simulation(p)
+        # Run simulations
+        simulations = {}
+        for a in range(average_of):
+            p = (i, -1, 1)
+            simulations[p] = create_simulation(p)
 
-    for p in pro:
-        simulations[p] = create_simulation(p)
+        for p in pro:
+            simulations[p] = create_simulation(p)
 
-    results = []
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        results = executor.map(run_simulation, simulations.items())
+        results = []
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            results = executor.map(run_simulation, simulations.items())
 
-    update_results(results)
-    min_jump = random.uniform(1 / learning_rate, 1)
-    max_jump = random.uniform(1, learning_rate)
+        update_results(results)
+        min_jump = random.uniform(1 / learning_rate, 1)
+        max_jump = random.uniform(1, learning_rate)
 
-    print(f"Epoch: {i}\tAWT\t{current_awt}\t{current_params}")
-    write_result(current_awt, current_params)
+        print(f"Epoch: {i}\tAWT\t{current_awt}\t{current_params}")
+        write_result(current_awt, current_params)
 
 
-# -----------------------------------------------------------------------------------------------------------
-# Plot parameters and time
+    # -----------------------------------------------------------------------------------------------------------
+    # Plot parameters and time
+    if not plot: 
+        exit()
 
-
-if plot:
     params_over_time = []
     awt_over_time = []
 
