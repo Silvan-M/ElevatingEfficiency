@@ -1,0 +1,680 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="building module" href="building.html" /><link rel="prev" title="Elevating Efficiency" href="index.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>ElevatingEfficiency - Elevating Efficiency documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Elevating Efficiency  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Elevating Efficiency  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floor.html">floor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html">game_display module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liveplotter.html">liveplotter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation_plotter.html">simulation_plotter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation_statistics.html">simulation_statistics module</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="elevatingefficiency">
+<h1>ElevatingEfficiency<a class="headerlink" href="#elevatingefficiency" title="Link to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="building.html">building module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="building.html#building.Building"><code class="docutils literal notranslate"><span class="pre">Building</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="building.html#building.Building.spawn_passenger"><code class="docutils literal notranslate"><span class="pre">Building.spawn_passenger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="building.html#building.Building.step"><code class="docutils literal notranslate"><span class="pre">Building.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="color.html">color module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="color.html#color.Colors"><code class="docutils literal notranslate"><span class="pre">Colors</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.BOLD"><code class="docutils literal notranslate"><span class="pre">Colors.BOLD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.ENDC"><code class="docutils literal notranslate"><span class="pre">Colors.ENDC</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.FAIL"><code class="docutils literal notranslate"><span class="pre">Colors.FAIL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.HEADER"><code class="docutils literal notranslate"><span class="pre">Colors.HEADER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.OKBLUE"><code class="docutils literal notranslate"><span class="pre">Colors.OKBLUE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.OKCYAN"><code class="docutils literal notranslate"><span class="pre">Colors.OKCYAN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.OKGREEN"><code class="docutils literal notranslate"><span class="pre">Colors.OKGREEN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.UNDERLINE"><code class="docutils literal notranslate"><span class="pre">Colors.UNDERLINE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.WARNING"><code class="docutils literal notranslate"><span class="pre">Colors.WARNING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.error"><code class="docutils literal notranslate"><span class="pre">Colors.error()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.info"><code class="docutils literal notranslate"><span class="pre">Colors.info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.ok"><code class="docutils literal notranslate"><span class="pre">Colors.ok()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="color.html#color.Colors.warning"><code class="docutils literal notranslate"><span class="pre">Colors.warning()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debug.html">debug module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="debug.html#debug.Debug"><code class="docutils literal notranslate"><span class="pre">Debug</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.Q"><code class="docutils literal notranslate"><span class="pre">Debug.Q</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.all_false"><code class="docutils literal notranslate"><span class="pre">Debug.all_false</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.all_true"><code class="docutils literal notranslate"><span class="pre">Debug.all_true</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_fct_spawn_passenger"><code class="docutils literal notranslate"><span class="pre">Debug.bld_fct_spawn_passenger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_fct_spawn_passenger_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.bld_fct_spawn_passenger_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_fct_step"><code class="docutils literal notranslate"><span class="pre">Debug.bld_fct_step</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_fct_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.bld_fct_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_presses_floor_button"><code class="docutils literal notranslate"><span class="pre">Debug.bld_presses_floor_button</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_presses_floor_button_down"><code class="docutils literal notranslate"><span class="pre">Debug.bld_presses_floor_button_down</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_presses_floor_button_down_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.bld_presses_floor_button_down_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_presses_floor_button_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.bld_presses_floor_button_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_presses_floor_button_up"><code class="docutils literal notranslate"><span class="pre">Debug.bld_presses_floor_button_up</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_presses_floor_button_up_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.bld_presses_floor_button_up_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_spawn_passenger"><code class="docutils literal notranslate"><span class="pre">Debug.bld_spawn_passenger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.bld_spawn_passenger_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.bld_spawn_passenger_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.dsr_fct_get_index_prob"><code class="docutils literal notranslate"><span class="pre">Debug.dsr_fct_get_index_prob</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.dsr_fct_is_chosen"><code class="docutils literal notranslate"><span class="pre">Debug.dsr_fct_is_chosen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.dsr_fct_random_index"><code class="docutils literal notranslate"><span class="pre">Debug.dsr_fct_random_index</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_decision_update"><code class="docutils literal notranslate"><span class="pre">Debug.elv_decision_update</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_decision_update_skips"><code class="docutils literal notranslate"><span class="pre">Debug.elv_decision_update_skips</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_fct_step"><code class="docutils literal notranslate"><span class="pre">Debug.elv_fct_step</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_fct_steps_skips"><code class="docutils literal notranslate"><span class="pre">Debug.elv_fct_steps_skips</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_movement_update"><code class="docutils literal notranslate"><span class="pre">Debug.elv_movement_update</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_movement_update_skips"><code class="docutils literal notranslate"><span class="pre">Debug.elv_movement_update_skips</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_passenger_enters_elevator"><code class="docutils literal notranslate"><span class="pre">Debug.elv_passenger_enters_elevator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_passenger_enters_elevator_skips"><code class="docutils literal notranslate"><span class="pre">Debug.elv_passenger_enters_elevator_skips</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_passenger_leaves_elevator"><code class="docutils literal notranslate"><span class="pre">Debug.elv_passenger_leaves_elevator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_passenger_leaves_elevator_skips"><code class="docutils literal notranslate"><span class="pre">Debug.elv_passenger_leaves_elevator_skips</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_passenger_pressed_button"><code class="docutils literal notranslate"><span class="pre">Debug.elv_passenger_pressed_button</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.elv_passenger_pressed_button_skips"><code class="docutils literal notranslate"><span class="pre">Debug.elv_passenger_pressed_button_skips</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.enable_warnings"><code class="docutils literal notranslate"><span class="pre">Debug.enable_warnings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.flr_passenger_appended"><code class="docutils literal notranslate"><span class="pre">Debug.flr_passenger_appended</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.i"><code class="docutils literal notranslate"><span class="pre">Debug.i</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.mn_end"><code class="docutils literal notranslate"><span class="pre">Debug.mn_end</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.mn_setup"><code class="docutils literal notranslate"><span class="pre">Debug.mn_setup</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.mn_start"><code class="docutils literal notranslate"><span class="pre">Debug.mn_start</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.pcy_action_update"><code class="docutils literal notranslate"><span class="pre">Debug.pcy_action_update</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.pcy_action_update_select"><code class="docutils literal notranslate"><span class="pre">Debug.pcy_action_update_select</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.pcy_action_update_selection"><code class="docutils literal notranslate"><span class="pre">Debug.pcy_action_update_selection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.pcy_fct_decide"><code class="docutils literal notranslate"><span class="pre">Debug.pcy_fct_decide</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.pcy_fct_get_action"><code class="docutils literal notranslate"><span class="pre">Debug.pcy_fct_get_action</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.pr"><code class="docutils literal notranslate"><span class="pre">Debug.pr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.sim_fct_run"><code class="docutils literal notranslate"><span class="pre">Debug.sim_fct_run</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.sim_fct_step"><code class="docutils literal notranslate"><span class="pre">Debug.sim_fct_step</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.sim_fct_step_skip"><code class="docutils literal notranslate"><span class="pre">Debug.sim_fct_step_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.sim_time_steps"><code class="docutils literal notranslate"><span class="pre">Debug.sim_time_steps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.sim_time_steps_skip"><code class="docutils literal notranslate"><span class="pre">Debug.sim_time_steps_skip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.skip_factor"><code class="docutils literal notranslate"><span class="pre">Debug.skip_factor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.str"><code class="docutils literal notranslate"><span class="pre">Debug.str()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug.html#debug.Debug.tdsr_fct_interpolated_prob"><code class="docutils literal notranslate"><span class="pre">Debug.tdsr_fct_interpolated_prob</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delegate.html">delegate module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="delegate.html#delegate.Delegate"><code class="docutils literal notranslate"><span class="pre">Delegate</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="delegate.html#delegate.Delegate.add_listener"><code class="docutils literal notranslate"><span class="pre">Delegate.add_listener()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="delegate.html#delegate.Delegate.notify_all"><code class="docutils literal notranslate"><span class="pre">Delegate.notify_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="delegate.html#delegate.Delegate.remove_listener"><code class="docutils literal notranslate"><span class="pre">Delegate.remove_listener()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="distributions.html">distributions package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.custom_building_distribution">distributions.custom_building_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.custom_building_distribution.CustomBuildingDistribution"><code class="docutils literal notranslate"><span class="pre">CustomBuildingDistribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.distribution">distributions.distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.distribution.EqualFloorDistribution"><code class="docutils literal notranslate"><span class="pre">EqualFloorDistribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.distribution.FloorDistribution"><code class="docutils literal notranslate"><span class="pre">FloorDistribution</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.FloorDistribution.get_index_prob"><code class="docutils literal notranslate"><span class="pre">FloorDistribution.get_index_prob()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.FloorDistribution.get_random_index"><code class="docutils literal notranslate"><span class="pre">FloorDistribution.get_random_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.FloorDistribution.is_chosen"><code class="docutils literal notranslate"><span class="pre">FloorDistribution.is_chosen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.FloorDistribution.update_distribution"><code class="docutils literal notranslate"><span class="pre">FloorDistribution.update_distribution()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.distribution.PeakFloorDistribution"><code class="docutils literal notranslate"><span class="pre">PeakFloorDistribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.distribution.TimeDistribution"><code class="docutils literal notranslate"><span class="pre">TimeDistribution</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeDistribution.add_data"><code class="docutils literal notranslate"><span class="pre">TimeDistribution.add_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeDistribution.get_interpolated_prob"><code class="docutils literal notranslate"><span class="pre">TimeDistribution.get_interpolated_prob()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeDistribution.precompute_interpolated_probs"><code class="docutils literal notranslate"><span class="pre">TimeDistribution.precompute_interpolated_probs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.distribution.TimeSpaceDistribution"><code class="docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeSpaceDistribution.get_floor_distributions"><code class="docutils literal notranslate"><span class="pre">TimeSpaceDistribution.get_floor_distributions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeSpaceDistribution.get_passenger_amount"><code class="docutils literal notranslate"><span class="pre">TimeSpaceDistribution.get_passenger_amount()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeSpaceDistribution.get_passengers_to_spawn"><code class="docutils literal notranslate"><span class="pre">TimeSpaceDistribution.get_passengers_to_spawn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="distributions.html#distributions.distribution.TimeSpaceDistribution.get_spawn_amount"><code class="docutils literal notranslate"><span class="pre">TimeSpaceDistribution.get_spawn_amount()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.high_density_distribution">distributions.high_density_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.high_density_distribution.HighDensityDistribution"><code class="docutils literal notranslate"><span class="pre">HighDensityDistribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.low_density_distribution">distributions.low_density_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.low_density_distribution.LowDensityDistribution"><code class="docutils literal notranslate"><span class="pre">LowDensityDistribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.residential_building_distribution">distributions.residential_building_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.residential_building_distribution.ResidentialBuildingDistribution"><code class="docutils literal notranslate"><span class="pre">ResidentialBuildingDistribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.rooftop_bar_distribution">distributions.rooftop_bar_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.rooftop_bar_distribution.RooftopBarDistribution"><code class="docutils literal notranslate"><span class="pre">RooftopBarDistribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions.shopping_mall_distribution">distributions.shopping_mall_distribution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="distributions.html#distributions.shopping_mall_distribution.ShoppingMallDistribution"><code class="docutils literal notranslate"><span class="pre">ShoppingMallDistribution</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="distributions.html#module-distributions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="elevator.html">elevator module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="elevator.html#elevator.Elevator"><code class="docutils literal notranslate"><span class="pre">Elevator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elevator.html#elevator.Elevator.get_current_floor"><code class="docutils literal notranslate"><span class="pre">Elevator.get_current_floor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="elevator.html#elevator.Elevator.get_elevator_index"><code class="docutils literal notranslate"><span class="pre">Elevator.get_elevator_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="elevator.html#elevator.Elevator.set_elevator_index"><code class="docutils literal notranslate"><span class="pre">Elevator.set_elevator_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="elevator.html#elevator.Elevator.step"><code class="docutils literal notranslate"><span class="pre">Elevator.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">exceptions module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#exceptions.Exceptions"><code class="docutils literal notranslate"><span class="pre">Exceptions</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exceptions.html#exceptions.Exceptions.bound_checker"><code class="docutils literal notranslate"><span class="pre">Exceptions.bound_checker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="exceptions.html#exceptions.Exceptions.type_checker"><code class="docutils literal notranslate"><span class="pre">Exceptions.type_checker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="exceptions.html#exceptions.Exceptions.type_checker_rek"><code class="docutils literal notranslate"><span class="pre">Exceptions.type_checker_rek()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="floor.html">floor module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="floor.html#floor.ButtonPressed"><code class="docutils literal notranslate"><span class="pre">ButtonPressed</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="floor.html#floor.ButtonPressed.set_move_down"><code class="docutils literal notranslate"><span class="pre">ButtonPressed.set_move_down()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="floor.html#floor.ButtonPressed.set_move_up"><code class="docutils literal notranslate"><span class="pre">ButtonPressed.set_move_up()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="floor.html#floor.ButtonPressed.update_time"><code class="docutils literal notranslate"><span class="pre">ButtonPressed.update_time()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="floor.html#floor.Floor"><code class="docutils literal notranslate"><span class="pre">Floor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="floor.html#floor.Floor.remove_passenger"><code class="docutils literal notranslate"><span class="pre">Floor.remove_passenger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="floor.html#floor.Floor.spawn_passenger"><code class="docutils literal notranslate"><span class="pre">Floor.spawn_passenger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="floor.html#floor.Floor.update_floor_buttons"><code class="docutils literal notranslate"><span class="pre">Floor.update_floor_buttons()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="game_display.html">game_display module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.GameDisplay"><code class="docutils literal notranslate"><span class="pre">GameDisplay</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.apply_differences"><code class="docutils literal notranslate"><span class="pre">GameDisplay.apply_differences()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.get_floor_color"><code class="docutils literal notranslate"><span class="pre">GameDisplay.get_floor_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.get_passenger_y_coord"><code class="docutils literal notranslate"><span class="pre">GameDisplay.get_passenger_y_coord()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.get_random_passenger_location"><code class="docutils literal notranslate"><span class="pre">GameDisplay.get_random_passenger_location()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.get_shaft_location"><code class="docutils literal notranslate"><span class="pre">GameDisplay.get_shaft_location()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.pause_button_pressed"><code class="docutils literal notranslate"><span class="pre">GameDisplay.pause_button_pressed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.render_text"><code class="docutils literal notranslate"><span class="pre">GameDisplay.render_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.set_background"><code class="docutils literal notranslate"><span class="pre">GameDisplay.set_background()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.start_simulation"><code class="docutils literal notranslate"><span class="pre">GameDisplay.start_simulation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.GameDisplay.step"><code class="docutils literal notranslate"><span class="pre">GameDisplay.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.PassengerInfo"><code class="docutils literal notranslate"><span class="pre">PassengerInfo</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.PassengerInfo.equal"><code class="docutils literal notranslate"><span class="pre">PassengerInfo.equal()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.SimulationStepInfo"><code class="docutils literal notranslate"><span class="pre">SimulationStepInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.Sprite"><code class="docutils literal notranslate"><span class="pre">Sprite</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.Sprite.cache"><code class="docutils literal notranslate"><span class="pre">Sprite.cache</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.SpriteEntity"><code class="docutils literal notranslate"><span class="pre">SpriteEntity</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="game_display.html#game_display.SpriteEntity.update_screen_loc"><code class="docutils literal notranslate"><span class="pre">SpriteEntity.update_screen_loc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.add"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.format_time"><code class="docutils literal notranslate"><span class="pre">format_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.get_color_at_time"><code class="docutils literal notranslate"><span class="pre">get_color_at_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.lerp"><code class="docutils literal notranslate"><span class="pre">lerp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.mul"><code class="docutils literal notranslate"><span class="pre">mul()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_display.html#game_display.vround"><code class="docutils literal notranslate"><span class="pre">vround()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="liveplotter.html">liveplotter module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="liveplotter.html#liveplotter.LivePlotter"><code class="docutils literal notranslate"><span class="pre">LivePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="liveplotter.html#liveplotter.LivePlotter.addPoints"><code class="docutils literal notranslate"><span class="pre">LivePlotter.addPoints()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="liveplotter.html#liveplotter.LivePlotter.set_line_data"><code class="docutils literal notranslate"><span class="pre">LivePlotter.set_line_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="liveplotter.html#liveplotter.LivePlotter.startPlot"><code class="docutils literal notranslate"><span class="pre">LivePlotter.startPlot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="liveplotter.html#liveplotter.LivePlotter.step"><code class="docutils literal notranslate"><span class="pre">LivePlotter.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parameter.html">parameter module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="parameter.html#parameter.ElevatorParameter"><code class="docutils literal notranslate"><span class="pre">ElevatorParameter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.ElevatorParameter.CAPACITY"><code class="docutils literal notranslate"><span class="pre">ElevatorParameter.CAPACITY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.ElevatorParameter.MAX_FLOOR"><code class="docutils literal notranslate"><span class="pre">ElevatorParameter.MAX_FLOOR</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.ElevatorParameter.MIN_FLOOR"><code class="docutils literal notranslate"><span class="pre">ElevatorParameter.MIN_FLOOR</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.ElevatorParameter.case"><code class="docutils literal notranslate"><span class="pre">ElevatorParameter.case()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parameter.html#parameter.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.Parameter.FLOOR_AMOUNT"><code class="docutils literal notranslate"><span class="pre">Parameter.FLOOR_AMOUNT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.Parameter.SPWD_STR_TYPE"><code class="docutils literal notranslate"><span class="pre">Parameter.SPWD_STR_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.Parameter.TAR_DSTR_TYPE"><code class="docutils literal notranslate"><span class="pre">Parameter.TAR_DSTR_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.Parameter.case"><code class="docutils literal notranslate"><span class="pre">Parameter.case()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parameter.html#parameter.PolicyParameter"><code class="docutils literal notranslate"><span class="pre">PolicyParameter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.COMP_WEIGHT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.COMP_WEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.DIST_EXPONENT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.DIST_EXPONENT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.DIST_WEIGHT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.DIST_WEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.ELEV_BUT_TIME_WEIGHT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.ELEV_BUT_TIME_WEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.ELEV_BUT_WEIGHT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.ELEV_BUT_WEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.FLOOR_BUT_TIME_WEIGHT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.FLOOR_BUT_TIME_WEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.FLOOR_BUT_WEIGHT"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.FLOOR_BUT_WEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.POLICY"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.POLICY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.case"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.case()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.PolicyParameter.short_name"><code class="docutils literal notranslate"><span class="pre">PolicyParameter.short_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parameter.html#parameter.TimeDistrParameter"><code class="docutils literal notranslate"><span class="pre">TimeDistrParameter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.TimeDistrParameter.ADD_POINT"><code class="docutils literal notranslate"><span class="pre">TimeDistrParameter.ADD_POINT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.TimeDistrParameter.MAX_PASSENGER"><code class="docutils literal notranslate"><span class="pre">TimeDistrParameter.MAX_PASSENGER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.TimeDistrParameter.TIME_TYPE"><code class="docutils literal notranslate"><span class="pre">TimeDistrParameter.TIME_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="parameter.html#parameter.TimeDistrParameter.case"><code class="docutils literal notranslate"><span class="pre">TimeDistrParameter.case()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html#parameter_optimizer.create_simulation"><code class="docutils literal notranslate"><span class="pre">create_simulation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html#parameter_optimizer.map_parameters"><code class="docutils literal notranslate"><span class="pre">map_parameters()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html#parameter_optimizer.run_simulation"><code class="docutils literal notranslate"><span class="pre">run_simulation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html#parameter_optimizer.update_results"><code class="docutils literal notranslate"><span class="pre">update_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html#parameter_optimizer.write_result"><code class="docutils literal notranslate"><span class="pre">write_result()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="passenger.html">passenger module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="passenger.html#passenger.Passenger"><code class="docutils literal notranslate"><span class="pre">Passenger</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="policies.html">policies package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.fcfs_policy">policies.fcfs_policy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.fcfs_policy.FCFSPolicy"><code class="docutils literal notranslate"><span class="pre">FCFSPolicy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.fcfs_policy.FCFSPolicy.name"><code class="docutils literal notranslate"><span class="pre">FCFSPolicy.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.look_policy">policies.look_policy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.look_policy.LOOKPolicy"><code class="docutils literal notranslate"><span class="pre">LOOKPolicy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.look_policy.LOOKPolicy.name"><code class="docutils literal notranslate"><span class="pre">LOOKPolicy.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.policy">policies.policy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.policy.Action"><code class="docutils literal notranslate"><span class="pre">Action</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Action.MOVE_DOWN"><code class="docutils literal notranslate"><span class="pre">Action.MOVE_DOWN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Action.MOVE_UP"><code class="docutils literal notranslate"><span class="pre">Action.MOVE_UP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Action.WAIT"><code class="docutils literal notranslate"><span class="pre">Action.WAIT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Action.WAIT_DOWN"><code class="docutils literal notranslate"><span class="pre">Action.WAIT_DOWN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Action.WAIT_OPEN"><code class="docutils literal notranslate"><span class="pre">Action.WAIT_OPEN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Action.WAIT_UP"><code class="docutils literal notranslate"><span class="pre">Action.WAIT_UP</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.policy.Policy"><code class="docutils literal notranslate"><span class="pre">Policy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Policy.get_action"><code class="docutils literal notranslate"><span class="pre">Policy.get_action()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.policy.Policy.name"><code class="docutils literal notranslate"><span class="pre">Policy.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.pwdp_policy">policies.pwdp_policy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.pwdp_policy.PWDPPolicy"><code class="docutils literal notranslate"><span class="pre">PWDPPolicy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.pwdp_policy.PWDPPolicy.name"><code class="docutils literal notranslate"><span class="pre">PWDPPolicy.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.pwdp_policy_Enhanced">policies.pwdp_policy_Enhanced module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.pwdp_policy_Enhanced.PWDPPolicyEnhanced"><code class="docutils literal notranslate"><span class="pre">PWDPPolicyEnhanced</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.pwdp_policy_Enhanced.PWDPPolicyEnhanced.name"><code class="docutils literal notranslate"><span class="pre">PWDPPolicyEnhanced.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.pwdp_policy_optimized">policies.pwdp_policy_optimized module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.pwdp_policy_optimized.PWDPPolicyOptimized"><code class="docutils literal notranslate"><span class="pre">PWDPPolicyOptimized</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.pwdp_policy_optimized.PWDPPolicyOptimized.name"><code class="docutils literal notranslate"><span class="pre">PWDPPolicyOptimized.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.scan_policy">policies.scan_policy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.scan_policy.SCANPolicy"><code class="docutils literal notranslate"><span class="pre">SCANPolicy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.scan_policy.SCANPolicy.name"><code class="docutils literal notranslate"><span class="pre">SCANPolicy.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies.sstf_policy">policies.sstf_policy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="policies.html#policies.sstf_policy.SSTFPolicy"><code class="docutils literal notranslate"><span class="pre">SSTFPolicy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="policies.html#policies.sstf_policy.SSTFPolicy.name"><code class="docutils literal notranslate"><span class="pre">SSTFPolicy.name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#module-policies">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="progress_bar.html">progress_bar module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="progress_bar.html#progress_bar.ProgressBar"><code class="docutils literal notranslate"><span class="pre">ProgressBar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="progress_bar.html#progress_bar.ProgressBar.show"><code class="docutils literal notranslate"><span class="pre">ProgressBar.show()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progress_bar.html#progress_bar.ProgressBar.update"><code class="docutils literal notranslate"><span class="pre">ProgressBar.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">simulation module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html#simulation.Simulation"><code class="docutils literal notranslate"><span class="pre">Simulation</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simulation.html#simulation.Simulation.run"><code class="docutils literal notranslate"><span class="pre">Simulation.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation.html#simulation.Simulation.set_time"><code class="docutils literal notranslate"><span class="pre">Simulation.set_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation.html#simulation.Simulation.step"><code class="docutils literal notranslate"><span class="pre">Simulation.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_plotter.html">simulation_plotter module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter.distr_plotter_2d"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter.distr_plotter_2d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter.param_plotter_2d"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter.param_plotter_2d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter.param_plotter_3d"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter.param_plotter_3d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter.param_plotter_3d_permutations"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter.param_plotter_3d_permutations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter.policy_plotter_2d"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter.policy_plotter_2d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_plotter.html#simulation_plotter.SimulationPlotter.policy_plotter_2d_scenarios"><code class="docutils literal notranslate"><span class="pre">SimulationPlotter.policy_plotter_2d_scenarios()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_statistics.html">simulation_statistics module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.FinishInfo"><code class="docutils literal notranslate"><span class="pre">FinishInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective"><code class="docutils literal notranslate"><span class="pre">Objective</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective.ACE"><code class="docutils literal notranslate"><span class="pre">Objective.ACE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective.AMP"><code class="docutils literal notranslate"><span class="pre">Objective.AMP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective.ATTD"><code class="docutils literal notranslate"><span class="pre">Objective.ATTD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective.AWT"><code class="docutils literal notranslate"><span class="pre">Objective.AWT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective.AWTSD"><code class="docutils literal notranslate"><span class="pre">Objective.AWTSD</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.calculate_amount_people_spawned"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.calculate_amount_people_spawned()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.calculate_average_crowdedness"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.calculate_average_crowdedness()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.calculate_average_crowdedness_per_floor"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.calculate_average_crowdedness_per_floor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.calculate_average_time_to_destination"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.calculate_average_time_to_destination()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.calculate_average_waiting_time"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.calculate_average_waiting_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.calculate_std_dev_waiting_time"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.calculate_std_dev_waiting_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.get_objective"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.get_objective()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.get_objectives"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.get_objectives()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.on_passenger_created"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.on_passenger_created()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.on_passenger_entered"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.on_passenger_entered()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.on_passenger_exited"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.on_passenger_exited()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.on_simulation_finished"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.on_simulation_finished()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.on_simulation_started"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.on_simulation_started()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.on_step_end"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.on_step_end()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.SimulationStatistics.write_to_file"><code class="docutils literal notranslate"><span class="pre">SimulationStatistics.write_to_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="building.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">building module</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Brian Funk, Andrin Gasser and Silvan Metzker
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>
