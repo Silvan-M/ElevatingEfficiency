@@ -2,6 +2,7 @@
 
 # Elevating Efficiency
 Our project is about the efficiency of elevators. We want to find out how the efficiency of elevators can be improved by using different policies. We will simulate the movement of elevators and passengers in a building and compare the results of different policies.
+
 This project was created as part of the course "Complex Social Systems: Modelling Agents, Learning and Games" at ETH Zurich.
 
 ![Elevator Showcase](img/Elevator-Showcase.gif)
