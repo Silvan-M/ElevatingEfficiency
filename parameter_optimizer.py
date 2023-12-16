@@ -22,6 +22,9 @@ learning_rate = 1.03
 average_of = 10
 simulation_length = 60 * 60 * 6
 
+# Enable plotting
+plot = False
+
 distribution = distributions.HighDensityDistribution() if num_epochs > 0 else None
 
 load_params = "param_optimizer/save_params.txt"
@@ -160,59 +163,62 @@ for i in range(num_epochs):
 
 # -----------------------------------------------------------------------------------------------------------
 # Plot parameters and time
-params_over_time = []
-awt_over_time = []
 
-with open(store_params, 'r') as csvfile:
-    reader = csv.reader(csvfile)
 
-    for row in reader:
-        awt_over_time.append(float(row[0]))
+if plot:
+    params_over_time = []
+    awt_over_time = []
 
-        # Extract the rest of the columns
-        params_over_time.append(map(float, row[1:]))
+    with open(store_params, 'r') as csvfile:
+        reader = csv.reader(csvfile)
 
-# Transpose the params list for easier plotting
-params_transposed = list(map(list, zip(*params_over_time)))
+        for row in reader:
+            awt_over_time.append(float(row[0]))
 
-# Create a figure and axis for the first y-axis
-fig, ax1 = plt.subplots()
+            # Extract the rest of the columns
+            params_over_time.append(map(float, row[1:]))
 
-# Plot parameter values on the first y-axis
-for param_values in params_transposed:
-    ax1.plot(param_values, marker='o')
+    # Transpose the params list for easier plotting
+    params_transposed = list(map(list, zip(*params_over_time)))
 
-# Customize the first y-axis
-ax1.set_xlabel('Epochs')
-ax1.set_ylabel('Parameter Values', color='tab:grey')
-ax1.tick_params('y')
-ax1.legend(['ElevatorButtonWeight',
-            'ElevatorButtonTimeWeight',
-            'FloorButtonWeight',
-            'FloorButtonTimeWeight',
-            'CompetitorWeight',
-            'DistanceWeight'])
-# ax1.legend(['ElevatorButtonTimeWeight', 'FloorButtonTimeWeight', 'competitor_weight', 'distance_weight'])
+    # Create a figure and axis for the first y-axis
+    fig, ax1 = plt.subplots()
 
-# Create a secondary y-axis
-ax2 = ax1.twinx()
+    # Plot parameter values on the first y-axis
+    for param_values in params_transposed:
+        ax1.plot(param_values, marker='o')
 
-# Plot scores on the secondary y-axis
-minAWT = min(awt_over_time)
-ax2.plot(awt_over_time, marker='s', alpha=0)
-ax2.set_ylabel('AWT', color='tab:grey')
-ax2.tick_params('y')
-ax2.fill_between(
-    np.arange(
-        len(awt_over_time)),
-    minAWT - 2,
-    awt_over_time,
-    color='gray',
-    alpha=0.3)
-ax2.autoscale(axis='y')
+    # Customize the first y-axis
+    ax1.set_xlabel('Epochs')
+    ax1.set_ylabel('Parameter Values', color='tab:grey')
+    ax1.tick_params('y')
+    ax1.legend(['ElevatorButtonWeight',
+                'ElevatorButtonTimeWeight',
+                'FloorButtonWeight',
+                'FloorButtonTimeWeight',
+                'CompetitorWeight',
+                'DistanceWeight'])
+    # ax1.legend(['ElevatorButtonTimeWeight', 'FloorButtonTimeWeight', 'competitor_weight', 'distance_weight'])
 
-# Plot a transparent grey area for the scores
+    # Create a secondary y-axis
+    ax2 = ax1.twinx()
 
-# Customize the plot
-plt.title('Parameter Values Over Epochs')
-plt.show()
+    # Plot scores on the secondary y-axis
+    minAWT = min(awt_over_time)
+    ax2.plot(awt_over_time, marker='s', alpha=0)
+    ax2.set_ylabel('AWT', color='tab:grey')
+    ax2.tick_params('y')
+    ax2.fill_between(
+        np.arange(
+            len(awt_over_time)),
+        minAWT - 2,
+        awt_over_time,
+        color='gray',
+        alpha=0.3)
+    ax2.autoscale(axis='y')
+
+    # Plot a transparent grey area for the scores
+
+    # Customize the plot
+    plt.title('Parameter Values Over Epochs')
+    plt.show()
