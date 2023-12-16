@@ -50,15 +50,41 @@ class Elevator:
                 "buttons pressed"])
 
     def set_elevator_index(self, index):
+        """
+        Set the index of the elevator in the building
+
+        :param index: The index of the elevator
+        :type index: int
+        """
         self.elevator_index = index
 
     def get_current_floor(self):
+        """
+        Get the current floor of the elevator
+
+        :return: The current floor
+        :rtype: int
+        """
         return self.current_height // 100
 
     def get_elevator_index(self):
+        """
+        Get the index of the elevator in the building
+
+        :return: The index of the elevator
+        :rtype: int
+        """
         return self.elevator_index
 
     def step(self, time, building):
+        """
+        Steps the elevator one time step forward
+
+        :param time: The current time
+        :type time: int
+        :param building: The building the elevator is in
+        :type building: Building
+        """
         self.time = time
         if (DB.elv_fct_step and ((time % int(DB.elv_fct_stepsSkips)) == 0)):
             DB.pr("Func", "step", message="function was called", t=time)

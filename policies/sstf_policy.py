@@ -3,7 +3,8 @@ from policies.policy import Policy, Action
 
 class SSTFPolicy(Policy):
     """
-    SSTF Policy (Shortest Seek Time First)
+    **SSTF Policy (Shortest Seek Time First)**
+    
     Move to the closest target in the same direction
     """
 

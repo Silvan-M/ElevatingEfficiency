@@ -3,29 +3,37 @@ from policies.policy import Policy, Action
 
 class PWDPPolicy(Policy):
     """
-    PWDP Policy (Parameterized Weighted Decision Policy)
-    Policy which evaluates each floor by giving it a score using the following parameters:
-    - elevator_button_weight:         Award elevator button pressed on floor i
-    - elevator_button_time_weight:    Award elevator buttons which were pressed a long time ago
-    - floor_button_weight:            Award floor buttons which were pressed
-    - floor_button_time_weight:       Award floor buttons which were pressed a long time ago
-    - competitor_weight:              Penalize if other elevators are heading to floor i
-    - distance_weight:                Penalize high distance to target
-    - distance_exponent:              Exponent for distance penalty
-
+    **PWDP Policy (Parameterized Weighted Decision Policy)**
+    
+    Policy which evaluates each floor by giving it a score using input parameters (see below).
+    
     The score for the i-th floor advertising [Up/Down] is calculated as follows:
-    s1 = elevator_button_weight * elevator_buttons[i]
-    s2 = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
-    s3 = floor_button_weight * button_pressed
-    s4 = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
-    s5 = sum(elevator_distances) * competitor_weight
-    s6 = distance_weight^(distance_exponent) * abs(current_floor - i)
+    
+    .. code-block:: python
 
-    Then the i-th floor advertising [Up/Down] will have score:
-    Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
+        s1 = elevator_button_weight * elevator_buttons[i]
+        s2 = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
+        s3 = floor_button_weight * button_pressed
+        s4 = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
+        s5 = sum(elevator_distances) * competitor_weight
+        s6 = distance_weight^(distance_exponent) * abs(current_floor - i)
+
+    Then the i-th floor advertising \[Up/Down\] will have score:
+
+    .. code-block:: python
+        
+        Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
 
     The elevator will then choose the highest scored floor, set it as target, and move to it.
     Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.
+
+    :param elevator_button_weight: Award elevator button pressed on floor i.
+    :param elevator_button_time_weight: Award elevator buttons which were pressed a long time ago.
+    :param floor_button_weight: Award floor buttons which were pressed.
+    :param floor_button_time_weight: Award floor buttons which were pressed a long time ago.
+    :param competitor_weight: Penalize if other elevators are heading to floor i.
+    :param distance_weight: Penalize high distance to target.
+    :param distance_exponent: Exponent for distance penalty.
     """
 
     def __init__(

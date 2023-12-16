@@ -217,15 +217,41 @@
 <dt class="sig sig-object py" id="building.Building">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">building.</span></span><span class="sig-name descname"><span class="pre">Building</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elevators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building.Building" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages the building and the elevators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elevators</strong> (<em>list</em><em>[</em><a class="reference internal" href="elevator.html#elevator.Elevator" title="elevator.Elevator"><em>Elevator</em></a><em>]</em>) – The elevators in the building</p></li>
+<li><p><strong>floor_amount</strong> (<em>int</em>) – The amount of floors in the building</p></li>
+<li><p><strong>distribution</strong> (<em>Distribution</em>) – The distribution to use for spawning passengers</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="building.Building.spawn_passenger">
 <span class="sig-name descname"><span class="pre">spawn_passenger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spawn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building.Building.spawn_passenger" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Spawns a new passenger at the given floor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> (<em>int</em>) – The current time</p></li>
+<li><p><strong>spawn</strong> (<em>int</em>) – The floor the passenger spawns at</p></li>
+<li><p><strong>target</strong> (<em>int</em>) – The floor the passenger wants to go to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="building.Building.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#building.Building.step" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Steps the building one time step forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The current time</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

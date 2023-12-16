@@ -222,8 +222,8 @@
 <dt class="sig sig-object py" id="policies.fcfs_policy.FCFSPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.fcfs_policy.</span></span><span class="sig-name descname"><span class="pre">FCFSPolicy</span></span><a class="headerlink" href="#policies.fcfs_policy.FCFSPolicy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.policy.Policy" title="policies.policy.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
-<p>First Come First Serve Policy
-Elevator will (directly) go to the first floor that was requested,
+<p><strong>First Come First Serve Policy</strong></p>
+<p>Elevator will (directly) go to the first floor that was requested,
 then then it will go to the closest destination in the same direction and carries out until done.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.fcfs_policy.FCFSPolicy.name">
@@ -240,8 +240,8 @@ then then it will go to the closest destination in the same direction and carrie
 <dt class="sig sig-object py" id="policies.look_policy.LOOKPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.look_policy.</span></span><span class="sig-name descname"><span class="pre">LOOKPolicy</span></span><a class="headerlink" href="#policies.look_policy.LOOKPolicy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.policy.Policy" title="policies.policy.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
-<p>LOOK Policy
-Move up and down, stop at every floor if someone is waiting
+<p><strong>LOOK Policy</strong></p>
+<p>Move up and down, stop at every floor if someone is waiting
 Change direction if no requests in current direction</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.look_policy.LOOKPolicy.name">
@@ -294,7 +294,7 @@ Change direction if no requests in current direction</p>
 <dt class="sig sig-object py" id="policies.policy.Policy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.policy.</span></span><span class="sig-name descname"><span class="pre">Policy</span></span><a class="headerlink" href="#policies.policy.Policy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base class for all policies, contains the interface for the policy without logic</p>
+<p>Base class for all policies, contains the interface for the policy without logic.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.policy.Policy.get_action">
 <span class="sig-name descname"><span class="pre">get_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_floor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevator_buttons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#policies.policy.Policy.get_action" title="Link to this definition">#</a></dt>
@@ -316,26 +316,36 @@ Change direction if no requests in current direction</p>
 <dt class="sig sig-object py" id="policies.pwdp_policy.PWDPPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.pwdp_policy.</span></span><span class="sig-name descname"><span class="pre">PWDPPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elevator_button_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevator_button_time_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_button_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_button_time_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">competitor_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#policies.pwdp_policy.PWDPPolicy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.policy.Policy" title="policies.policy.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
-<p>PWDP Policy (Parameterized Weighted Decision Policy)
-Policy which evaluates each floor by giving it a score using the following parameters:
-- elevator_button_weight:         Award elevator button pressed on floor i
-- elevator_button_time_weight:    Award elevator buttons which were pressed a long time ago
-- floor_button_weight:            Award floor buttons which were pressed
-- floor_button_time_weight:       Award floor buttons which were pressed a long time ago
-- competitor_weight:              Penalize if other elevators are heading to floor i
-- distance_weight:                Penalize high distance to target
-- distance_exponent:              Exponent for distance penalty</p>
-<p>The score for the i-th floor advertising [Up/Down] is calculated as follows:
-s1 = elevator_button_weight * elevator_buttons[i]
-s2 = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
-s3 = floor_button_weight * button_pressed
-s4 = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
-s5 = sum(elevator_distances) * competitor_weight
-s6 = distance_weight^(distance_exponent) * abs(current_floor - i)</p>
-<p>Then the i-th floor advertising [Up/Down] will have score:
-Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))</p>
+<p><strong>PWDP Policy (Parameterized Weighted Decision Policy)</strong></p>
+<p>Policy which evaluates each floor by giving it a score using input parameters (see below).</p>
+<p>The score for the i-th floor advertising [Up/Down] is calculated as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s1</span> <span class="o">=</span> <span class="n">elevator_button_weight</span> <span class="o">*</span> <span class="n">elevator_buttons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">elevator_buttons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">elevator_button_weight</span> <span class="o">*</span> <span class="n">elevator_button_time_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">target_button_time</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_elevator_button_time</span><span class="p">))</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">floor_button_weight</span> <span class="o">*</span> <span class="n">button_pressed</span>
+<span class="n">s4</span> <span class="o">=</span> <span class="n">floor_button_weight</span> <span class="o">*</span> <span class="n">floor_button_time_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_floor_button_time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_all_floor_button_time</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">s5</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">elevator_distances</span><span class="p">)</span> <span class="o">*</span> <span class="n">competitor_weight</span>
+<span class="n">s6</span> <span class="o">=</span> <span class="n">distance_weight</span><span class="o">^</span><span class="p">(</span><span class="n">distance_exponent</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_floor</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then the i-th floor advertising [Up/Down] will have score:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">+</span> <span class="n">s3</span> <span class="o">+</span> <span class="n">s4</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">s5</span> <span class="o">+</span> <span class="n">s6</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>The elevator will then choose the highest scored floor, set it as target, and move to it.
 Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elevator_button_weight</strong> – Award elevator button pressed on floor i.</p></li>
+<li><p><strong>elevator_button_time_weight</strong> – Award elevator buttons which were pressed a long time ago.</p></li>
+<li><p><strong>floor_button_weight</strong> – Award floor buttons which were pressed.</p></li>
+<li><p><strong>floor_button_time_weight</strong> – Award floor buttons which were pressed a long time ago.</p></li>
+<li><p><strong>competitor_weight</strong> – Penalize if other elevators are heading to floor i.</p></li>
+<li><p><strong>distance_weight</strong> – Penalize high distance to target.</p></li>
+<li><p><strong>distance_exponent</strong> – Exponent for distance penalty.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.pwdp_policy.PWDPPolicy.name">
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#policies.pwdp_policy.PWDPPolicy.name" title="Link to this definition">#</a></dt>
@@ -351,28 +361,38 @@ Along the way, it will stop at each floor if someone wants to enter or exit the 
 <dt class="sig sig-object py" id="policies.pwdp_policy_Enhanced.PWDPPolicyEnhanced">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.pwdp_policy_Enhanced.</span></span><span class="sig-name descname"><span class="pre">PWDPPolicyEnhanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">people_in_elevator_button_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevator_button_time_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">people_floor_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_button_time_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">competitor_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#policies.pwdp_policy_Enhanced.PWDPPolicyEnhanced" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.pwdp_policy.PWDPPolicy" title="policies.pwdp_policy.PWDPPolicy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PWDPPolicy</span></code></a></p>
-<p>PWDP Policy Enhanced (Enhanced Parameterized Weighted Decision Policy)
-Similar to PWDP Policy, but this time the elevator knows the direction of the passengers and the amount of passengers
-Policy which evaluates each floor by giving it a score using the following parameters (changes are marked with <a href="#id1"><span class="problematic" id="id2">*</span></a>):
-* people_in_elevator_button_weight:     Award high amount of people that pressed elevator button for floor i
-- elevator_button_time_weight:          Award elevator buttons which were pressed a long time ago
-* people_floor_weight:                  Award high amount of people waiting on floor i
-- floor_button_time_weight:             Award floor buttons which were pressed a long time ago
-- competitor_weight:                    Penalize if other elevators are heading to floor i
-- distance_weight:                      Penalize high distance to target
-- distance_exponent:                    Exponent for distance penalty</p>
-<p>The score for the i-th floor advertising [Up/Down] is calculated as follows (changes are marked with <em>):
-s1</em> = people_in_elevator_button_weight * amount_of_people_in_elevator_going_to_floor(i)
-s2 = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
-s3* = people_floor_weight * amount_of_people_in_floor(i).moving[Up/Down]
-s4 = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
-s5 = sum(elevator_distances) * competitor_weight
-s6 = distance_weight^(distance_exponent) * abs(current_floor - i)</p>
-<p>Additionally s3 = 0 if elevator capacity is reached</p>
-<p>Then the i-th floor advertising [Up/Down] will have score:
-Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))</p>
+<p><strong>PWDP Policy Enhanced (Enhanced Parameterized Weighted Decision Policy)</strong></p>
+<p>Similar to PWDP Policy, but this time the elevator knows the direction of the passengers and the amount of passengers
+Policy which evaluates each floor by giving it a score using the input parameters (see below).</p>
+<p>The score for the i-th floor advertising [Up/Down] is calculated as follows (changes are marked with <code class="docutils literal notranslate"><span class="pre">x</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s1x</span> <span class="o">=</span> <span class="n">people_in_elevator_button_weight</span> <span class="o">*</span> <span class="n">amount_of_people_in_elevator_going_to_floor</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">s2</span>  <span class="o">=</span> <span class="n">elevator_buttons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">elevator_button_weight</span> <span class="o">*</span> <span class="n">elevator_button_time_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">target_button_time</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_elevator_button_time</span><span class="p">))</span>
+<span class="n">s3x</span> <span class="o">=</span> <span class="n">people_floor_weight</span> <span class="o">*</span> <span class="n">amount_of_people_in_floor</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">moving</span><span class="p">[</span><span class="n">Up</span><span class="o">/</span><span class="n">Down</span><span class="p">]</span>
+<span class="n">s4</span>  <span class="o">=</span> <span class="n">floor_button_weight</span> <span class="o">*</span> <span class="n">floor_button_time_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_floor_button_time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_all_floor_button_time</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">s5</span>  <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">elevator_distances</span><span class="p">)</span> <span class="o">*</span> <span class="n">competitor_weight</span>
+<span class="n">s6</span>  <span class="o">=</span> <span class="n">distance_weight</span><span class="o">^</span><span class="p">(</span><span class="n">distance_exponent</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_floor</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Additionally <code class="docutils literal notranslate"><span class="pre">s3</span> <span class="pre">=</span> <span class="pre">0</span></code> if elevator capacity is reached</p>
+<p>Then the i-th floor advertising [Up/Down] will have score:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">+</span> <span class="n">s3</span> <span class="o">+</span> <span class="n">s4</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">s5</span> <span class="o">+</span> <span class="n">s6</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>The elevator will then choose the highest scored floor, set it as target, and move to it.
 Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>people_in_elevator_button_weight</strong> – (changed) Award high amount of people that pressed elevator button for floor i</p></li>
+<li><p><strong>elevator_button_time_weight</strong> – Award elevator buttons which were pressed a long time ago</p></li>
+<li><p><strong>people_floor_weight</strong> – (changed) Award high amount of people waiting on floor i</p></li>
+<li><p><strong>floor_button_time_weight</strong> – Award floor buttons which were pressed a long time ago</p></li>
+<li><p><strong>competitor_weight</strong> – Penalize if other elevators are heading to floor i</p></li>
+<li><p><strong>distance_weight</strong> – Penalize high distance to target</p></li>
+<li><p><strong>distance_exponent</strong> – Exponent for distance penalty</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.pwdp_policy_Enhanced.PWDPPolicyEnhanced.name">
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#policies.pwdp_policy_Enhanced.PWDPPolicyEnhanced.name" title="Link to this definition">#</a></dt>
@@ -388,26 +408,37 @@ Along the way, it will stop at each floor if someone wants to enter or exit the 
 <dt class="sig sig-object py" id="policies.pwdp_policy_optimized.PWDPPolicyOptimized">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.pwdp_policy_optimized.</span></span><span class="sig-name descname"><span class="pre">PWDPPolicyOptimized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loadPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'param_optimizer/save_params.txt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#policies.pwdp_policy_optimized.PWDPPolicyOptimized" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.policy.Policy" title="policies.policy.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
-<p>PWDP Policy Optimized (Parameterized Weighted Decision Policy)
-Policy which evaluates each floor by giving it a score using the following parameters:
-- elevator_button_weight:         Award elevator button pressed on floor i
-- elevator_button_time_weight:    Award elevator buttons which were pressed a long time ago
-- floor_button_weight:            Award floor buttons which were pressed
-- floor_button_time_weight:       Award floor buttons which were pressed a long time ago
-- competitor_weight:              Penalize if other elevators are heading to floor i
-- distance_weight:                Penalize high distance to target
-- distance_exponent:              Exponent for distance penalty</p>
-<p>The score for the i-th floor advertising [Up/Down] is calculated as follows:
-s1 = elevator_button_weight * elevator_buttons[i]
-s2 = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
-s3 = floor_button_weight * button_pressed
-s4 = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
-s5 = sum(elevator_distances) * competitor_weight
-s6 = distance_weight^(distance_exponent) * abs(current_floor - i)</p>
-<p>Then the i-th floor advertising [Up/Down] will have score:
-Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))</p>
+<p><strong>PWDP Policy Optimized (Parameterized Weighted Decision Policy Optimized)</strong></p>
+<p>PWDPPolicyOptimized is an optimized version of PWDPPolicy.
+Policy which evaluates each floor by giving it a score using input parameters (see below).</p>
+<p>The score for the i-th floor advertising [Up/Down] is calculated as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s1</span> <span class="o">=</span> <span class="n">elevator_button_weight</span> <span class="o">*</span> <span class="n">elevator_buttons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">elevator_buttons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">elevator_button_weight</span> <span class="o">*</span> <span class="n">elevator_button_time_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">target_button_time</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_elevator_button_time</span><span class="p">))</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">floor_button_weight</span> <span class="o">*</span> <span class="n">button_pressed</span>
+<span class="n">s4</span> <span class="o">=</span> <span class="n">floor_button_weight</span> <span class="o">*</span> <span class="n">floor_button_time_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_floor_button_time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_all_floor_button_time</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">s5</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">elevator_distances</span><span class="p">)</span> <span class="o">*</span> <span class="n">competitor_weight</span>
+<span class="n">s6</span> <span class="o">=</span> <span class="n">distance_weight</span><span class="o">^</span><span class="p">(</span><span class="n">distance_exponent</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_floor</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then the i-th floor advertising [Up/Down] will have score:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">+</span> <span class="n">s3</span> <span class="o">+</span> <span class="n">s4</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">s5</span> <span class="o">+</span> <span class="n">s6</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>The elevator will then choose the highest scored floor, set it as target, and move to it.
 Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elevator_button_weight</strong> – Award elevator button pressed on floor i.</p></li>
+<li><p><strong>elevator_button_time_weight</strong> – Award elevator buttons which were pressed a long time ago.</p></li>
+<li><p><strong>floor_button_weight</strong> – Award floor buttons which were pressed.</p></li>
+<li><p><strong>floor_button_time_weight</strong> – Award floor buttons which were pressed a long time ago.</p></li>
+<li><p><strong>competitor_weight</strong> – Penalize if other elevators are heading to floor i.</p></li>
+<li><p><strong>distance_weight</strong> – Penalize high distance to target.</p></li>
+<li><p><strong>distance_exponent</strong> – Exponent for distance penalty.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.pwdp_policy_optimized.PWDPPolicyOptimized.name">
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#policies.pwdp_policy_optimized.PWDPPolicyOptimized.name" title="Link to this definition">#</a></dt>
@@ -423,8 +454,8 @@ Along the way, it will stop at each floor if someone wants to enter or exit the 
 <dt class="sig sig-object py" id="policies.scan_policy.SCANPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.scan_policy.</span></span><span class="sig-name descname"><span class="pre">SCANPolicy</span></span><a class="headerlink" href="#policies.scan_policy.SCANPolicy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.policy.Policy" title="policies.policy.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
-<p>SCAN Policy
-Move up and down, stop at every floor if someone is waiting
+<p><strong>SCAN Policy</strong></p>
+<p>Move up and down, stop at every floor if someone is waiting
 Change direction if reached top or bottom floor</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.scan_policy.SCANPolicy.name">
@@ -441,8 +472,8 @@ Change direction if reached top or bottom floor</p>
 <dt class="sig sig-object py" id="policies.sstf_policy.SSTFPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">policies.sstf_policy.</span></span><span class="sig-name descname"><span class="pre">SSTFPolicy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefers_elevator_buttons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#policies.sstf_policy.SSTFPolicy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#policies.policy.Policy" title="policies.policy.Policy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Policy</span></code></a></p>
-<p>SSTF Policy (Shortest Seek Time First)
-Move to the closest target in the same direction</p>
+<p><strong>SSTF Policy (Shortest Seek Time First)</strong></p>
+<p>Move to the closest target in the same direction</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="policies.sstf_policy.SSTFPolicy.name">
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#policies.sstf_policy.SSTFPolicy.name" title="Link to this definition">#</a></dt>

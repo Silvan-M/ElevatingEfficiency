@@ -217,20 +217,53 @@
 <dt class="sig sig-object py" id="simulation.Simulation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulation.</span></span><span class="sig-name descname"><span class="pre">Simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">building</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.Simulation" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simulates the building and the elevators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>building</strong> (<a class="reference internal" href="building.html#building.Building" title="building.Building"><em>Building</em></a>) – The building to simulate</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed to use for the random number generator</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation.Simulation.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minutes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.Simulation.run" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Starts the simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>days</strong> (<em>int</em>) – The amount of days to run the simulation for</p></li>
+<li><p><strong>hours</strong> (<em>int</em>) – The amount of hours to run the simulation for</p></li>
+<li><p><strong>minutes</strong> (<em>int</em>) – The amount of minutes to run the simulation for</p></li>
+<li><p><strong>seconds</strong> (<em>int</em>) – The amount of seconds to run the simulation for</p></li>
+<li><p><strong>time_scale</strong> (<em>float</em>) – Set the speed of the simulation, only for visualisation purposes, -1 for no delay</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation.Simulation.set_time">
 <span class="sig-name descname"><span class="pre">set_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minutes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.Simulation.set_time" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sets the time of the simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>days</strong> (<em>int</em>) – The amount of days to set the time to</p></li>
+<li><p><strong>hours</strong> (<em>int</em>) – The amount of hours to set the time to</p></li>
+<li><p><strong>minutes</strong> (<em>int</em>) – The amount of minutes to set the time to</p></li>
+<li><p><strong>seconds</strong> (<em>int</em>) – The amount of seconds to set the time to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation.Simulation.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simulation.Simulation.step" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Steps the simulation one time step forward</p>
+</dd></dl>
 
 </dd></dl>
 

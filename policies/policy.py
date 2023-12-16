@@ -14,7 +14,7 @@ class Action(Enum):
 
 class Policy():
     """
-    Base class for all policies, contains the interface for the policy without logic
+    Base class for all policies, contains the interface for the policy without logic.
     """
 
     def __init__(self):

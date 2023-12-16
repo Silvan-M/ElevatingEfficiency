@@ -15,6 +15,14 @@ class ButtonPressed():
                 "move_down", "move_up"])
 
     def set_move_up(self, value, time):
+        """
+        Set the move up button to the given value and update the last pressed time
+
+        :param value: The value to set the button to
+        :type value: bool
+        :param time: The current time
+        :type time: int
+        """
         if (value and not self.move_up):
             self.last_pressed_up = time
         elif (not value):
@@ -22,6 +30,14 @@ class ButtonPressed():
         self.move_up = value
 
     def set_move_down(self, value, time):
+        """
+        Set the move down button to the given value and update the last pressed time
+
+        :param value: The value to set the button to
+        :type value: bool
+        :param time: The current time
+        :type time: int
+        """
         if (value and not self.move_down):
             self.last_pressed_down = time
         elif (not value):
@@ -50,6 +66,11 @@ class Floor():
     def spawn_passenger(self, passenger, time):
         """
         Adds a passenger to the floor and updates the floor buttons
+
+        :param passenger: The passenger to add
+        :type passenger: Passenger
+        :param time: The current time
+        :type time: int
         """
         if (DB.flr_passenger_appended):
             DB.pr("Class", "Floor", message="passenger appended")
@@ -61,6 +82,11 @@ class Floor():
     def remove_passenger(self, passenger, time):
         """
         Removes a passenger from the floor and updates the floor buttons
+
+        :param passenger: The passenger to remove
+        :type passenger: Passenger
+        :param time: The current time
+        :type time: int
         """
         self.passenger_list.remove(passenger)
 
@@ -70,6 +96,9 @@ class Floor():
     def update_floor_buttons(self, time):
         """
         Updates the floor buttons based on the passengers on the floor
+
+        :param time: The current time
+        :type time: int
         """
         up = False
         down = False

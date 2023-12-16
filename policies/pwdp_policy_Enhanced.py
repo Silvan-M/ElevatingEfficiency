@@ -4,32 +4,41 @@ from policies.pwdp_policy import PWDPPolicy
 
 class PWDPPolicyEnhanced(PWDPPolicy):
     """
-    PWDP Policy Enhanced (Enhanced Parameterized Weighted Decision Policy)
+    **PWDP Policy Enhanced (Enhanced Parameterized Weighted Decision Policy)**
+
     Similar to PWDP Policy, but this time the elevator knows the direction of the passengers and the amount of passengers
-    Policy which evaluates each floor by giving it a score using the following parameters (changes are marked with *):
-    * people_in_elevator_button_weight:     Award high amount of people that pressed elevator button for floor i
-    - elevator_button_time_weight:          Award elevator buttons which were pressed a long time ago
-    * people_floor_weight:                  Award high amount of people waiting on floor i
-    - floor_button_time_weight:             Award floor buttons which were pressed a long time ago
-    - competitor_weight:                    Penalize if other elevators are heading to floor i
-    - distance_weight:                      Penalize high distance to target
-    - distance_exponent:                    Exponent for distance penalty
+    Policy which evaluates each floor by giving it a score using the input parameters (see below).
 
-    The score for the i-th floor advertising [Up/Down] is calculated as follows (changes are marked with *):
-    s1* = people_in_elevator_button_weight * amount_of_people_in_elevator_going_to_floor(i)
-    s2 = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
-    s3* = people_floor_weight * amount_of_people_in_floor(i).moving[Up/Down]
-    s4 = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
-    s5 = sum(elevator_distances) * competitor_weight
-    s6 = distance_weight^(distance_exponent) * abs(current_floor - i)
+    The score for the i-th floor advertising [Up/Down] is calculated as follows (changes are marked with ``x``):
 
-    Additionally s3 = 0 if elevator capacity is reached
+    .. code-block:: python
+
+        s1x = people_in_elevator_button_weight * amount_of_people_in_elevator_going_to_floor(i)
+        s2  = elevator_buttons[i] * elevator_button_weight * elevator_button_time_weight * (target_button_time / max(1, max_elevator_button_time))
+        s3x = people_floor_weight * amount_of_people_in_floor(i).moving[Up/Down]
+        s4  = floor_button_weight * floor_button_time_weight * (max_floor_button_time[i] / max(max_all_floor_button_time, 1))
+        s5  = sum(elevator_distances) * competitor_weight
+        s6  = distance_weight^(distance_exponent) * abs(current_floor - i)
+
+    
+    Additionally ``s3 = 0`` if elevator capacity is reached
 
     Then the i-th floor advertising [Up/Down] will have score:
-    Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
 
+    .. code-block:: python
+
+        Score = (s1 + s2 + s3 + s4) / max(1, (s5 + s6))
+    
     The elevator will then choose the highest scored floor, set it as target, and move to it.
     Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.
+
+    :param people_in_elevator_button_weight: (changed) Award high amount of people that pressed elevator button for floor i
+    :param elevator_button_time_weight: Award elevator buttons which were pressed a long time ago
+    :param people_floor_weight: (changed) Award high amount of people waiting on floor i
+    :param floor_button_time_weight: Award floor buttons which were pressed a long time ago
+    :param competitor_weight: Penalize if other elevators are heading to floor i
+    :param distance_weight: Penalize high distance to target
+    :param distance_exponent: Exponent for distance penalty
     """
 
     def __init__(

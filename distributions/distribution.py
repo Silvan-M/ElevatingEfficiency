@@ -8,6 +8,9 @@ from enum import Enum
 class FloorDistribution():
     """
     A distribution of how many passengers per floor at a fixed time point.
+
+    :param distribution: A list of probabilities for every floor.
+    :type distribution: list(float)
     """
 
     def __init__(self, distribution: list):
@@ -22,6 +25,12 @@ class FloorDistribution():
             desc=["distribution"])
 
     def update_distribution(self, distribution):
+        """
+        Updates the distribution of the floor distribution.
+
+        :param distribution: A list of probabilities for every floor.
+        :type distribution: list(float)
+        """
         self.distribution = distribution
 
     def is_chosen(self, index):
@@ -36,6 +45,14 @@ class FloorDistribution():
         return out
 
     def get_index_prob(self, index):
+        """
+        Returns the probability of the given floor index.
+
+        :param index: The index of the floor.
+        :type index: int
+        :return: The probability of the given floor index.
+        :rtype: float
+        """
         out = self.distribution[index]
         if (DB.dsrFctget_index_prob):
             DB.pr(
@@ -47,6 +64,12 @@ class FloorDistribution():
         return out
 
     def get_random_index(self, exclude=None):
+        """
+        Returns a random floor index based on the distribution.
+
+        :param exclude: The index to exclude from the distribution.
+        :type exclude: int
+        """
         indices = [i for i, _ in enumerate(self.distribution) if i != exclude]
         weights = [self.distribution[i] for i in indices]
         index = random.choices(indices, weights=weights, k=1)[0]
@@ -63,6 +86,9 @@ class FloorDistribution():
 class EqualFloorDistribution(FloorDistribution):
     """
     A distribution with equal probability for every floor.
+
+    :param amount_floors: The amount of floors.
+    :type amount_floors: int
     """
 
     def __init__(self, amount_floors: int):
@@ -86,6 +112,11 @@ class PeakFloorDistribution(FloorDistribution):
 class TimeDistribution:
     """
     A probability distribution of how many passengers spawn on a floor over time.
+
+    :param time_type: The type of the time values. Can be "s", "m" or "h".
+    :param max_time_typed: The maximum time in the given time type.
+    :param data: A list of tuples (time, probability).
+    :type data: list(tuple(int, float))
     """
 
     def __init__(self, time_type, max_time_typed, data):
@@ -110,6 +141,12 @@ class TimeDistribution:
         self.add_data(new_data)
 
     def add_data(self, data):
+        """
+        Adds data to the distribution.
+
+        :param data: A list of tuples (time, probability).
+        :type data: list(tuple(int, float))
+        """
         self.data.extend(data)
         times, people = zip(*self.data)
         self.probabilities = people
@@ -117,12 +154,23 @@ class TimeDistribution:
         self.precompute_interpolated_probs()
 
     def precompute_interpolated_probs(self):
+        """
+        Precomputes the interpolated probabilities for every time point to improve performance.
+        """
         times, _ = zip(*self.data)
         for time in range(0, self.max_time):
             self.lookup_table[time] = np.interp(
                 time, times, self.probabilities)
 
     def get_interpolated_prob(self, time):
+        """
+        Get the interpolated probability for the given time.
+
+        :param time: The time to get the probability for.
+        :type time: int
+        :return: The interpolated probability for the given time.
+        :rtype: float
+        """
         out = self.lookup_table[time % self.max_time]
         if (DB.tdsr_fct_interpolated_prob):
             DB.pr(
@@ -138,11 +186,15 @@ class TimeSpaceDistribution():
     """
     A distribution of how many passengers spawn on every floor over time.
     max_passengers: The maximum amount of passengers that can spawn in the entire building once.
-    time_type: The type of the time values. Can be "s", "m" or "h".
+    time_type: The type of the time values. Can be ``"s", "m" or "h"``.
     data: A list of tuples (time, spawnDistribution, target_distribution) with the last two parameters being a Distribution object.
     passenger_distribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.
 
     Note: The spawnDistribution and target_distribution of the data parameter contain the probabilities of which floor should be chosen for spawning or as a target.
+
+    :param max_passengers: The maximum amount of passengers that can spawn in the entire building once.
+    :type max_passengers: int
+    :param time_type: The type of the time values. Can be ``"s", "m" or "h"``.
     """
 
     def __init__(
@@ -213,6 +265,11 @@ class TimeSpaceDistribution():
     def get_passengers_to_spawn(self, time):
         """
         Returns a list of tuples (spawnFloor, target_floor) of the passengers that spawn at the given time.
+
+        :param time: The time to get the passengers for.
+        :type time: int
+        :return: A list of tuples (spawnFloor, target_floor) of the passengers that spawn at the given time.
+        :rtype: list(tuple(int, int))
         """
         floorSpawnDistribution, floorTargetDistribution = self.get_floor_distributions(
             time)
@@ -237,6 +294,11 @@ class TimeSpaceDistribution():
     def get_floor_distributions(self, time):
         """
         Returns a list of tuples (spawnDistribution, target_distribution) of the passengers that spawn at the given time.
+
+        :param time: The time to get the passengers for.
+        :type time: int
+        :return: A list of tuples (spawnDistribution, target_distribution) of the passengers that spawn at the given time.
+        :rtype: list(tuple(FloorDistribution, FloorDistribution))
         """
         # Get the probabilities of the floor distributions, use reusable to
         # save memory
@@ -250,6 +312,11 @@ class TimeSpaceDistribution():
     def get_passenger_amount(self, time):
         """
         Returns a double amount of the passengers that spawn at the given time.
+
+        :param time: The time to get the passengers for.
+        :type time: int
+        :return: A double amount of the passengers that spawn at the given time.
+        :rtype: double
         """
         return self.passenger_distribution.get_interpolated_prob(
             time) * self.max_passengers
@@ -257,6 +324,11 @@ class TimeSpaceDistribution():
     def get_spawn_amount(self, time):
         """
         Returns an integer amount of passengers that spawn at the given time using the exponential distribution.
+
+        :param time: The time to get the passengers for.
+        :type time: int
+        :return: An integer amount of passengers that spawn at the given time using the exponential distribution.
+        :rtype: int
         """
         # Get the interpolated probability of the time distribution
         amount_of_passengers = self.get_passenger_amount(time)

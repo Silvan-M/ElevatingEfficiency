@@ -5,6 +5,17 @@ from debug import Debug as DB
 
 
 class Passenger():
+    """
+    Represents a passenger
+
+    :param start_time: The time the passenger was created
+    :type start_time: int
+    :param start_level: The level the passenger was created on
+    :type start_level: int
+    :param end_level: The level the passenger wants to go to
+    :type end_level: int
+    """
+
     def __init__(self, start_time, start_level, end_level):
         self.id = random.randint(0, sys.maxsize)
         self.start_level = start_level

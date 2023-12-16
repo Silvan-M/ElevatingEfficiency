@@ -8,6 +8,14 @@ import random
 
 
 class Simulation():
+    """
+    Simulates the building and the elevators
+
+    :param building: The building to simulate
+    :type building: Building
+    :param seed: The seed to use for the random number generator
+    :type seed: int
+    """
 
     def __init__(self, building, seed=-1):
         self.time = 0
@@ -32,9 +40,35 @@ class Simulation():
                 + seconds)
 
     def set_time(self, days=0, hours=0, minutes=0, seconds=0):
+        """
+        Sets the time of the simulation
+
+        :param days: The amount of days to set the time to
+        :type days: int
+        :param hours: The amount of hours to set the time to
+        :type hours: int
+        :param minutes: The amount of minutes to set the time to
+        :type minutes: int
+        :param seconds: The amount of seconds to set the time to
+        :type seconds: int
+        """
         self.time = self._convert_time(days, hours, minutes, seconds)
 
     def run(self, days=0, hours=0, minutes=0, seconds=0, time_scale=-1):
+        """
+        Starts the simulation
+
+        :param days: The amount of days to run the simulation for
+        :type days: int
+        :param hours: The amount of hours to run the simulation for
+        :type hours: int
+        :param minutes: The amount of minutes to run the simulation for
+        :type minutes: int
+        :param seconds: The amount of seconds to run the simulation for
+        :type seconds: int
+        :param time_scale: Set the speed of the simulation, only for visualisation purposes, -1 for no delay 
+        :type time_scale: float
+        """
         if (self.seed != -1):
             random.seed(self.seed)
             np.random.seed(self.seed)
@@ -51,6 +85,9 @@ class Simulation():
         self.on_simulation_finished.notify_all(self)
 
     def step(self):
+        """
+        Steps the simulation one time step forward
+        """
         if (DB.sim_fct_step and ((self.time % int(DB.sim_time_steps_skip)) == 0)):
             DB.pr("Func", "step", message="function was called", t=self.time)
 

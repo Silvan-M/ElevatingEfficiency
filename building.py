@@ -6,6 +6,16 @@ from debug import Debug as DB
 
 
 class Building():
+    """
+    Manages the building and the elevators
+
+    :param elevators: The elevators in the building
+    :type elevators: list[Elevator]
+    :param floor_amount: The amount of floors in the building
+    :type floor_amount: int
+    :param distribution: The distribution to use for spawning passengers
+    :type distribution: Distribution
+    """
 
     def __init__(self, elevators, floor_amount, distribution):
         self.on_passenger_created = Delegate()
@@ -40,6 +50,12 @@ class Building():
         return out
 
     def step(self, time):
+        """
+        Steps the building one time step forward
+
+        :param time: The current time
+        :type time: int
+        """
         if (DB.bld_fct_step and ((time % int(DB.bld_fct_stepsSkip)) == 0)):
             DB.pr("Func", "step", message="function was called")
 
@@ -61,6 +77,16 @@ class Building():
             elevator.step(time, self)
 
     def spawn_passenger(self, time, spawn, target):
+        """
+        Spawns a new passenger at the given floor
+
+        :param time: The current time
+        :type time: int
+        :param spawn: The floor the passenger spawns at
+        :type spawn: int
+        :param target: The floor the passenger wants to go to
+        :type target: int
+        """
         # Create passenger object
         passenger = Passenger(time, spawn, target)
 

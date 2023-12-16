@@ -220,12 +220,30 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="floor.ButtonPressed.set_move_down">
 <span class="sig-name descname"><span class="pre">set_move_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#floor.ButtonPressed.set_move_down" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Set the move down button to the given value and update the last pressed time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>bool</em>) – The value to set the button to</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – The current time</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="floor.ButtonPressed.set_move_up">
 <span class="sig-name descname"><span class="pre">set_move_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#floor.ButtonPressed.set_move_up" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Set the move up button to the given value and update the last pressed time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>bool</em>) – The value to set the button to</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – The current time</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="floor.ButtonPressed.update_time">
@@ -242,18 +260,39 @@
 <dt class="sig sig-object py" id="floor.Floor.remove_passenger">
 <span class="sig-name descname"><span class="pre">remove_passenger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#floor.Floor.remove_passenger" title="Link to this definition">#</a></dt>
 <dd><p>Removes a passenger from the floor and updates the floor buttons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passenger</strong> (<a class="reference internal" href="passenger.html#passenger.Passenger" title="passenger.Passenger"><em>Passenger</em></a>) – The passenger to remove</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – The current time</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="floor.Floor.spawn_passenger">
 <span class="sig-name descname"><span class="pre">spawn_passenger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#floor.Floor.spawn_passenger" title="Link to this definition">#</a></dt>
 <dd><p>Adds a passenger to the floor and updates the floor buttons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passenger</strong> (<a class="reference internal" href="passenger.html#passenger.Passenger" title="passenger.Passenger"><em>Passenger</em></a>) – The passenger to add</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – The current time</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="floor.Floor.update_floor_buttons">
 <span class="sig-name descname"><span class="pre">update_floor_buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#floor.Floor.update_floor_buttons" title="Link to this definition">#</a></dt>
 <dd><p>Updates the floor buttons based on the passengers on the floor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The current time</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

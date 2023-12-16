@@ -3,6 +3,19 @@ import time
 
 
 class ProgressBar:
+    """
+    A simple progress bar
+
+    :param total: The total amount of steps
+    :type total: int
+    :param prefix: The prefix to display
+    :type prefix: str
+    :param size: The size of the progress bar
+    :type size: int
+    :param out: The output stream
+    :type out: file
+    """
+
     def __init__(self, total, prefix="", size=60, out=sys.stdout):
         self.total = total
         self.prefix = prefix
@@ -12,10 +25,20 @@ class ProgressBar:
         self.current_count = 0
 
     def show(self):
+        """
+        Shows the progress bar
+
+        :return: The current count
+        """
         self.start_time = time.time()
         self.update(start=True)
 
     def update(self, start=False):
+        """
+        Displays or updates a console progress bar.
+
+        :param start: Whether this is the first time the progress bar is being displayed
+        """
         if not start:
             self.current_count += 1
 

@@ -234,6 +234,11 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.distribution.</span></span><span class="sig-name descname"><span class="pre">EqualFloorDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount_floors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.EqualFloorDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.FloorDistribution" title="distributions.distribution.FloorDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloorDistribution</span></code></a></p>
 <p>A distribution with equal probability for every floor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>amount_floors</strong> (<em>int</em>) – The amount of floors.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -241,15 +246,38 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.distribution.</span></span><span class="sig-name descname"><span class="pre">FloorDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.FloorDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A distribution of how many passengers per floor at a fixed time point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>distribution</strong> (<em>list</em><em>(</em><em>float</em><em>)</em>) – A list of probabilities for every floor.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.FloorDistribution.get_index_prob">
 <span class="sig-name descname"><span class="pre">get_index_prob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.FloorDistribution.get_index_prob" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the probability of the given floor index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the floor.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The probability of the given floor index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.FloorDistribution.get_random_index">
 <span class="sig-name descname"><span class="pre">get_random_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.FloorDistribution.get_random_index" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a random floor index based on the distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exclude</strong> (<em>int</em>) – The index to exclude from the distribution.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.FloorDistribution.is_chosen">
@@ -259,7 +287,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.FloorDistribution.update_distribution">
 <span class="sig-name descname"><span class="pre">update_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distribution</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.FloorDistribution.update_distribution" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Updates the distribution of the floor distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>distribution</strong> (<em>list</em><em>(</em><em>float</em><em>)</em>) – A list of probabilities for every floor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -275,20 +309,48 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.distribution.</span></span><span class="sig-name descname"><span class="pre">TimeDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time_typed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A probability distribution of how many passengers spawn on a floor over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_type</strong> – The type of the time values. Can be “s”, “m” or “h”.</p></li>
+<li><p><strong>max_time_typed</strong> – The maximum time in the given time type.</p></li>
+<li><p><strong>data</strong> (<em>list</em><em>(</em><em>tuple</em><em>(</em><em>int</em><em>, </em><em>float</em><em>)</em><em>)</em>) – A list of tuples (time, probability).</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeDistribution.add_data">
 <span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeDistribution.add_data" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Adds data to the distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>list</em><em>(</em><em>tuple</em><em>(</em><em>int</em><em>, </em><em>float</em><em>)</em><em>)</em>) – A list of tuples (time, probability).</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeDistribution.get_interpolated_prob">
 <span class="sig-name descname"><span class="pre">get_interpolated_prob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeDistribution.get_interpolated_prob" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the interpolated probability for the given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The time to get the probability for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interpolated probability for the given time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeDistribution.precompute_interpolated_probs">
 <span class="sig-name descname"><span class="pre">precompute_interpolated_probs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeDistribution.precompute_interpolated_probs" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Precomputes the interpolated probabilities for every time point to improve performance.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -298,32 +360,84 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A distribution of how many passengers spawn on every floor over time.
 max_passengers: The maximum amount of passengers that can spawn in the entire building once.
-time_type: The type of the time values. Can be “s”, “m” or “h”.
+time_type: The type of the time values. Can be <code class="docutils literal notranslate"><span class="pre">&quot;s&quot;,</span> <span class="pre">&quot;m&quot;</span> <span class="pre">or</span> <span class="pre">&quot;h&quot;</span></code>.
 data: A list of tuples (time, spawnDistribution, target_distribution) with the last two parameters being a Distribution object.
 passenger_distribution: A TimeDistribution object that determines how many passengers spawn in the building at a given time.</p>
 <p>Note: The spawnDistribution and target_distribution of the data parameter contain the probabilities of which floor should be chosen for spawning or as a target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_passengers</strong> (<em>int</em>) – The maximum amount of passengers that can spawn in the entire building once.</p></li>
+<li><p><strong>time_type</strong> – The type of the time values. Can be <code class="docutils literal notranslate"><span class="pre">&quot;s&quot;,</span> <span class="pre">&quot;m&quot;</span> <span class="pre">or</span> <span class="pre">&quot;h&quot;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeSpaceDistribution.get_floor_distributions">
 <span class="sig-name descname"><span class="pre">get_floor_distributions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeSpaceDistribution.get_floor_distributions" title="Link to this definition">#</a></dt>
 <dd><p>Returns a list of tuples (spawnDistribution, target_distribution) of the passengers that spawn at the given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The time to get the passengers for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples (spawnDistribution, target_distribution) of the passengers that spawn at the given time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list(tuple(<a class="reference internal" href="#distributions.distribution.FloorDistribution" title="distributions.distribution.FloorDistribution">FloorDistribution</a>, <a class="reference internal" href="#distributions.distribution.FloorDistribution" title="distributions.distribution.FloorDistribution">FloorDistribution</a>))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeSpaceDistribution.get_passenger_amount">
 <span class="sig-name descname"><span class="pre">get_passenger_amount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeSpaceDistribution.get_passenger_amount" title="Link to this definition">#</a></dt>
 <dd><p>Returns a double amount of the passengers that spawn at the given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The time to get the passengers for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A double amount of the passengers that spawn at the given time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeSpaceDistribution.get_passengers_to_spawn">
 <span class="sig-name descname"><span class="pre">get_passengers_to_spawn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeSpaceDistribution.get_passengers_to_spawn" title="Link to this definition">#</a></dt>
 <dd><p>Returns a list of tuples (spawnFloor, target_floor) of the passengers that spawn at the given time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The time to get the passengers for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples (spawnFloor, target_floor) of the passengers that spawn at the given time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list(tuple(int, int))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="distributions.distribution.TimeSpaceDistribution.get_spawn_amount">
 <span class="sig-name descname"><span class="pre">get_spawn_amount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions.distribution.TimeSpaceDistribution.get_spawn_amount" title="Link to this definition">#</a></dt>
 <dd><p>Returns an integer amount of passengers that spawn at the given time using the exponential distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> (<em>int</em>) – The time to get the passengers for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An integer amount of passengers that spawn at the given time using the exponential distribution.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

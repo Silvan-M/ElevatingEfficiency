@@ -3,7 +3,8 @@ from policies.policy import Policy, Action
 
 class LOOKPolicy(Policy):
     """
-    LOOK Policy
+    **LOOK Policy**
+    
     Move up and down, stop at every floor if someone is waiting
     Change direction if no requests in current direction
     """

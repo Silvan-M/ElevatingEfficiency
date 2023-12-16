@@ -3,7 +3,8 @@ from policies.policy import Policy, Action
 
 class SCANPolicy(Policy):
     """
-    SCAN Policy
+    **SCAN Policy**
+    
     Move up and down, stop at every floor if someone is waiting
     Change direction if reached top or bottom floor
     """
