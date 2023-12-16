@@ -14,6 +14,8 @@ copyright = '2023, Brian Funk, Andrin Gasser and Silvan Metzker'
 author = 'Brian Funk, Andrin Gasser and Silvan Metzker'
 
 sys.path.insert(0, os.path.abspath('..'))
+autodoc_mock_imports = ['hard_to_install_module', 'module_with_c_extensions']
+
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -21,7 +23,7 @@ sys.path.insert(0, os.path.abspath('..'))
 extensions = ['sphinx.ext.autodoc']
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'main.py']
 
 
 

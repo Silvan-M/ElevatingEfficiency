@@ -14,7 +14,6 @@ ElevatingEfficiency
    floor
    game_display
    liveplotter
-   main
    parameter
    parameter_optimizer
    passenger
