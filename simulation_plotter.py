@@ -69,6 +69,23 @@ class SimulationPlotter():
         to further compute any plots. The list obj contains the metrics which will be plotted and measured during
         this numerical experiment.
 
+        :param obj: List of objectives to be plotted.
+        :type obj: list
+        :param param: The parameter to be simulated.
+        :type param: Parameter
+        :param start_val: The start value of the simulation.
+        :type start_val: int
+        :param end_val: The end value of the simulation.
+        :type end_val: int
+        :param steps: The amount of steps in the simulation.
+        :type steps: int
+        :param average_of: The amount of simulations objective.
+        :type average_of: int, optional
+        :param save_plot: Whether the plot should be saved or not.
+        :type save_plot: bool, optional
+        :param name: The name of the plot.
+        :type name: str, optional
+        :rtype: None
         """
         obj_list = obj
         objective_data = []
@@ -111,6 +128,19 @@ class SimulationPlotter():
         The average will be taken to further compute any plots. The obj represents the metric which will be plotted
         and measured during this numerical experiment.
 
+        :param obj: The objective to be plotted.
+        :type obj: Objective
+        :param param1: The first parameter to be simulated.
+        :type param1: list
+        :param param2: The second parameter to be simulated.
+        :type param2: list
+        :param average_of: The amount of simulations per objective.
+        :type average_of: int, optional
+        :param save_plot: Whether the plot should be saved or not.
+        :type save_plot: bool, optional
+        :param name: The name of the plot.
+        :type name: str, optional
+        :rtype: None
         """
         objective = obj
         temp_res = []
@@ -205,6 +235,17 @@ class SimulationPlotter():
             interpolation="bilinear")
 
     def _param_plotter_3d_worker(self, tuples, obj):
+        """
+        Computes a list of simulation determined by the tuples and returns a list of tuples containing the results. 
+        Used for multiprocessing.
+
+        param tuples: List of tuples containing the parameters for the simulation.
+        type tuples: list
+        param obj: The objective to be plotted.
+        type obj: Objective
+        return: List of tuples containing the results.
+        rtype: list
+        """
         result = []
         for tuple in tuples:
             simulation = tuple[2]
@@ -222,6 +263,18 @@ class SimulationPlotter():
             avg_of=1):
         """
         Plots all permutations of the parameters in PolicyParameter.
+
+        :param obj: The objective to be plotted.
+        :type obj: Objective
+        :param from_val: The start value of the simulation.
+        :type from_val: int
+        :param to_val: The end value of the simulation.
+        :type to_val: int
+        :param steps: The amount of steps in the simulation.
+        :type steps: int
+        :param average_of: The amount of simulations per objective.
+        :type average_of: int, optional
+        :rtype: None
         """
         P = PolicyParameter
         parameters = [
@@ -270,6 +323,20 @@ class SimulationPlotter():
         If plot_time=0, only the floor distribution will be plotted.
         If plot_time=1, only the time distribution will be plotted.
         If plot_time=2, both will be plotted.
+
+        :param distr: The distribution to be plotted.
+        :type distr: Distribution
+        :param target: Whether the target or spawn distribution should be plotted.
+        :type target: bool, optional
+        :param save_plot: Whether the plot should be saved or not.
+        :type save_plot: bool, optional
+        :param name: The name of the plot.
+        :type name: str, optional
+        :param combine_floors: List of tuples of indices of floors to be combined.
+        :type combine_floors: list, optional
+        :param plot_time: Specifies the starting time of the distribution.
+        :type plot_time: int, optional
+        :rtype: None
         """
         distr_init = distr()
         start = 0
@@ -364,6 +431,25 @@ class SimulationPlotter():
             average_of=1,
             save_plot=False,
             name=""):
+        """
+        Plots the given objective as benchmark over all given policies. The time_scale specifies how often 
+        the objective should be measured. The average_of specifies how often the simulation should be run
+        
+        :param objective: The objective to be plotted.
+        :type objective: Objective
+        :param policies: The policies to be compared.
+        :type policies: list
+        :param time_scale: The time scale of the objective.
+        :type time_scale: str, optional
+        :param average_of: The amount of simulations per objective.
+        :type average_of: int, optional
+        :param save_plot: Whether the plot should be saved or not.
+        :type save_plot: bool, optional
+        :param name: The name of the plot.
+        :type name: str, optional
+        :rtype: None
+        """
+
         bar = ProgressBar(len(policies) * average_of, "Simulating: ")
         objective_data = []
         objective_temp = []
@@ -429,6 +515,29 @@ class SimulationPlotter():
             average_of=1,
             save_plot=False,
             name=""):
+        
+        """
+        Compares the given policy over all given scenarios. The time_scale specifies how often 
+        the objective should be measured. The average_of specifies how often the simulation should be run
+
+        :param objective: The objective to be plotted.
+        :type objective: Objective
+        :param policy: The policy to be compared.
+        :type policy: Policy
+        :param scenarios: The scenarios to be compared.
+        :type scenarios: list
+        :param scenario_names: The names of the scenarios.
+        :type scenario_names: list
+        :param time_scale: The time scale of the objective.
+        :type time_scale: str, optional
+        :param average_of: The amount of simulations per objective.
+        :type average_of: int, optional
+        :param save_plot: Whether the plot should be saved or not.
+        :type save_plot: bool, optional
+        :param name: The name of the plot.
+        :type name: str, optional
+        :rtype: None
+        """
         bar = ProgressBar(len(scenarios) * average_of, "Simulating: ")
         self._update_handler(PolicyParameter.POLICY, policy)
         objective_data = []
@@ -485,6 +594,16 @@ class SimulationPlotter():
     
 
     def _partition_tasks(self, input: list):
+        """
+        Given a list of tasks, this function partitions the tasks into a list of lists, where each list adheres to the tasks_per_thread parameter.
+        It returns a list of lists, where each list contains the tasks for a single thread. Used for multiprocessing.
+
+        :param input: The list of tasks to be partitioned.
+        :type input: list
+        :return: The partitioned tasks.
+        :rtype: list
+        """
+
         tasks = [[]]
         current_thread = 0
         current_amount = 0
@@ -499,6 +618,14 @@ class SimulationPlotter():
         return tasks
 
     def _unpartition_results(self, input: list):
+        """
+        Given a list of lists of results, this function unpartitions the results into a single list. Used for multiprocessing.
+
+        :param input: The list of lists of results to be unpartitioned.
+        :type input: list
+        :return: The unpartitioned results.
+        :rtype: list
+        """
         out = []
         for x in range(len(input)):
             for y in range(len(input[x])):
@@ -510,6 +637,11 @@ class SimulationPlotter():
         Extracts the mean of the columns of a matrix represented by input.
         Individual None values get deleted in a column. When column only consists of
         None, average will be marked with -1, such that we can handle that case later.
+
+        :param input: The matrix to be averaged.
+        :type input: list
+        :return: The averaged matrix.
+        :rtype: list
         """
         if (len(input) == 0 or input is None):
             raise BaseException("List cannot be empty or of length 0")
@@ -532,7 +664,13 @@ class SimulationPlotter():
 
     def _extract_mean_3d(self, input: list):
         """
-        TODO
+        Extracts the mean of the columns of a 3d matrix represented by input.
+        Individual None values get deleted in a column.
+
+        :param input: The matrix to be averaged.
+        :type input: list
+        :return: The averaged matrix.
+        :rtype: list
         """
         if (len(input) == 0 or input is None):
             raise BaseException("List cannot be empty or of length 0")
@@ -549,12 +687,15 @@ class SimulationPlotter():
 
     def _init(self):
         """
-        Initialises an experiment with the current member variables as arguments.
+        Initialises an simulation with the current member variables as arguments.
         The arguments are:
         - elevator_args      : stores the arguments of the i-th elevator in elevator_args[i]
         - distr_type         : stores the scenario [ShoppingMallDistribution, RooftopBarDistribution, ResidentialBuildingDistribution]
-        - self.distribution : stores the distribution
+        - self.distribution  : stores the distribution
         - self.floor_amount  : stores the floor amount
+
+        :return: The initialised simulation.
+        :rtype: Simulation
         """
         if (self.seed != -1):
             random.seed(self.seed)
@@ -573,6 +714,13 @@ class SimulationPlotter():
         return Simulation(building, self.seed)
 
     def _init_policy(self, i):
+        """
+        Initialises the policy of the i-th elevator in elevator_args[i].
+
+        :param i: The index of the elevator.
+        :type i: int
+        :rtype: None
+        """
         t = self.elevator_args[i][2][0]
 
         if (t == LOOKPolicy):
@@ -594,6 +742,13 @@ class SimulationPlotter():
             self.elevators_init[i] = PWDPPolicyOptimized(*args)
 
     def _set_floor_amount(self, amount: int):
+        """
+        Sets the floor amount to the given amount and updates all member variables accordingly.
+
+        :param amount: The new floor amount.
+        :type amount: int
+        :rtype: None
+        """
         self.floor_amount = amount
         self.spawn_distr_args[0] = amount
         self.time_distr_args[0] = amount
@@ -602,6 +757,18 @@ class SimulationPlotter():
             self.elevator_args[i][1] = amount - 1
 
     def _update_handler(self, param, new_val, index=0):
+        """
+        Updates the member variables according to the given parameter and value.
+        If the parameter is a PolicyParameter, the value will be added to the policy list of the i-th elevator in elevator_args[i].
+
+        :param param: The parameter to be updated.
+        :type param: Parameter
+        :param new_val: The new value.
+        :type new_val: int
+        :param index: The index of the elevator.
+        :type index: int, optional
+        :rtype: None
+        """
 
         match param.case():
             case 0:
@@ -614,6 +781,16 @@ class SimulationPlotter():
                 self._update_timeDistr(param, new_val)
 
     def _update_param(self, param, new_val):
+        """
+        If the to be updated parameter is a spawn-, target distribution or floor amount, the member variables will be updated accordingly.
+
+        :param param: The parameter to be updated.
+        :type param: Parameter
+        :param new_val: The new value.
+        :type new_val: int
+        :rtype: None
+        """
+
         match param.value:
             case 1:
                 self._set_floor_amount(new_val)
@@ -623,29 +800,82 @@ class SimulationPlotter():
                 self.target_distr_args[1] = new_val
 
     def _update_policy(self, param, new_val, index: int):
+        """
+        If the to be updated parameter is a PolicyParameter, the member variables will be updated accordingly.
+
+        :param param: The parameter to be updated.
+        :type param: Parameter
+        :param new_val: The new value.
+        :type new_val: int
+        :param index: The index of the elevator.
+        :type index: int
+        :rtype: None
+        """
+
         if (param.value == -1):
             self.elevator_args[index][2] = [new_val]
         else:
             self.elevator_args[index][2][param.value] = new_val
 
     def _add_elevator(self, args: list):
+        """
+        Adds an elevator with the given args to the current building
+
+        :param args: The arguments of the elevator.
+        :type args: list
+        :rtype: None
+        """
+
         self.elevator_args.append(args)
         self.elevator_args.append(None)
 
     def _update_elevator(self, param: ElevatorParameter, new_val, index: int):
+        """
+        If the to be updated parameter is an ElevatorParameter, the member variables will be updated accordingly.
+
+        :param param: The parameter to be updated.
+        :type param: Parameter
+        :param new_val: The new value.
+        :type new_val: int
+        :param index: The index of the elevator.
+        :type index: int
+        :rtype: None
+        """
         self.elevator_args[index][param.value] = new_val
 
     def _update_distr(self, distribution):
+        """
+        Updates the distribution to the given distribution and updates all member variables accordingly.
+
+        :param distribution: The new distribution.
+        :type distribution: Distribution
+        :rtype: None
+        """
         self.distribution = distribution()
         self.floor_amount = self.distribution.floor_amount
 
     def _update_timeDistr(self, param: TimeDistrParameter, new_val):
+        """
+        If the to be updated parameter is a TimeDistrParameter, the member variables will be updated accordingly.
+
+        :param param: The parameter to be updated.
+        :type param: Parameter
+        :param new_val: The new value.
+        :type new_val: int
+        :rtype: None
+        """
+
         if (param.value == 3):
             self.time_distr_args[param.value].append(new_val)
         else:
             self.time_distr_args[param.value] = new_val
 
     def _print_args(self):
+        """
+        Prints all member variables.
+
+        :rtype: None
+        """
         print("printing args -----")
         print(self.elevator_args)
         print(self.floor_amount)
@@ -654,11 +884,27 @@ class SimulationPlotter():
         print(self.time_distr_args)
 
     def _del_none(self, lst: list):
+        """
+        Deletes all None values in the given list, accessed as a pointer.
+
+        :param lst: The list to be cleaned.
+        :type lst: list
+        :rtype: None
+        """
         for i in sorted(range(len(lst)), reverse=True):
             if (lst[i] is None):
                 lst.pop(i)
 
     def _gen_tuple(self, param: Parameter):
+        """
+        Generates a tuple of all parameters except the given parameter.
+
+        :param param: The parameter to be excluded.
+        :type param: Parameter
+        :return: The list of all tuple of parameters except the given parameter.
+        :rtype: list
+        """
+
         P = PolicyParameter
         parameters = [
             P.ELEV_BUT_TIME_WEIGHT,
