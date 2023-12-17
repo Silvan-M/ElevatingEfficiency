@@ -26,7 +26,8 @@ simulation_length = 60 * 60 * 6
 gradient_descent = False
 
 # Enable plotting
-plot = False
+plot = True
+save_plot = "plotter/plots/parameter_optimizer.pdf"
 
 distribution = distributions.HighDensityDistribution() if num_epochs > 0 else None
 
@@ -227,4 +228,6 @@ if plot or gradient_descent:
 
     # Customize the plot
     plt.title('Parameter Values Over Epochs')
+    fig.set_size_inches(10, 7)
+    plt.savefig(save_plot, dpi=300)
     plt.show()

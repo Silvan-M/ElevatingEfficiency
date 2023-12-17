@@ -12,8 +12,22 @@ class Plotter3D():
     Creates a Plotter3D object:
     - param_x_data (list)    : parametric Data, will be plotted on the x-axis with label param_x_name
     - param_y_data  (list)   : parametric Data, will be plotted on the y-axis with label param_y_name
-    - objective_data (list) : z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)],
+    - objective_data (list)  : z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)],
                              will be labelled with objective_name
+
+    :param param_x_data: list of x-values
+    :type param_x_data: list
+    :param param_x_name: name of the x-axis
+    :type param_x_name: str
+    :param param_y_data: list of y-values
+    :type param_y_data: list
+    :param param_y_name: name of the y-axis
+    :type param_y_name: str
+    :param objective_data: z-values of the graph in the form of a matrix
+    :type objective_data: list
+    :param objective_name: name of the z-axis
+    :type objective_name: str
+    :rtype: None
     """
 
     def __init__(
@@ -40,16 +54,27 @@ class Plotter3D():
             interpolation='bilinear'):
         """
         Shows the plot with the data stored in member variables:
-        - name (str)          : sets the title of the plot
+        - name (str)           : sets the title of the plot
         - show_min (bool)      : if True, plots and computes minimum z-value and it's corresponding x- and y-coordinate
         - show_max (bool)      : if True, plots and computes maximum z-value and it's corresponding x- and y-coordinate
-        - save  (bool)        : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.png",
+        - save  (bool)         : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.png",
                                 where HH,MM,SS are hours, minutes and seconds respectively
-        - interpolation (str) : chooses interpolation mode, options are:
+        - interpolation (str)  : chooses interpolation mode, options are:
                                 'none', 'nearest', 'bilinear', 'bicubic', 'spline16',
                                 'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric',
                                 'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos'
 
+        :param name: name of the plot
+        :type name: str
+        :param show_min: show minimum value, defaults to False
+        :type show_min: bool, optional
+        :param show_max: show maximum value, defaults to False
+        :type show_max: bool, optional
+        :param save: save plot, defaults to False
+        :type save: bool, optional
+        :param interpolation: interpolation mode, defaults to 'bilinear'
+        :type interpolation: str, optional
+        :rtype: None
         """
 
         if save:
