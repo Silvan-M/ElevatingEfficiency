@@ -17,6 +17,7 @@ ElevatingEfficiency
    parameter
    parameter_optimizer
    passenger
+   plotter
    policies
    progress_bar
    simulation

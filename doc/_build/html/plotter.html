@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="policies package" href="policies.html" /><link rel="prev" title="passenger module" href="passenger.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>plotter package - Elevating Efficiency documentation</title>
@@ -155,8 +155,8 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
@@ -170,6 +170,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -275,13 +276,12 @@ This is done to not plot None values, as they were replaced with negative values
 <dt class="sig sig-object py" id="plotter.plotter3D.Plotter3D">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">plotter.plotter3D.</span></span><span class="sig-name descname"><span class="pre">Plotter3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_x_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_x_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_y_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_y_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objective_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objective_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotter.plotter3D.Plotter3D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Creates a Plotter3D object:
-- param_x_data (list)    : parametric Data, will be plotted on the x-axis with label param_x_name
-- param_y_data  (list)   : parametric Data, will be plotted on the y-axis with label param_y_name
-- objective_data (list)  : z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)],</p>
-<blockquote>
-<div><p>will be labelled with objective_name</p>
-</div></blockquote>
+<p>Creates a Plotter3D object:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">param_x_data</span></code> (list): parametric Data, will be plotted on the x-axis with label param_x_name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">param_y_data</span></code> (list): parametric Data, will be plotted on the y-axis with label param_y_name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">objective_data</span></code> (list): z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)], will be labelled with objective_name</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -346,8 +346,26 @@ This is done to not plot None values, as they were replaced with negative values
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="policies.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">policies package</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="passenger.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">passenger module</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">

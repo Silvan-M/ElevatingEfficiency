@@ -10,10 +10,11 @@ from datetime import datetime
 class Plotter3D():
     """
     Creates a Plotter3D object:
-    - param_x_data (list)    : parametric Data, will be plotted on the x-axis with label param_x_name
-    - param_y_data  (list)   : parametric Data, will be plotted on the y-axis with label param_y_name
-    - objective_data (list)  : z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)],
-                             will be labelled with objective_name
+    
+    * ``param_x_data`` (list): parametric Data, will be plotted on the x-axis with label param_x_name
+    * ``param_y_data`` (list): parametric Data, will be plotted on the y-axis with label param_y_name
+    * ``objective_data`` (list): z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)], will be labelled with objective_name
+
 
     :param param_x_data: list of x-values
     :type param_x_data: list
