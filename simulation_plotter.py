@@ -19,6 +19,19 @@ from datetime import datetime
 
 
 class SimulationPlotter():
+    """
+    Simulation Plotter and enables various plottings with the given __init__ parameters as standard parameters.
+
+    :param elevator_args: List containing all elevator arguments. 
+    :type elevator_args: list
+    :param distr_type: The distribution type of the simulation.
+    :type distr_type: Distribution
+    :param seed: The seed for the simulation. If -1, no seed will be used.
+    :type seed: int
+    :param distr_init: The distribution object. If None, a new object will be created with the distribution type. If not None, it will be used directly.
+    :type distr_init: Distribution, optional
+    :rtype: None
+    """
     def __init__(
             self,
             elevator_args=[[0, 9, [LOOKPolicy], 10]],
@@ -26,19 +39,7 @@ class SimulationPlotter():
             seed=-1,
             distr_init=None):
     
-        """
-        Initialises the Simulation Plotter and enables various plottings with the given input as standard parameters.
 
-        :param elevator_args: List containing all elevator arguments. 
-        :type elevator_args: list
-        :param distr_type: The distribution type of the simulation.
-        :type distr_type: Distribution
-        :param seed: The seed for the simulation. If -1, no seed will be used.
-        :type seed: int
-        :param distr_init: The distribution object. If None, a new object will be created with the distribution type. If not None, it will be used directly.
-        :type distr_init: Distribution, optional
-        :rtype: None
-        """
 
         self.distribution = distr_type() if (distr_init is None) else distr_init
         self.floor_amount = self.distribution.floor_amount
@@ -537,7 +538,7 @@ class SimulationPlotter():
         :type name: str, optional
         :rtype: None
         """
-        
+
         bar = ProgressBar(len(scenarios) * average_of, "Simulating: ")
         self._update_handler(PolicyParameter.POLICY, policy)
         objective_data = []

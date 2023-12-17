@@ -9,9 +9,24 @@ class Plotter2D():
     """
     Creates a Plotter2D object:
     - param_data (list)     : parametric Data, will be plotted on the x-axis with label param_name
-    - objective_data (list) : multiple curves, each stored by y-values in the form of a objective_data[i] = list[len(param_data)],
-                             will be labelled with respective objective_name[i]
+    - objective_data (list) : multiple curves, each stored by y-values in the form of a objective_data[i] = list[len(param_data)], will be labelled with respective objective_name[i]
     - spec_val (list)       : special values will be plotted in red and labelled spec_val_name
+
+    :param para_data: list of x-values
+    :type para_data: list
+    :param objective_data: list of y-values, can represent multiplce curves
+    :type objective_data: list
+    :param param_name: name of the x-axis
+    :type param_name: str
+    :param objective_name: name of the curves
+    :type objective_name: list
+    :param y_label: label of the y-axis
+    :type y_label: str
+    :param spec_val: special values, defaults to []
+    :type spec_val: list, optional
+    :param spec_val_name: name of the special values, defaults to ""
+    :type spec_val_name: str, optional
+    :rtype: None
     """
 
     def __init__(
@@ -42,17 +57,25 @@ class Plotter2D():
             ignore_neg_value=True,
             max_val=None):
         """
-        Shows the plot with the data stored in member variables:
-        - name (str)            : sets the title of the plot
-        - show_min (bool)        : if True, plots and computes minimum z-value and it's corresponding x- and y-coordinate
-        - show_max (bool)        : if True, plots and computes maximum z-value and it's corresponding x- and y-coordinate
-        - cmap (str)            : sets cmap, which defines color. Options: https://matplotlib.org/stable/users/explain/colors/colormaps.html
-        - save  (bool)          : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.pdf",
-                                  where HH,MM,SS are hours, minutes and seconds respectively
-        - ignore_neg_value (bool) : if True, automatically ignores negative values. simulatiom_plotter.py marks None with -1
-                                  This might occur when the distribution is really low and no passengers spawn and thus
-                                  AWT, ATTD and average crowdedness are undefined
-
+        Shows the plot with the data stored in member variables. 
+        Ignore_neg_value is set to True by default, which means that negative values are ignored.
+        This is done to not plot None values, as they were replaced with negative values.
+        
+        :param name: name of the plot
+        :type name: str
+        :param show_min: show minimum value, defaults to False
+        :type show_min: bool, optional
+        :param show_max: show maximum value, defaults to False
+        :type show_max: bool, optional
+        :param cmap: color map, defaults to None
+        :type cmap: str, optional
+        :param save: save plot, defaults to False
+        :type save: bool, optional
+        :param ignore_neg_value: ignore negative values, defaults to True
+        :type ignore_neg_value: bool, optional
+        :param max_val: maximum value on x-axis, defaults to None
+        :type max_val: [type], optional
+        :rtype: None
         """
 
         plt.title(name)
@@ -143,6 +166,14 @@ class Plotter2D():
         - max (int)          : sets the range of the cmap
         - cmap_inp (str,None) : selects cmap and if None, sets cmap to "viridis"
 
+        :param index: index of the color
+        :type index: int
+        :param max: maximum value of the color
+        :type max: int
+        :param cmap_inp: color map, defaults to None
+        :type cmap_inp: str, optional
+        :return: color
+        :rtype: str
         """
         if (cmap_inp is None):
             cmap_inp = "winter"
