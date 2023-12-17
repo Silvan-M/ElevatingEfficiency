@@ -77,7 +77,7 @@ class SimulationPlotter():
         :type end_val: int
         :param steps: The amount of steps in the simulation.
         :type steps: int
-        :param average_of: The amount of simulations objective.
+        :param average_of: The amount of simulations per objective.
         :type average_of: int, optional
         :param save_plot: Whether the plot should be saved or not.
         :type save_plot: bool, optional
