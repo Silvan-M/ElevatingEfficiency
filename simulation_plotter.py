@@ -20,7 +20,7 @@ from datetime import datetime
 
 class SimulationPlotter():
     """
-    Simulation Plotter and enables various plottings with the given __init__ parameters as standard parameters.
+    Simulation Plotter enables various plottings with the given __init__ parameters as standard parameters.
 
     :param elevator_args: List containing all elevator arguments. 
     :type elevator_args: list
