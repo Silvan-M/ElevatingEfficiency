@@ -327,7 +327,6 @@ Change direction if no requests in current direction</p>
 <span class="n">s6</span> <span class="o">=</span> <span class="n">distance_weight</span><span class="o">^</span><span class="p">(</span><span class="n">distance_exponent</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_floor</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then the i-th floor advertising [Up/Down] will have score:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">+</span> <span class="n">s3</span> <span class="o">+</span> <span class="n">s4</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">s5</span> <span class="o">+</span> <span class="n">s6</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -420,7 +419,6 @@ Policy which evaluates each floor by giving it a score using input parameters (s
 <span class="n">s6</span> <span class="o">=</span> <span class="n">distance_weight</span><span class="o">^</span><span class="p">(</span><span class="n">distance_exponent</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_floor</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then the i-th floor advertising [Up/Down] will have score:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">+</span> <span class="n">s3</span> <span class="o">+</span> <span class="n">s4</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">s5</span> <span class="o">+</span> <span class="n">s6</span><span class="p">))</span>
 </pre></div>
 </div>
