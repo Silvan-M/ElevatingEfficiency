@@ -39,8 +39,6 @@ class SimulationPlotter():
             seed=-1,
             distr_init=None):
     
-
-
         self.distribution = distr_type() if (distr_init is None) else distr_init
         self.floor_amount = self.distribution.floor_amount
         self.seed = seed
@@ -52,7 +50,6 @@ class SimulationPlotter():
 
         self.tasks_per_thread = 4
 
-    
 
     def param_plotter_2d(
             self,
@@ -88,30 +85,49 @@ class SimulationPlotter():
         :type name: str, optional
         :rtype: None
         """
+
+        # variable initialization used to store computed values and its names
+
         obj_list = obj
         objective_data = []
         objective_names = []
         objective_temp = []
+
+
         for i in range(len(obj_list)):
             objective_names.append(obj_list[i].value)
             objective_data.append([])
             objective_temp.append([])
+
+        # creates the space to be simulated starting at start_val and ending at end_val with steps amount of steps
+            
         parameter_data = np.linspace(start_val, end_val, num=steps)
+
+        # init progressbar
         bar = ProgressBar(len(parameter_data) * average_of, "Simulating: ")
 
+        # iterates through all parameter values and simulates the scenario average_of times
+
         for i in range(len(parameter_data)):
+            # updates the according parameter 
             self._update_handler(param, parameter_data[i])
+            # repeats simulation average_of times
             for a in range(average_of):
                 bar.update()
+                # inits simulation with current settings and store it in simulation
                 simulation = self._init()
+                # runs simulation for 1 day
                 simulation.run(days=1, time_scale=-1)
+                # retrieves all objectives and stores them in objective_temp
                 for q in range(len(obj_list)):
                     x = (simulation.statistics.get_objective(obj_list[q]))
                     objective_temp[q].append(x)
+            # computes the average of all objectives and stores them in objective_data
             for q in range(len(obj_list)):
                 self._del_none(objective_temp[q])
                 objective_data[q].append(np.mean(objective_temp[q]))
                 objective_temp[q] = []
+        # plots the data
         plt = P2D(parameter_data, param.name(), objective_data, objective_names)
         plt.plot_normal(name, save=save_plot)
 
@@ -143,37 +159,53 @@ class SimulationPlotter():
         :type name: str, optional
         :rtype: None
         """
+        # variable used for plotting
+
+
+        # objective to be plotted
+
         objective = obj
         temp_res = []
         objective_temp = []
+
+        # first parameter to be simulated
         par1 = param1[0]
         start_val_1 = param1[1]
         end_val_1 = param1[2]
         steps1 = param1[3]
 
+        # second parameter to be simulated
         par2 = param2[0]
         start_val_2 = param2[1]
         end_val_2 = param2[2]
         steps2 = param2[3]
 
+        # list of simulations to be executed
         simulations = []
 
+        # determines the amount of threads to be used
         threads = mp.cpu_count()
 
+        # prints the name of the simulation
         print_name = name if name != "" else self.distribution.distribution_name + " Scenario"
         print(f"Plotting {print_name} with {par1.name()} and {par2.name()} using {threads} threads with {self.tasks_per_thread} simulations per Thread.")
 
         if (name == ""):
             name = self.distribution.distribution_name + " Scenario"
 
+        # creates the space to be simulated starting at start_val and ending at end_val with steps amount of steps for both parameters
         parameter_data1 = np.linspace(start_val_1, end_val_1, num=steps1)
         parameter_data2 = np.linspace(start_val_2, end_val_2, num=steps2)
 
+        # creates a pool of threads
         pool = mp.Pool()
         simulations = []
         results = []
         objective_data = []
+        # stores the seed to be used for the simulation
         seed_store = self.seed
+
+        # iterates through all parameter values and simulates the scenario average_of times
 
         for i in range(len(parameter_data2)):
             objective_data.append([])
@@ -182,18 +214,25 @@ class SimulationPlotter():
                 self.seed = seed_store
 
                 for k in range(len(self.elevator_args)):
+                    # changes the parameters of the simulation
                     self._update_handler(par1, parameter_data1[j], k)
                     self._update_handler(par2, parameter_data2[i], k)
-
+                # repeats simulation average_of times
                 for a in range(average_of):
                     self.seed += 1234
+                    # inits simulation with current settings and store it in simulation
                     simulation = self._init()
+                    # creates tuple to be used for multiprocessing and store them in a list
                     simulations.append((j, i, simulation))
 
+        # distributes all tuples to the threads
         tasks = self._partition_tasks(simulations)
 
+        # init progressbar
         bar = ProgressBar(len(tasks), "Simulating: ")
         bar.show()
+
+        # iterates through all tasks and executes them asynchronously
 
         for i in range(len(tasks)):
             result = pool.apply_async(
@@ -202,25 +241,26 @@ class SimulationPlotter():
             results.append(result)
 
         temp_res = []
-
+        # iterates through all results and stores them in a list
         for result in results:
             temp_res.append(result.get())
             bar.update()
-
+        # unpartitions the results
         temp_res = self._unpartition_results(temp_res)
 
         pool.close()
         pool.join()
 
         print(f"Simulation {name} finished.")
-
+        # stores the results in a 3d matrix to be plotted
         for i in range(len(temp_res)):
             vari = temp_res[i][0]
             varj = temp_res[i][1]
             objective_data[varj][vari].append(temp_res[i][2])
-
+        # computes mean
         self._extract_mean_3d(objective_data)
 
+        # plots the data
         plt = P3D(
             parameter_data1,
             par1.name(),
@@ -339,15 +379,20 @@ class SimulationPlotter():
         :type plot_time: int, optional
         :rtype: None
         """
+        # inits distribution
         distr_init = distr()
+        # range to be plotted (start, end)
         start = 0
         end = distr_init.max_time
         key_frames = list(range(start, end + 1))
+        # amount of floors
         floor_amount = self.floor_amount
 
+        # if combine_floors is None, all floors will be plotted individually
         if (combine_floors is None):
             combine_floors = [(i, i) for i in range(floor_amount)]
 
+        # if name is empty, the name of the distribution will be used
         if (name == ""):
             name = self.distribution.distribution_name + " Scenario"
 
@@ -355,10 +400,12 @@ class SimulationPlotter():
         floor_target_data = []
         floor_spawn_data = []
 
+        # prepares list to hold the data of each floor
         for i in range(floor_amount):
             floor_target_data.append([])
             floor_spawn_data.append([])
 
+        # combines floors and stores the names of the curves as indicated in combine_floors
         if plot_time == 0 or plot_time == 2:
             for below, above in combine_floors:
                 if below != above:
@@ -368,13 +415,17 @@ class SimulationPlotter():
 
         time_data = []
 
+        # iterates through all key frames and stores the data of each floor
         for t in range(len(key_frames)):
+            # stores floor spawn and target distribution at time t
             floorSpawnDistribution, floorTargetDistribution = distr_init.get_floor_distributions(
                 t)
+            # stores passenger distribution at time t
             passenger_distr_at_time = distr_init.passenger_distribution.get_interpolated_prob(
                 t)
             time_data.append(passenger_distr_at_time)
 
+            # depending on plot_time it plots either floor distribution, time distribution or both
             for i in range(floor_amount):
                 if (plot_time == 0):
                     floor_target_data[i].append(
@@ -450,54 +501,74 @@ class SimulationPlotter():
         :type name: str, optional
         :rtype: None
         """
-
+        # inits progressbar
         bar = ProgressBar(len(policies) * average_of, "Simulating: ")
+        
+        # prepares variables to store objective data, names and average
         objective_data = []
         objective_temp = []
         objective_names = []
         objective_average = []
 
+        # prepares variables to store the average of the objective at the end of the simulation
         policy_average_end_result = []
 
+        # determines the interval in which data will be retrieved from the simulation
         t = 1
         if (time_scale == "h"):
             t = 60 * 60
         elif (time_scale == "m"):
             t = 60
 
+        # if name is empty, the name of the distribution will be used
         if (name == ""):
             name = self.distribution.distribution_name + " Scenario"
 
+        # inits distribution and range of the simulation
         distr = self.distribution
         start = 0
         end = (distr.max_time) // t
+        # stores the seed to be used for the simulation, that we can reset it later
         seed_store = self.seed
 
+        # creates the range of the simulation
         key_frames = list(range(start, end))
 
+        # iterates through all policies and simulates the scenario average_of times
         for i in range(len(policies)):
             policy_end_result = []
             self.seed = seed_store
             objective_names.append(policies[i]().name())
+            # updates the policy of all elevators
             for j in range(len(self.elevator_args)):
                 self._update_handler(PolicyParameter.POLICY, policies[i], j)
+            # repeats simulation average_of times
             for a in range(average_of):
                 self.seed += 1234
                 bar.update()
+                # init simulation
                 simulation = self._init()
+                # run simulation for 1 day
                 simulation.run(days=1, time_scale=-1)
+                # get objective data partitioned by time_scale
                 x = (
                     simulation.statistics.get_objective(
                         objective, t, 24 * 60 * 60 // t))
+                
                 objective_temp.append(x)
+                # get objective data at the end of the simulation
                 y = (simulation.statistics.get_objective(objective))
                 policy_end_result.append(y)
+            # compute average of the objective
             objective_data.append(self._extract_mean(objective_temp))
             objective_temp = []
+            # compute average of the objective at the end of the simulation
             policy_average_end_result.append(np.mean(policy_end_result))
+        # prints the average of the objective at the end of the simulation
         for i in range(len(policies)):
             print(
                 f"Policy {policies[i]().name()} has an average of {policy_average_end_result[i]} {objective.value} at the end of the simulation")
+        # plots the data
         plt = P2D(
             key_frames,
             "Time [" + str(time_scale) + "]",
@@ -538,50 +609,68 @@ class SimulationPlotter():
         :type name: str, optional
         :rtype: None
         """
-
+        # inits progressbar
         bar = ProgressBar(len(scenarios) * average_of, "Simulating: ")
-        self._update_handler(PolicyParameter.POLICY, policy)
+        # updates the policy for all elevators
+        for q in range(len(self.elevator_args)):
+            self._update_handler(PolicyParameter.POLICY, policy, q)
+        
+        # prepares variables to store objective data, names and average
         objective_data = []
         objective_temp = []
         objective_names = []
         objective_average = []
 
+        # prepares variables to store the average of the objective at the end of the simulation
         policy_average_end_result = []
 
+        # determines the interval in which data will be retrieved from the simulation
         t = 1
         if (time_scale == "h"):
             t = 60 * 60
         elif (time_scale == "m"):
             t = 60
-
+        
+        # if name is empty, "Different Scenarios" will be used
         if (name == ""):
             name = "Different Scenarios"
 
+        # inits distribution and range of the simulation
         distr = self.distribution
         start = 0
         end = (distr.max_time) // t
+        # stores the seed to be used for the simulation, that we can reset it later
         seed_store = self.seed
 
         key_frames = list(range(start, end))
 
+        # iterates through all scenarios and simulates the scenario average_of times
         for i in range(len(scenarios)):
+            # init distribution
             self.distribution = scenarios[i]()
             policy_end_result = []
             self.seed = seed_store
             objective_names.append(scenario_names[i])
+            # repeats simulation average_of times
             for a in range(average_of):
                 self.seed += 1234
                 bar.update()
+                # init simulation
                 simulation = self._init()
+                # run simulation for 1 day
                 simulation.run(days=1, time_scale=-1)
+                # get objective data partitioned by time_scale
                 x = (
                     simulation.statistics.get_objective(
                         objective, t, 24 * 60 * 60 // t))
                 objective_temp.append(x)
+                # get objective data at the end of the simulation
                 y = (simulation.statistics.get_objective(objective))
                 policy_end_result.append(y)
+            # compute average of the objective
             objective_data.append(self._extract_mean(objective_temp))
             objective_temp = []
+            # compute average of the objective at the end of the simulation
             policy_average_end_result.append(np.mean(policy_end_result))
         plt = P2D(
             key_frames,
@@ -608,12 +697,16 @@ class SimulationPlotter():
         tasks = [[]]
         current_thread = 0
         current_amount = 0
+
+        # repeats as long we have tasks left
         while (len(input) > 0):
+            # appends a task until we have tasks_per_thread tasks in a list
             if (current_amount >= self.tasks_per_thread):
                 current_amount = 0
                 current_thread += 1
                 tasks.append([])
             else:
+                # appends to current_thread tasks and pops it from the input list
                 tasks[current_thread].append(input.pop())
                 current_amount += 1
         return tasks
@@ -628,6 +721,7 @@ class SimulationPlotter():
         :rtype: list
         """
         out = []
+        # iterates trough a 2d matrix and appends every element to out
         for x in range(len(input)):
             for y in range(len(input[x])):
                 out.append(input[x][y])
@@ -647,19 +741,26 @@ class SimulationPlotter():
         if (len(input) == 0 or input is None):
             raise BaseException("List cannot be empty or of length 0")
 
+        # final result
         avg = []
+        # temporary result
         avg_temp = []
 
+        # determines dimensions of matrix
         x_len = len(input)
         y_len = len(input[0])
 
         for y in range(y_len):
             for x in range(x_len):
                 avg_temp.append(input[x][y])
+            # deletes none values out of column
             self._del_none(avg_temp)
+            # if column only consists of None, average will be marked with -1
             if (len(avg_temp) == 0):
                 avg_temp.append(-1)
+            # computes average of column
             avg.append(np.mean(avg_temp))
+            # resets avg_temp
             avg_temp = []
         return avg
 
@@ -676,14 +777,23 @@ class SimulationPlotter():
         if (len(input) == 0 or input is None):
             raise BaseException("List cannot be empty or of length 0")
 
+        # input is an 3 dimensional matrix, where first and second dimensions are parameters and the 
+        # third dimensions are repitions of the simulation. So, we need to average over the third dimension
+
         for x in range(len(input)):
             for y in range(len(input[x])):
+                # resets avg_temp
                 avg_temp = []
-                for c in range(len(input[x][y])):
-                    avg_temp.append(input[x][y])
+                # iterates through all elements in the matrix 
+                for z in range(len(input[x][y])):
+                    avg_temp.append(input[x][y][z])
+                # deletes none values out of list 
                 self._del_none(avg_temp)
+                # if third dimension only consists of None, average will be marked with -1
                 if (len(avg_temp) == 0):
                     avg_temp.append(-1)
+                # stores the average of the third dimension onto the same matrix. Collapsing it to 
+                # a 2 dimensional matrix
                 input[x][y] = np.mean(avg_temp)
 
     def _init(self):
@@ -698,10 +808,15 @@ class SimulationPlotter():
         :return: The initialised simulation.
         :rtype: Simulation
         """
+        # set seed
         if (self.seed != -1):
             random.seed(self.seed)
             np.random.seed(self.seed)
         elevators = []
+
+        # initialises all member variables
+
+        # initialises all elevators
         for i in range(len(self.elevator_args)):
             self._init_policy(i)
             elevators.append(
@@ -710,8 +825,10 @@ class SimulationPlotter():
                     self.elevator_args[i][1],
                     self.elevators_init[i],
                     self.elevator_args[i][3]))
-
+        # init building
         building = Building(elevators, self.floor_amount, self.distribution)
+
+        # init and return simulation
         return Simulation(building, self.seed)
 
     def _init_policy(self, i):
@@ -722,7 +839,11 @@ class SimulationPlotter():
         :type i: int
         :rtype: None
         """
+        # is the object of the policy stored in the i-th elevator
+
         t = self.elevator_args[i][2][0]
+
+        # changes and inits the policy of the i-th elevator
 
         if (t == LOOKPolicy):
             self.elevators_init[i] = LOOKPolicy()
@@ -733,12 +854,15 @@ class SimulationPlotter():
         elif (t == SCANPolicy):
             self.elevators_init[i] = SCANPolicy()
         elif (t == PWDPPolicy):
+            # if the policy is PWDPPolicy, the arguments of the policy are stored in elevator_args[i][2][1:]
             args = self.elevator_args[i][2][1:]
             self.elevators_init[i] = PWDPPolicy(*args)
         elif (t == PWDPPolicyEnhanced):
+            # if the policy is PWDPPolicyEnhanced, the arguments of the policy are stored in elevator_args[i][2][1:]
             args = self.elevator_args[i][2][1:]
             self.elevators_init[i] = PWDPPolicyEnhanced(*args)
         elif (t == PWDPPolicyOptimized):
+            # if the policy is PWDPPolicyOptimized, the arguments of the policy are stored in elevator_args[i][2][1:]
             args = self.elevator_args[i][2][1:]
             self.elevators_init[i] = PWDPPolicyOptimized(*args)
 
@@ -754,6 +878,7 @@ class SimulationPlotter():
         self.spawn_distr_args[0] = amount
         self.time_distr_args[0] = amount
 
+        # updates the floor amount of all elevators
         for i in range(len(self.elevator_args)):
             self.elevator_args[i][1] = amount - 1
 
@@ -771,14 +896,19 @@ class SimulationPlotter():
         :rtype: None
         """
 
+        # Enum is used to determine the type of the parameter
         match param.case():
             case 0:
+                # Either floor amount, spawn distribution type or target distribution type will be updated
                 self._update_param(param, new_val)
             case 1:
+                # Either elevator range or capacity will be updated.
                 self._update_elevator(param, new_val, index)
             case 2:
+                # Either any policy parameter or the policy itself will be updated
                 self._update_policy(param, new_val, index)
             case 3:
+                # Time distribution will be updated
                 self._update_timeDistr(param, new_val)
 
     def _update_param(self, param, new_val):
@@ -792,6 +922,7 @@ class SimulationPlotter():
         :rtype: None
         """
 
+        # Only called to update floor amount, spawn distribution type or target distribution
         match param.value:
             case 1:
                 self._set_floor_amount(new_val)
@@ -812,6 +943,8 @@ class SimulationPlotter():
         :type index: int
         :rtype: None
         """
+
+        # Called to update any policy parameter or the policy itself 
 
         if (param.value == -1):
             self.elevator_args[index][2] = [new_val]
@@ -865,7 +998,8 @@ class SimulationPlotter():
         :type new_val: int
         :rtype: None
         """
-
+        # Distinguish the case where we want to add another point to the interpolation of the distribution
+        # and the case where change any other parameter of the distribution
         if (param.value == 3):
             self.time_distr_args[param.value].append(new_val)
         else:
@@ -984,7 +1118,7 @@ if __name__ == "__main__":
     # plt.distr_plotter_2d(distribution, save_plot=False, target=False, plot_time=0, combine_floors=[(0,0),(1,9)])
 
     # Policy Parameter Comparison
-    # plt.param_plotter_3d(Objective.ATTD,[PolicyParameter.ELEV_BUT_WEIGHT,1,6,5],[PolicyParameter.FLOOR_BUT_WEIGHT,1,6,5],2,save_plot=True)
+    plt.param_plotter_3d(Objective.ATTD,[PolicyParameter.ELEV_BUT_WEIGHT,1,6,5],[PolicyParameter.FLOOR_BUT_WEIGHT,1,6,5],1,save_plot=True)
 
     # Policy Parameter Permutation Comparison
     # plt.param_plotter_3d_permutations(Objective.AWT, 0, 10, 20, avg_of=5)
