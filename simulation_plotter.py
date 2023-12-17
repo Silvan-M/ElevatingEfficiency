@@ -1118,52 +1118,10 @@ if __name__ == "__main__":
     # plt.distr_plotter_2d(distribution, save_plot=False, target=False, plot_time=0, combine_floors=[(0,0),(1,9)])
 
     # Policy Parameter Comparison
-    plt.param_plotter_3d(Objective.ATTD,[PolicyParameter.ELEV_BUT_WEIGHT,1,6,5],[PolicyParameter.FLOOR_BUT_WEIGHT,1,6,5],1,save_plot=True)
+    # plt.param_plotter_3d(Objective.ATTD,[PolicyParameter.ELEV_BUT_WEIGHT,1,6,5],[PolicyParameter.FLOOR_BUT_WEIGHT,1,6,5],1,save_plot=True)
 
     # Policy Parameter Permutation Comparison
     # plt.param_plotter_3d_permutations(Objective.AWT, 0, 10, 20, avg_of=5)
-
-    cool = Objective.AWT
-    plt.policy_plotter_2d_scenarios(
-    cool,
-    SCANPolicy,
-    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
-    ["Residential Building ","Rooftop Bar","Shopping Mal"],
-    average_of=10,
-    name = "i",
-    save_plot=False
-    )
-
-    plt.policy_plotter_2d_scenarios(
-    cool,
-    LOOKPolicy,
-    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
-    ["Residential Building ","Rooftop Bar","Shopping Mal"],
-    average_of=10,
-    name = "i",
-    save_plot=False
-    )
-
-    plt.policy_plotter_2d_scenarios(
-    cool,
-    FCFSPolicy,
-    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
-    ["Residential Building ","Rooftop Bar","Shopping Mal"],
-    average_of=10,
-    name = "i",
-    save_plot=False
-    )
-
-    plt.policy_plotter_2d_scenarios(
-    cool,
-    SSTFPolicy,
-    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
-    ["Residential Building ","Rooftop Bar","Shopping Mal"],
-    average_of=10,
-    name = "i",
-    save_plot=False
-    )
-
 
     # Multiple Policy Parameter Comparison
     run_multiple = False

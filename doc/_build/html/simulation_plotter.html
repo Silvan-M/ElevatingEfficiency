@@ -217,6 +217,20 @@
 <dt class="sig sig-object py" id="simulation_plotter.SimulationPlotter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulation_plotter.</span></span><span class="sig-name descname"><span class="pre">SimulationPlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">elevator_args=[[0,</span> <span class="pre">9,</span> <span class="pre">[&lt;class</span> <span class="pre">'policies.look_policy.LOOKPolicy'&gt;],</span> <span class="pre">10]],</span> <span class="pre">distr_type=&lt;class</span> <span class="pre">'distributions.shopping_mall_distribution.ShoppingMallDistribution'&gt;,</span> <span class="pre">seed=-1,</span> <span class="pre">distr_init=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_plotter.SimulationPlotter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simulation Plotter enables various plottings with the given __init__ parameters as standard parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elevator_args</strong> (<em>list</em>) – List containing all elevator arguments.</p></li>
+<li><p><strong>distr_type</strong> (<em>Distribution</em>) – The distribution type of the simulation.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed for the simulation. If -1, no seed will be used.</p></li>
+<li><p><strong>distr_init</strong> (<em>Distribution</em><em>, </em><em>optional</em>) – The distribution object. If None, a new object will be created with the distribution type. If not None, it will be used directly.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_plotter.SimulationPlotter.distr_plotter_2d">
 <span class="sig-name descname"><span class="pre">distr_plotter_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combine_floors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_plotter.SimulationPlotter.distr_plotter_2d" title="Link to this definition">#</a></dt>
@@ -226,6 +240,21 @@ If None, all floors will be plotted individually.</p>
 <p>If plot_time=0, only the floor distribution will be plotted.
 If plot_time=1, only the time distribution will be plotted.
 If plot_time=2, both will be plotted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distr</strong> (<em>Distribution</em>) – The distribution to be plotted.</p></li>
+<li><p><strong>target</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the target or spawn distribution should be plotted.</p></li>
+<li><p><strong>save_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the plot should be saved or not.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the plot.</p></li>
+<li><p><strong>combine_floors</strong> (<em>list</em><em>, </em><em>optional</em>) – List of tuples of indices of floors to be combined.</p></li>
+<li><p><strong>plot_time</strong> (<em>int</em><em>, </em><em>optional</em>) – Specifies the starting time of the distribution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -235,6 +264,23 @@ If plot_time=2, both will be plotted.</p>
 The average_of defines how often each step stated above gets executed. The average will be taken
 to further compute any plots. The list obj contains the metrics which will be plotted and measured during
 this numerical experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>list</em>) – List of objectives to be plotted.</p></li>
+<li><p><strong>param</strong> (<a class="reference internal" href="parameter.html#parameter.Parameter" title="parameter.Parameter"><em>Parameter</em></a>) – The parameter to be simulated.</p></li>
+<li><p><strong>start_val</strong> (<em>int</em>) – The start value of the simulation.</p></li>
+<li><p><strong>end_val</strong> (<em>int</em>) – The end value of the simulation.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – The amount of steps in the simulation.</p></li>
+<li><p><strong>average_of</strong> (<em>int</em><em>, </em><em>optional</em>) – The amount of simulations per objective.</p></li>
+<li><p><strong>save_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the plot should be saved or not.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -244,23 +290,88 @@ this numerical experiment.</p>
 in their respective [start_val,end_val] The average_of defines how often each step stated above gets executed.
 The average will be taken to further compute any plots. The obj represents the metric which will be plotted
 and measured during this numerical experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a>) – The objective to be plotted.</p></li>
+<li><p><strong>param1</strong> (<em>list</em>) – The first parameter to be simulated.</p></li>
+<li><p><strong>param2</strong> (<em>list</em>) – The second parameter to be simulated.</p></li>
+<li><p><strong>average_of</strong> (<em>int</em><em>, </em><em>optional</em>) – The amount of simulations per objective.</p></li>
+<li><p><strong>save_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the plot should be saved or not.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_plotter.SimulationPlotter.param_plotter_3d_permutations">
 <span class="sig-name descname"><span class="pre">param_plotter_3d_permutations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><span class="pre">Objective</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_plotter.SimulationPlotter.param_plotter_3d_permutations" title="Link to this definition">#</a></dt>
 <dd><p>Plots all permutations of the parameters in PolicyParameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a>) – The objective to be plotted.</p></li>
+<li><p><strong>from_val</strong> (<em>int</em>) – The start value of the simulation.</p></li>
+<li><p><strong>to_val</strong> (<em>int</em>) – The end value of the simulation.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – The amount of steps in the simulation.</p></li>
+<li><p><strong>average_of</strong> (<em>int</em><em>, </em><em>optional</em>) – The amount of simulations per objective.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_plotter.SimulationPlotter.policy_plotter_2d">
 <span class="sig-name descname"><span class="pre">policy_plotter_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><span class="pre">Objective</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'h'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_plotter.SimulationPlotter.policy_plotter_2d" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plots the given objective as benchmark over all given policies. The time_scale specifies how often 
+the objective should be measured. The average_of specifies how often the simulation should be run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objective</strong> (<a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a>) – The objective to be plotted.</p></li>
+<li><p><strong>policies</strong> (<em>list</em>) – The policies to be compared.</p></li>
+<li><p><strong>time_scale</strong> (<em>str</em><em>, </em><em>optional</em>) – The time scale of the objective.</p></li>
+<li><p><strong>average_of</strong> (<em>int</em><em>, </em><em>optional</em>) – The amount of simulations per objective.</p></li>
+<li><p><strong>save_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the plot should be saved or not.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_plotter.SimulationPlotter.policy_plotter_2d_scenarios">
 <span class="sig-name descname"><span class="pre">policy_plotter_2d_scenarios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><span class="pre">Objective</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenarios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'h'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_plotter.SimulationPlotter.policy_plotter_2d_scenarios" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compares the given policy over all given scenarios. The time_scale specifies how often 
+the objective should be measured. The average_of specifies how often the simulation should be run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objective</strong> (<a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a>) – The objective to be plotted.</p></li>
+<li><p><strong>policy</strong> (<a class="reference internal" href="policies.html#policies.policy.Policy" title="policies.policy.Policy"><em>Policy</em></a>) – The policy to be compared.</p></li>
+<li><p><strong>scenarios</strong> (<em>list</em>) – The scenarios to be compared.</p></li>
+<li><p><strong>scenario_names</strong> (<em>list</em>) – The names of the scenarios.</p></li>
+<li><p><strong>time_scale</strong> (<em>str</em><em>, </em><em>optional</em>) – The time scale of the objective.</p></li>
+<li><p><strong>average_of</strong> (<em>int</em><em>, </em><em>optional</em>) – The amount of simulations per objective.</p></li>
+<li><p><strong>save_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the plot should be saved or not.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

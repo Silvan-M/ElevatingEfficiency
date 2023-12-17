@@ -26,7 +26,7 @@ simulation_length = 60 * 60 * 6
 gradient_descent = False
 
 # Enable plotting
-plot = True
+plot = False
 save_plot = "plotter/plots/parameter_optimizer.pdf"
 
 distribution = distributions.HighDensityDistribution() if num_epochs > 0 else None

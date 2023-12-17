@@ -224,33 +224,46 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Creates a Plotter2D object:
 - param_data (list)     : parametric Data, will be plotted on the x-axis with label param_name
-- objective_data (list) : multiple curves, each stored by y-values in the form of a objective_data[i] = list[len(param_data)],</p>
-<blockquote>
-<div><p>will be labelled with respective objective_name[i]</p>
-</div></blockquote>
-<ul class="simple">
-<li><p>spec_val (list)       : special values will be plotted in red and labelled spec_val_name</p></li>
+- objective_data (list) : multiple curves, each stored by y-values in the form of a objective_data[i] = list[len(param_data)], will be labelled with respective objective_name[i]
+- spec_val (list)       : special values will be plotted in red and labelled spec_val_name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>para_data</strong> (<em>list</em>) – list of x-values</p></li>
+<li><p><strong>objective_data</strong> (<em>list</em>) – list of y-values, can represent multiplce curves</p></li>
+<li><p><strong>param_name</strong> (<em>str</em>) – name of the x-axis</p></li>
+<li><p><strong>objective_name</strong> (<em>list</em>) – name of the curves</p></li>
+<li><p><strong>y_label</strong> (<em>str</em>) – label of the y-axis</p></li>
+<li><p><strong>spec_val</strong> (<em>list</em><em>, </em><em>optional</em>) – special values, defaults to []</p></li>
+<li><p><strong>spec_val_name</strong> (<em>str</em><em>, </em><em>optional</em>) – name of the special values, defaults to “”</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="plotter.plotter2D.Plotter2D.plot_normal">
 <span class="sig-name descname"><span class="pre">plot_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_neg_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotter.plotter2D.Plotter2D.plot_normal" title="Link to this definition">#</a></dt>
-<dd><p>Shows the plot with the data stored in member variables:
-- name (str)            : sets the title of the plot
-- show_min (bool)        : if True, plots and computes minimum z-value and it’s corresponding x- and y-coordinate
-- show_max (bool)        : if True, plots and computes maximum z-value and it’s corresponding x- and y-coordinate
-- cmap (str)            : sets cmap, which defines color. Options: <a class="reference external" href="https://matplotlib.org/stable/users/explain/colors/colormaps.html">https://matplotlib.org/stable/users/explain/colors/colormaps.html</a>
-- save  (bool)          : if True, saves plot directly in plots folder with  naming “name+HH_MM_SS.pdf”,</p>
-<blockquote>
-<div><p>where HH,MM,SS are hours, minutes and seconds respectively</p>
-</div></blockquote>
-<ul class="simple">
-<li><dl class="simple">
-<dt>ignore_neg_value (bool)<span class="classifier">if True, automatically ignores negative values. simulatiom_plotter.py marks None with -1</span></dt><dd><p>This might occur when the distribution is really low and no passengers spawn and thus
-AWT, ATTD and average crowdedness are undefined</p>
+<dd><p>Shows the plot with the data stored in member variables. 
+Ignore_neg_value is set to True by default, which means that negative values are ignored.
+This is done to not plot None values, as they were replaced with negative values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of the plot</p></li>
+<li><p><strong>show_min</strong> (<em>bool</em><em>, </em><em>optional</em>) – show minimum value, defaults to False</p></li>
+<li><p><strong>show_max</strong> (<em>bool</em><em>, </em><em>optional</em>) – show maximum value, defaults to False</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – color map, defaults to None</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – save plot, defaults to False</p></li>
+<li><p><strong>ignore_neg_value</strong> (<em>bool</em><em>, </em><em>optional</em>) – ignore negative values, defaults to True</p></li>
+<li><p><strong>max_val</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – maximum value on x-axis, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
-</li>
-</ul>
 </dd></dl>
 
 </dd></dl>
@@ -265,18 +278,33 @@ AWT, ATTD and average crowdedness are undefined</p>
 <p>Creates a Plotter3D object:
 - param_x_data (list)    : parametric Data, will be plotted on the x-axis with label param_x_name
 - param_y_data  (list)   : parametric Data, will be plotted on the y-axis with label param_y_name
-- objective_data (list) : z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)],</p>
+- objective_data (list)  : z-values of the graph in the form of a matrix m[len(param_x_data)][len(param_y_data)],</p>
 <blockquote>
 <div><p>will be labelled with objective_name</p>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param_x_data</strong> (<em>list</em>) – list of x-values</p></li>
+<li><p><strong>param_x_name</strong> (<em>str</em>) – name of the x-axis</p></li>
+<li><p><strong>param_y_data</strong> (<em>list</em>) – list of y-values</p></li>
+<li><p><strong>param_y_name</strong> (<em>str</em>) – name of the y-axis</p></li>
+<li><p><strong>objective_data</strong> (<em>list</em>) – z-values of the graph in the form of a matrix</p></li>
+<li><p><strong>objective_name</strong> (<em>str</em>) – name of the z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="plotter.plotter3D.Plotter3D.plot_normal">
 <span class="sig-name descname"><span class="pre">plot_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bilinear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotter.plotter3D.Plotter3D.plot_normal" title="Link to this definition">#</a></dt>
 <dd><p>Shows the plot with the data stored in member variables:
-- name (str)          : sets the title of the plot
+- name (str)           : sets the title of the plot
 - show_min (bool)      : if True, plots and computes minimum z-value and it’s corresponding x- and y-coordinate
 - show_max (bool)      : if True, plots and computes maximum z-value and it’s corresponding x- and y-coordinate
-- save  (bool)        : if True, saves plot directly in plots folder with  naming “name+HH_MM_SS.png”,</p>
+- save  (bool)         : if True, saves plot directly in plots folder with  naming “name+HH_MM_SS.png”,</p>
 <blockquote>
 <div><p>where HH,MM,SS are hours, minutes and seconds respectively</p>
 </div></blockquote>
@@ -289,6 +317,20 @@ AWT, ATTD and average crowdedness are undefined</p>
 </dl>
 </li>
 </ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name of the plot</p></li>
+<li><p><strong>show_min</strong> (<em>bool</em><em>, </em><em>optional</em>) – show minimum value, defaults to False</p></li>
+<li><p><strong>show_max</strong> (<em>bool</em><em>, </em><em>optional</em>) – show maximum value, defaults to False</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – save plot, defaults to False</p></li>
+<li><p><strong>interpolation</strong> (<em>str</em><em>, </em><em>optional</em>) – interpolation mode, defaults to ‘bilinear’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
