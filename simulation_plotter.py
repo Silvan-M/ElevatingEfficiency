@@ -25,6 +25,20 @@ class SimulationPlotter():
             distr_type=distributions.ShoppingMallDistribution,
             seed=-1,
             distr_init=None):
+    
+        """
+        Initialises the Simulation Plotter and enables various plottings with the given input as standard parameters.
+
+        :param elevator_args: List containing all elevator arguments. 
+        :type elevator_args: list
+        :param distr_type: The distribution type of the simulation.
+        :type distr_type: Distribution
+        :param seed: The seed for the simulation. If -1, no seed will be used.
+        :type seed: int
+        :param distr_init: The distribution object. If None, a new object will be created with the distribution type. If not None, it will be used directly.
+        :type distr_init: Distribution, optional
+        :rtype: None
+        """
 
         self.distribution = distr_type() if (distr_init is None) else distr_init
         self.floor_amount = self.distribution.floor_amount
@@ -36,6 +50,8 @@ class SimulationPlotter():
             self.elevators_init.append([])
 
         self.tasks_per_thread = 4
+
+    
 
     def param_plotter_2d(
             self,
@@ -465,6 +481,9 @@ class SimulationPlotter():
             y_label=objective.value)
         plt.plot_normal(name, cmap="winter", save=save_plot)
 
+
+    
+
     def _partition_tasks(self, input: list):
         tasks = [[]]
         current_thread = 0
@@ -722,6 +741,48 @@ if __name__ == "__main__":
 
     # Policy Parameter Permutation Comparison
     # plt.param_plotter_3d_permutations(Objective.AWT, 0, 10, 20, avg_of=5)
+
+    cool = Objective.AWT
+    plt.policy_plotter_2d_scenarios(
+    cool,
+    SCANPolicy,
+    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
+    ["Residential Building ","Rooftop Bar","Shopping Mal"],
+    average_of=10,
+    name = "i",
+    save_plot=False
+    )
+
+    plt.policy_plotter_2d_scenarios(
+    cool,
+    LOOKPolicy,
+    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
+    ["Residential Building ","Rooftop Bar","Shopping Mal"],
+    average_of=10,
+    name = "i",
+    save_plot=False
+    )
+
+    plt.policy_plotter_2d_scenarios(
+    cool,
+    FCFSPolicy,
+    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
+    ["Residential Building ","Rooftop Bar","Shopping Mal"],
+    average_of=10,
+    name = "i",
+    save_plot=False
+    )
+
+    plt.policy_plotter_2d_scenarios(
+    cool,
+    SSTFPolicy,
+    [distributions.ResidentialBuildingDistribution, distributions.RooftopBarDistribution, distributions.ShoppingMallDistribution],
+    ["Residential Building ","Rooftop Bar","Shopping Mal"],
+    average_of=10,
+    name = "i",
+    save_plot=False
+    )
+
 
     # Multiple Policy Parameter Comparison
     run_multiple = False
