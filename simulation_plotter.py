@@ -515,7 +515,6 @@ class SimulationPlotter():
             average_of=1,
             save_plot=False,
             name=""):
-        
         """
         Compares the given policy over all given scenarios. The time_scale specifies how often 
         the objective should be measured. The average_of specifies how often the simulation should be run
@@ -538,6 +537,7 @@ class SimulationPlotter():
         :type name: str, optional
         :rtype: None
         """
+        
         bar = ProgressBar(len(scenarios) * average_of, "Simulating: ")
         self._update_handler(PolicyParameter.POLICY, policy)
         objective_data = []
