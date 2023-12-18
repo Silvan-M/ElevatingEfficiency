@@ -13,6 +13,8 @@ Our project is about the efficiency of elevators. We want to find out how the ef
 
 This project was created as part of the course "Complex Social Systems: Modelling Agents, Learning and Games" at ETH Zurich.
 
+To download our project, please visit our `GitHub repository <https://github.com/Silvan-M/ElevatingEfficiency>`_.
+
 .. image:: ../img/Elevator-Showcase.gif
    :alt: Elevator Showcase
 
