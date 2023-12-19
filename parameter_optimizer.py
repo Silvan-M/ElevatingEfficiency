@@ -36,14 +36,19 @@ store_params = "param_optimizer/save_params.txt"
 
 
 def map_parameters(parameters, changed_parameter):
+    """
+    Maps the parameters of the minimizing function to the parameters of the model
+    """
     ret = parameters + [1]
-    # ret = [1, parameters[0], 1, parameters[1], parameters[2], parameters[3]]
     if (changed_parameter[0] >= 0):
         ret[changed_parameter[0]] *= changed_parameter[1]
     return ret
 
 
 def create_simulation(args):
+    """
+    Initializes a new simulation
+    """
     global current_params
     global distribution
 
@@ -82,6 +87,9 @@ def create_simulation(args):
 
 
 def run_simulation(args):
+    """
+    Run a single simulation
+    """
     (average_index, parameter_index, parameter_value), simulation = args
 
     simulation.run(seconds=simulation_length, time_scale=-1)
@@ -92,6 +100,10 @@ def run_simulation(args):
 
 
 def update_results(results):
+    """
+    Update the current model with new parameters if a performance increase has been detected
+    """
+
     global current_awt
     global current_params
 
@@ -120,6 +132,9 @@ def update_results(results):
 
 
 def write_result(awt, params):
+    """
+    Write the results to text
+    """
     s = ','.join(map(str, [awt] + params))
     with open(store_params, "a") as file:
         file.write(s + "\n")
@@ -160,6 +175,7 @@ if plot or gradient_descent:
         with ThreadPoolExecutor(max_workers=10) as executor:
             results = executor.map(run_simulation, simulations.items())
 
+        # Apply simulation results
         update_results(results)
         min_jump = random.uniform(1 / learning_rate, 1)
         max_jump = random.uniform(1, learning_rate)
