@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -217,55 +217,92 @@
 <dt class="sig sig-object py" id="game_display.GameDisplay">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game_display.</span></span><span class="sig-name descname"><span class="pre">GameDisplay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_paused</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Displays the game</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.apply_differences">
 <span class="sig-name descname"><span class="pre">apply_differences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_step_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.apply_differences" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Given two simulation steps, calculate the differences between them:
+- Change in elevator location and state
+- Spawning of new passenger
+- Removal of passenger
+- Passenger switched from floor to elevator</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.get_floor_color">
 <span class="sig-name descname"><span class="pre">get_floor_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_amount</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.get_floor_color" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the floor color of a given floor</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.get_passenger_y_coord">
 <span class="sig-name descname"><span class="pre">get_passenger_y_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.get_passenger_y_coord" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the absolute y-coordinate of a passenger.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.get_random_passenger_location">
 <span class="sig-name descname"><span class="pre">get_random_passenger_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.get_random_passenger_location" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the absolute coordinates of a passenger randomized in a floor or elevator.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.get_shaft_location">
 <span class="sig-name descname"><span class="pre">get_shaft_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elevator_index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.get_shaft_location" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the x-tile-coordinate of an elevator shaft, given the index of an elevator</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.pause_button_pressed">
 <span class="sig-name descname"><span class="pre">pause_button_pressed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.pause_button_pressed" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Check whether the pause button has been pressed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.render_text">
 <span class="sig-name descname"><span class="pre">render_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.render_text" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Renders text to screen</p>
+<dl class="field-list simple">
+<dt class="field-odd">Txt<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String of content to display</p>
+</dd>
+<dt class="field-even">Loc<span class="colon">:</span></dt>
+<dd class="field-even"><p>Absolute display location to display</p>
+</dd>
+<dt class="field-odd">Alignement<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{-1: Left, 0: Center, 1: Right}</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.set_background">
 <span class="sig-name descname"><span class="pre">set_background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.set_background" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sets the background given the current time of day in seconds.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.start_simulation">
 <span class="sig-name descname"><span class="pre">start_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_amount</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.start_simulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initializes a new simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Simulation<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The simulation object to display</p>
+</dd>
+<dt class="field-even">Start_time<span class="colon">:</span></dt>
+<dd class="field-even"><p>Time in seconds of the time of day</p>
+</dd>
+<dt class="field-odd">Start_time<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Time in seconds of the duration</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.GameDisplay.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.GameDisplay.step" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>A single frame update of the game display</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -284,12 +321,14 @@
 <dt class="sig sig-object py" id="game_display.SimulationStepInfo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game_display.</span></span><span class="sig-name descname"><span class="pre">SimulationStepInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">building</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.SimulationStepInfo" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Condenses the necessary information needed for the game display of a single simulation step.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="game_display.Sprite">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game_display.</span></span><span class="sig-name descname"><span class="pre">Sprite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sprite_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.Sprite" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sprite</span></code></p>
+<p>A single image displayed on the live display</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="game_display.Sprite.cache">
 <span class="sig-name descname"><span class="pre">cache</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#game_display.Sprite.cache" title="Link to this definition">#</a></dt>
@@ -301,6 +340,7 @@
 <dt class="sig sig-object py" id="game_display.SpriteEntity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game_display.</span></span><span class="sig-name descname"><span class="pre">SpriteEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">front</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">back</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sprite_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">front_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">back_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.SpriteEntity" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper class for two sprites, one in the foreground and one in the background.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="game_display.SpriteEntity.update_screen_loc">
 <span class="sig-name descname"><span class="pre">update_screen_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen_loc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.SpriteEntity.update_screen_loc" title="Link to this definition">#</a></dt>
@@ -316,12 +356,22 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="game_display.format_time">
 <span class="sig-prename descclassname"><span class="pre">game_display.</span></span><span class="sig-name descname"><span class="pre">format_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.format_time" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Converts from seconds to a string of minutes and hours</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="game_display.get_color_at_time">
 <span class="sig-prename descclassname"><span class="pre">game_display.</span></span><span class="sig-name descname"><span class="pre">get_color_at_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#game_display.get_color_at_time" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Given a time of day, returns the skycolor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of time in seconds, color</p>
+</dd>
+<dt class="field-even">Time<span class="colon">:</span></dt>
+<dd class="field-even"><p>Time of day in seconds</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="game_display.lerp">

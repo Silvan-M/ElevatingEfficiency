@@ -11,6 +11,20 @@ import numpy as np
 
 
 class LivePlotter():
+    """
+    Live plotter for the simulation
+
+    :param simulation: simulation to plot
+    :type simulation: Simulation
+    :param objectives: objectives to plot
+    :type objectives: list[Objective]
+    :param update_graph_interval: interval to update the graph
+    :type update_graph_interval: int
+    :param update_point_interval: interval to update the points
+    :type update_point_interval: int
+    """
+
+
     def __init__(
             self,
             simulation,
@@ -18,13 +32,23 @@ class LivePlotter():
             update_graph_interval=1,
             update_point_interval=1):
         self.objectives = objectives
-        simulation.on_simulation_started.add_listener(self.startPlot)
+        simulation.on_simulation_started.add_listener(self.start_plot)
         simulation.on_step_end.add_listener(self.step)
         self.update_graph_interval = update_graph_interval
         self.update_point_interval = update_point_interval
         self.fill_between_obj = None
 
-    def startPlot(self, simulation, start_time, step_amount):
+    def start_plot(self, simulation, start_time, step_amount):
+        """
+        Starts the plotter
+
+        :param simulation: simulation to plot
+        :type simulation: Simulation
+        :param start_time: start time of the simulation
+        :type start_time: int
+        :param step_amount: amount of steps in the simulation
+        :type step_amount: int
+        """
         self.x = np.linspace(
             0, step_amount, round(
                 step_amount / self.update_point_interval))
@@ -76,10 +100,24 @@ class LivePlotter():
         plt.show(block=False)
 
     def set_line_data(self, objective):
+        """
+        Sets the data of a line
+
+        :param objective: objective to set the data of
+        :type objective: Objective
+        """
         self.lines[objective].set_xdata(range(len(self.live_data[objective])))
         self.lines[objective].set_ydata(self.live_data[objective])
 
-    def addPoints(self, simulation, tim):
+    def add_points(self, simulation, tim):
+        """
+        Adds points to the plot
+
+        :param simulation: simulation to plot
+        :type simulation: Simulation
+        :param tim: current time
+        :type tim: int
+        """
         statistics = simulation.statistics
 
         waiters = []
@@ -129,8 +167,18 @@ class LivePlotter():
             self.set_line_data(Objective.AMP)
 
     def step(self, simulation, tim):
+        """
+        Steps the plotter
+
+        :param simulation: simulation to plot
+        :type simulation: Simulation
+        :param tim: current time
+        :type tim: int
+        """
+
+
         if tim % self.update_point_interval == 0:
-            self.addPoints(simulation, tim)
+            self.add_points(simulation, tim)
 
         if tim % self.update_graph_interval == 0 and len(
                 self.live_data[Objective.AWT]) > 0:
