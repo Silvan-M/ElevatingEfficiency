@@ -2,6 +2,14 @@ from debug import Debug as DB
 
 
 class Delegate:
+    """
+    Handles the delegation of events to listeners
+
+    :param listeners: The listeners to add
+    :type listeners: list
+    """
+
+
     def __init__(self):
         self.listeners = []
 
