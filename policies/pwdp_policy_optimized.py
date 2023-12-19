@@ -27,13 +27,8 @@ class PWDPPolicyOptimized(policies.Policy):
     The elevator will then choose the highest scored floor, set it as target, and move to it.
     Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.
 
-    :param elevator_button_weight: Award elevator button pressed on floor i.
-    :param elevator_button_time_weight: Award elevator buttons which were pressed a long time ago.
-    :param floor_button_weight: Award floor buttons which were pressed.
-    :param floor_button_time_weight: Award floor buttons which were pressed a long time ago.
-    :param competitor_weight: Penalize if other elevators are heading to floor i.
-    :param distance_weight: Penalize high distance to target.
-    :param distance_exponent: Exponent for distance penalty.
+    :param loadPath: Path to load parameters from.
+    :type loadPath: str, optional
     """
 
     def __init__(self, loadPath='param_optimizer/save_params.txt'):

@@ -39,6 +39,13 @@ class PWDPPolicyEnhanced(PWDPPolicy):
     :param competitor_weight: Penalize if other elevators are heading to floor i
     :param distance_weight: Penalize high distance to target
     :param distance_exponent: Exponent for distance penalty
+    :type people_in_elevator_button_weight: float
+    :type elevator_button_time_weight: float
+    :type people_floor_weight: float
+    :type floor_button_time_weight: float
+    :type competitor_weight: float
+    :type distance_weight: float
+    :type distance_exponent: float
     """
 
     def __init__(

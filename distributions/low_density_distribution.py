@@ -3,7 +3,7 @@ from distributions.distribution import TimeSpaceDistribution, TimeDistribution, 
 
 class LowDensityDistribution(TimeSpaceDistribution):
     """
-    Low Density Distribution Scenario
+    **Low Density Distribution Scenario**
 
     Equal start and target distribution for the whole day.
     Low amount of passengers

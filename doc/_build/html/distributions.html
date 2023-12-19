@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -222,7 +222,7 @@
 <dt class="sig sig-object py" id="distributions.custom_building_distribution.CustomBuildingDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.custom_building_distribution.</span></span><span class="sig-name descname"><span class="pre">CustomBuildingDistribution</span></span><a class="headerlink" href="#distributions.custom_building_distribution.CustomBuildingDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.TimeSpaceDistribution" title="distributions.distribution.TimeSpaceDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a></p>
-<p>Custom Building Scenario</p>
+<p><strong>Custom Building Scenario</strong></p>
 <p>Choose your own distirbution and parameters for experiments.</p>
 </dd></dl>
 
@@ -449,7 +449,7 @@ passenger_distribution: A TimeDistribution object that determines how many passe
 <dt class="sig sig-object py" id="distributions.high_density_distribution.HighDensityDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.high_density_distribution.</span></span><span class="sig-name descname"><span class="pre">HighDensityDistribution</span></span><a class="headerlink" href="#distributions.high_density_distribution.HighDensityDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.TimeSpaceDistribution" title="distributions.distribution.TimeSpaceDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a></p>
-<p>High Density Distribution Scenario</p>
+<p><strong>High Density Distribution Scenario</strong></p>
 <p>Equal start and target distribution for the whole day.
 High amount of passengers</p>
 </dd></dl>
@@ -461,7 +461,7 @@ High amount of passengers</p>
 <dt class="sig sig-object py" id="distributions.low_density_distribution.LowDensityDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.low_density_distribution.</span></span><span class="sig-name descname"><span class="pre">LowDensityDistribution</span></span><a class="headerlink" href="#distributions.low_density_distribution.LowDensityDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.TimeSpaceDistribution" title="distributions.distribution.TimeSpaceDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a></p>
-<p>Low Density Distribution Scenario</p>
+<p><strong>Low Density Distribution Scenario</strong></p>
 <p>Equal start and target distribution for the whole day.
 Low amount of passengers</p>
 </dd></dl>
@@ -473,21 +473,25 @@ Low amount of passengers</p>
 <dt class="sig sig-object py" id="distributions.residential_building_distribution.ResidentialBuildingDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.residential_building_distribution.</span></span><span class="sig-name descname"><span class="pre">ResidentialBuildingDistribution</span></span><a class="headerlink" href="#distributions.residential_building_distribution.ResidentialBuildingDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.TimeSpaceDistribution" title="distributions.distribution.TimeSpaceDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a></p>
-<p>Residential Building Scenario</p>
+<p><strong>Residential Building Scenario</strong></p>
 <p>Building constantly has 10x more people entering/exiting than going to other floors.</p>
-<p>People exiting (through floor 0):
-00:00 - 05:00: Low amount of people exiting the building
-05:00 - 06:00: Some people exiting the building (early work)
-06:00 - 10:00: Many people exiting the building (work)
-10:00 - 12:00: Low amount of people exiting the building
-13:00        : Small peak of people exiting the building (lunch)
-14:00 - 24:00: Low amount of people exiting the building</p>
-<p>People entering (through floor 0):
-00:00 - 11:00: Low amount of people entering the building
-12:00        : Small peak of people entering the building (lunch)
-13:00 - 15:00: Low amount of people entering the building
-15:00 - 19:00: Many people entering the building (back from work)
-19:00 - 24:00: Low amount of people entering the building</p>
+<p>People exiting (through floor 0):</p>
+<ul class="simple">
+<li><p>00:00 - 05:00: Low amount of people exiting the building</p></li>
+<li><p>05:00 - 06:00: Some people exiting the building (early work)</p></li>
+<li><p>06:00 - 10:00: Many people exiting the building (work)</p></li>
+<li><p>10:00 - 12:00: Low amount of people exiting the building</p></li>
+<li><p>13:00        : Small peak of people exiting the building (lunch)</p></li>
+<li><p>14:00 - 24:00: Low amount of people exiting the building</p></li>
+</ul>
+<p>People entering (through floor 0):</p>
+<ul class="simple">
+<li><p>00:00 - 11:00: Low amount of people entering the building</p></li>
+<li><p>12:00        : Small peak of people entering the building (lunch)</p></li>
+<li><p>13:00 - 15:00: Low amount of people entering the building</p></li>
+<li><p>15:00 - 19:00: Many people entering the building (back from work)</p></li>
+<li><p>19:00 - 24:00: Low amount of people entering the building</p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -497,14 +501,16 @@ Low amount of passengers</p>
 <dt class="sig sig-object py" id="distributions.rooftop_bar_distribution.RooftopBarDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.rooftop_bar_distribution.</span></span><span class="sig-name descname"><span class="pre">RooftopBarDistribution</span></span><a class="headerlink" href="#distributions.rooftop_bar_distribution.RooftopBarDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.TimeSpaceDistribution" title="distributions.distribution.TimeSpaceDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a></p>
-<p>Rooftop Bar Scenario</p>
-<p>Building is open from 08:00 to 24:00, most people come between 20:00 and 22:00, when the rooftop bar is open.
-00:00 - 07:00: Distributed low usage of building
-07:00 - 08:00: Distributed increased usage of building
-08:00 - 10:00: Distributed medium usage of building
-10:00 - 11:00: Rooftop bar opens, people start coming in from the ground floor (3x more people than other floors)
-20:00 - 22:00: Rooftop bar peak usage (20x more people than other floors)
-23:00 - 24:00: Rooftop bar closes, people start leaving from the top floor</p>
+<p><strong>Rooftop Bar Scenario</strong></p>
+<p>Building is open from 08:00 to 24:00, most people come between 20:00 and 22:00, when the rooftop bar is open.</p>
+<ul class="simple">
+<li><p>00:00 - 07:00: Distributed low usage of building</p></li>
+<li><p>07:00 - 08:00: Distributed increased usage of building</p></li>
+<li><p>08:00 - 10:00: Distributed medium usage of building</p></li>
+<li><p>10:00 - 11:00: Rooftop bar opens, people start coming in from the ground floor (3x more people than other floors)</p></li>
+<li><p>20:00 - 22:00: Rooftop bar peak usage (20x more people than other floors)</p></li>
+<li><p>23:00 - 24:00: Rooftop bar closes, people start leaving from the top floor</p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -514,13 +520,15 @@ Low amount of passengers</p>
 <dt class="sig sig-object py" id="distributions.shopping_mall_distribution.ShoppingMallDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distributions.shopping_mall_distribution.</span></span><span class="sig-name descname"><span class="pre">ShoppingMallDistribution</span></span><a class="headerlink" href="#distributions.shopping_mall_distribution.ShoppingMallDistribution" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#distributions.distribution.TimeSpaceDistribution" title="distributions.distribution.TimeSpaceDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSpaceDistribution</span></code></a></p>
-<p>Shopping Mall Scenario</p>
-<p>Shopping mall is open from 08:00 to 21:00, most people come between 10:00 and 18:00, peak at 12:00
-00:00 - 08:00: Distributed low usage of building
-08:00 - 10:00: Distributed usage of building going up
-10:00 - 12:00: Distributed usage gradient to peak
-12:00 - 18:00: Distributed usage gradient to normal
-18:00 - 24:00: Distributed usage of building going down</p>
+<p><strong>Shopping Mall Scenario</strong></p>
+<p>Shopping mall is open from 08:00 to 21:00, most people come between 10:00 and 18:00, peak at 12:00</p>
+<ul class="simple">
+<li><p>00:00 - 08:00: Distributed low usage of building</p></li>
+<li><p>08:00 - 10:00: Distributed usage of building going up</p></li>
+<li><p>10:00 - 12:00: Distributed usage gradient to peak</p></li>
+<li><p>12:00 - 18:00: Distributed usage gradient to normal</p></li>
+<li><p>18:00 - 24:00: Distributed usage of building going down</p></li>
+</ul>
 </dd></dl>
 
 </section>

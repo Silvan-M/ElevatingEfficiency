@@ -55,15 +55,16 @@ class Plotter3D():
             interpolation='bilinear'):
         """
         Shows the plot with the data stored in member variables:
-        - name (str)           : sets the title of the plot
-        - show_min (bool)      : if True, plots and computes minimum z-value and it's corresponding x- and y-coordinate
-        - show_max (bool)      : if True, plots and computes maximum z-value and it's corresponding x- and y-coordinate
-        - save  (bool)         : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.png",
-                                where HH,MM,SS are hours, minutes and seconds respectively
-        - interpolation (str)  : chooses interpolation mode, options are:
-                                'none', 'nearest', 'bilinear', 'bicubic', 'spline16',
+
+        * name (str)           : sets the title of the plot
+        * show_min (bool)      : if True, plots and computes minimum z-value and it's corresponding x- and y-coordinate
+        * show_max (bool)      : if True, plots and computes maximum z-value and it's corresponding x- and y-coordinate
+        * save  (bool)         : if True, saves plot directly in plots folder with  naming "name+HH_MM_SS.png",
+                                where ``HH,MM,SS`` are hours, minutes and seconds respectively
+        * interpolation (str)  : chooses interpolation mode, options are:
+                                ``'none', 'nearest', 'bilinear', 'bicubic', 'spline16',
                                 'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric',
-                                'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos'
+                                'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos'``
 
         :param name: name of the plot
         :type name: str

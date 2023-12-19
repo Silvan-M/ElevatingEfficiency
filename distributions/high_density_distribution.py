@@ -3,7 +3,7 @@ from distributions.distribution import TimeSpaceDistribution, TimeDistribution, 
 
 class HighDensityDistribution(TimeSpaceDistribution):
     """
-    High Density Distribution Scenario
+    **High Density Distribution Scenario**
 
     Equal start and target distribution for the whole day.
     High amount of passengers
