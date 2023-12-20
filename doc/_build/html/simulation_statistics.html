@@ -217,6 +217,17 @@
 <dt class="sig sig-object py" id="simulation_statistics.FinishInfo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulation_statistics.</span></span><span class="sig-name descname"><span class="pre">FinishInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.FinishInfo" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>All necessary statistics information of a single passenger</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – The id of the passenger</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The starting floor of the passenger</p></li>
+<li><p><strong>target</strong> (<em>int</em>) – The target floor of the passenger</p></li>
+<li><p><strong>start_time</strong> (<em>int</em>) – The time the passenger was created</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -254,80 +265,229 @@
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulation_statistics.</span></span><span class="sig-name descname"><span class="pre">SimulationStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Tracks necessary information of the simulation for plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – The simulation object to track</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.calculate_amount_people_spawned">
 <span class="sig-name descname"><span class="pre">calculate_amount_people_spawned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.calculate_amount_people_spawned" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the amount of passengers spawned</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_time</strong> (<em>int</em>) – start time in seconds</p></li>
+<li><p><strong>to_time</strong> (<em>int</em>) – end time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.calculate_average_crowdedness">
 <span class="sig-name descname"><span class="pre">calculate_average_crowdedness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.calculate_average_crowdedness" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the average amount of people inside an elevator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_time</strong> (<em>int</em>) – start time in seconds</p></li>
+<li><p><strong>to_time</strong> (<em>int</em>) – end time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.calculate_average_crowdedness_per_floor">
 <span class="sig-name descname"><span class="pre">calculate_average_crowdedness_per_floor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.calculate_average_crowdedness_per_floor" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the average amount of people waiting on a floor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with the average amount of people waiting on a floor</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.calculate_average_time_to_destination">
 <span class="sig-name descname"><span class="pre">calculate_average_time_to_destination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.calculate_average_time_to_destination" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the average total time the passengers have been waiting to arrive at their destination</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_time</strong> (<em>int</em>) – start time in seconds</p></li>
+<li><p><strong>to_time</strong> (<em>int</em>) – end time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.calculate_average_waiting_time">
 <span class="sig-name descname"><span class="pre">calculate_average_waiting_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.calculate_average_waiting_time" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the average time the passengers have been waiting for an elevator to arrive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_time</strong> (<em>int</em>) – start time in seconds</p></li>
+<li><p><strong>to_time</strong> (<em>int</em>) – end time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.calculate_std_dev_waiting_time">
 <span class="sig-name descname"><span class="pre">calculate_std_dev_waiting_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.calculate_std_dev_waiting_time" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the standard deviation time the passengers have been waiting for an elevator to arrive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>from_time</strong> (<em>int</em>) – start time in seconds</p></li>
+<li><p><strong>to_time</strong> (<em>int</em>) – end time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.get_objective">
 <span class="sig-name descname"><span class="pre">get_objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulation_statistics.Objective" title="simulation_statistics.Objective"><span class="pre">Objective</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep_amount</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.get_objective" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get some objective over an amount of time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a>) – The objective to get</p></li>
+<li><p><strong>timestep</strong> (<em>int</em>) – The amount of seconds per timestep</p></li>
+<li><p><strong>timestep_amount</strong> (<em>int</em>) – The amount of timesteps to get</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The objective over an amount of time</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.get_objectives">
 <span class="sig-name descname"><span class="pre">get_objectives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">objs:</span> <span class="pre">[&lt;enum</span> <span class="pre">'Objective'&gt;],</span> <span class="pre">timestep=-1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.get_objectives" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get multiple objectives over an amount of time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objs</strong> (<em>[</em><a class="reference internal" href="#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a><em>]</em>) – The objectives to get</p></li>
+<li><p><strong>timestep</strong> (<em>int</em>) – The amount of seconds per timestep</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The objectives over an amount of time</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.on_passenger_created">
 <span class="sig-name descname"><span class="pre">on_passenger_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.on_passenger_created" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Called once one passenger created</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passenger</strong> (<a class="reference internal" href="passenger.html#passenger.Passenger" title="passenger.Passenger"><em>Passenger</em></a>) – The passenger object created</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – Current time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.on_passenger_entered">
 <span class="sig-name descname"><span class="pre">on_passenger_entered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.on_passenger_entered" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Called once one passenger entered the elevator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passenger</strong> (<a class="reference internal" href="passenger.html#passenger.Passenger" title="passenger.Passenger"><em>Passenger</em></a>) – The passenger object created</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – Current time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.on_passenger_exited">
 <span class="sig-name descname"><span class="pre">on_passenger_exited</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passenger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.on_passenger_exited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Called once one passenger exited the elevator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>passenger</strong> (<a class="reference internal" href="passenger.html#passenger.Passenger" title="passenger.Passenger"><em>Passenger</em></a>) – The passenger object created</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – Current time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.on_simulation_finished">
 <span class="sig-name descname"><span class="pre">on_simulation_finished</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.on_simulation_finished" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Called once entire simulation finished</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – The simulation object to track</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.on_simulation_started">
 <span class="sig-name descname"><span class="pre">on_simulation_started</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_amount</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.on_simulation_started" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initializes a new simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – The simulation object to track</p></li>
+<li><p><strong>start_time</strong> (<em>int</em>) – Time in seconds of the time of day</p></li>
+<li><p><strong>step_amount</strong> (<em>int</em>) – Time in seconds of the duration</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.on_step_end">
 <span class="sig-name descname"><span class="pre">on_step_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.on_step_end" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Called once one simulation step finished</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – The simulation object to track</p></li>
+<li><p><strong>time</strong> (<em>int</em>) – Current time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulation_statistics.SimulationStatistics.write_to_file">
 <span class="sig-name descname"><span class="pre">write_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_statistics.SimulationStatistics.write_to_file" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Writes the statistics to a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The filename to write to</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

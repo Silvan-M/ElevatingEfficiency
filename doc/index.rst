@@ -18,6 +18,12 @@ To download our project, please visit our `GitHub repository <https://github.com
 .. image:: ../img/Elevator-Showcase.gif
    :alt: Elevator Showcase
 
+Downloads
+------------------------------------------------
+For more information about the project, please refer to the following documents:
+
+* :download:`Project Presentation <../downloads/Elevating-Efficiency-Presentation.pdf>`
+
 Installation
 ------------------------------------------------
 

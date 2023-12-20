@@ -217,30 +217,79 @@
 <dt class="sig sig-object py" id="parameter_optimizer.create_simulation">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">create_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.create_simulation" title="Link to this definition">#</a></dt>
 <dd><p>Initializes a new simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>tuple</em>) – arguments for the simulation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>simulation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation">Simulation</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.map_parameters">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">map_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changed_parameter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.map_parameters" title="Link to this definition">#</a></dt>
 <dd><p>Maps the parameters of the minimizing function to the parameters of the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> (<em>list</em>) – parameters of the minimizing function</p></li>
+<li><p><strong>changed_parameter</strong> (<em>tuple</em>) – changed parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>parameters of the model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.run_simulation">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">run_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.run_simulation" title="Link to this definition">#</a></dt>
 <dd><p>Run a single simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>tuple</em>) – arguments for the simulation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>average waiting time</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.update_results">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">update_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.update_results" title="Link to this definition">#</a></dt>
 <dd><p>Update the current model with new parameters if a performance increase has been detected</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>results</strong> (<em>list</em>) – results of the simulations</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.write_result">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">write_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">awt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.write_result" title="Link to this definition">#</a></dt>
 <dd><p>Write the results to text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>awt</strong> (<em>float</em>) – average waiting time</p></li>
+<li><p><strong>params</strong> (<em>list</em>) – parameters</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
