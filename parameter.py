@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class Parameter(Enum):
+    """
+    Enum to represent the different types of parameters
+    """
     FLOOR_AMOUNT = 1
     SPWD_STR_TYPE = 2
     TAR_DSTR_TYPE = 3
@@ -16,6 +19,12 @@ class Parameter(Enum):
         return 0
 
     def name(self):
+        """
+        Returns the name of the parameter
+        
+        :return: name of the parameter
+        :rtype: str
+        """
         if (self.value == 1):
             return "amount of floors"
         elif (self.value == 5):
@@ -23,6 +32,9 @@ class Parameter(Enum):
 
 
 class ElevatorParameter(Enum):
+    """
+    Represents parameter of type elevator
+    """
     MIN_FLOOR = 0
     MAX_FLOOR = 1
 
@@ -53,6 +65,9 @@ class ElevatorParameter(Enum):
 
 
 class PolicyParameter(Enum):
+    """
+    Represents parameter of type policy
+    """
     POLICY = -1
     ELEV_BUT_WEIGHT = 1
     ELEV_BUT_TIME_WEIGHT = 2
@@ -117,6 +132,9 @@ class PolicyParameter(Enum):
 
 
 class TimeDistrParameter(Enum):
+    """
+    Represents parameter of type time distribution
+    """
     MAX_PASSENGER = 1
     TIME_TYPE = 2
     ADD_POINT = 3

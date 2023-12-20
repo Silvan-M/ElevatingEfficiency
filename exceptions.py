@@ -97,8 +97,18 @@ class Exceptions():
             param: list,
             check: list,
             strict: bool):
-        # print(C.ok("checking"+str(param)))
-        # print(C.ok("cmmp"+str(check)))
+        """
+        Recursively checks if the types of the given parameters are correct
+
+        :param origin: The name of the function that called this function
+        :type origin: str
+        :param param: The parameters that should be checked
+        :type param: list
+        :param check: The types that the parameters should have
+        :type check: list
+        :param strict: If True, the types have to match exactly, if False, the types have to be subclasses of the given types, defaults to False
+        :type strict: bool, optional
+        """
 
         if (len(param) != len(check)):
             print(C.error("[" +
@@ -156,6 +166,20 @@ class Exceptions():
             val: float,
             lower: float,
             upper: float):
+        """
+        Checks if the given value is in the given range
+
+        :param origin: The name of the function that called this function
+        :type origin: str
+        :param varname: The name of the variable that should be checked
+        :type varname: str
+        :param val: The value that should be checked
+        :type val: float
+        :param lower: The lower bound of the range
+        :type lower: float
+        :param upper: The upper bound of the range
+        :type upper: float
+        """
         if ((val > upper) or (val < lower)):
             print(
                 C.warning(
