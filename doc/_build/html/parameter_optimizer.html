@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -216,27 +216,32 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.create_simulation">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">create_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.create_simulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initializes a new simulation</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.map_parameters">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">map_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changed_parameter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.map_parameters" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Maps the parameters of the minimizing function to the parameters of the model</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.run_simulation">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">run_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.run_simulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Run a single simulation</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.update_results">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">update_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.update_results" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Update the current model with new parameters if a performance increase has been detected</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parameter_optimizer.write_result">
 <span class="sig-prename descclassname"><span class="pre">parameter_optimizer.</span></span><span class="sig-name descname"><span class="pre">write_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">awt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parameter_optimizer.write_result" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Write the results to text</p>
+</dd></dl>
 
 </section>
 

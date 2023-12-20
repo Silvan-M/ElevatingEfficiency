@@ -3,24 +3,26 @@ from distributions.distribution import TimeSpaceDistribution, TimeDistribution, 
 
 class ResidentialBuildingDistribution(TimeSpaceDistribution):
     """
-    Residential Building Scenario
+    **Residential Building Scenario**
 
     Building constantly has 10x more people entering/exiting than going to other floors.
 
     People exiting (through floor 0):
-    00:00 - 05:00: Low amount of people exiting the building
-    05:00 - 06:00: Some people exiting the building (early work)
-    06:00 - 10:00: Many people exiting the building (work)
-    10:00 - 12:00: Low amount of people exiting the building
-    13:00        : Small peak of people exiting the building (lunch)
-    14:00 - 24:00: Low amount of people exiting the building
+
+    * 00:00 - 05:00: Low amount of people exiting the building
+    * 05:00 - 06:00: Some people exiting the building (early work)
+    * 06:00 - 10:00: Many people exiting the building (work)
+    * 10:00 - 12:00: Low amount of people exiting the building
+    * 13:00        : Small peak of people exiting the building (lunch)
+    * 14:00 - 24:00: Low amount of people exiting the building
 
     People entering (through floor 0):
-    00:00 - 11:00: Low amount of people entering the building
-    12:00        : Small peak of people entering the building (lunch)
-    13:00 - 15:00: Low amount of people entering the building
-    15:00 - 19:00: Many people entering the building (back from work)
-    19:00 - 24:00: Low amount of people entering the building
+
+    * 00:00 - 11:00: Low amount of people entering the building
+    * 12:00        : Small peak of people entering the building (lunch)
+    * 13:00 - 15:00: Low amount of people entering the building
+    * 15:00 - 19:00: Many people entering the building (back from work)
+    * 19:00 - 24:00: Low amount of people entering the building
     """
 
     def __init__(self):

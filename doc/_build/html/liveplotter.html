@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -217,25 +217,70 @@
 <dt class="sig sig-object py" id="liveplotter.LivePlotter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">liveplotter.</span></span><span class="sig-name descname"><span class="pre">LivePlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objectives</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_graph_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_point_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Live plotter for the simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – simulation to plot</p></li>
+<li><p><strong>objectives</strong> (<em>list</em><em>[</em><a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a><em>]</em>) – objectives to plot</p></li>
+<li><p><strong>update_graph_interval</strong> (<em>int</em>) – interval to update the graph</p></li>
+<li><p><strong>update_point_interval</strong> (<em>int</em>) – interval to update the points</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="liveplotter.LivePlotter.addPoints">
-<span class="sig-name descname"><span class="pre">addPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter.addPoints" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="liveplotter.LivePlotter.add_points">
+<span class="sig-name descname"><span class="pre">add_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter.add_points" title="Link to this definition">#</a></dt>
+<dd><p>Adds points to the plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – simulation to plot</p></li>
+<li><p><strong>tim</strong> (<em>int</em>) – current time</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="liveplotter.LivePlotter.set_line_data">
 <span class="sig-name descname"><span class="pre">set_line_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter.set_line_data" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sets the data of a line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>objective</strong> (<a class="reference internal" href="simulation_statistics.html#simulation_statistics.Objective" title="simulation_statistics.Objective"><em>Objective</em></a>) – objective to set the data of</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="liveplotter.LivePlotter.startPlot">
-<span class="sig-name descname"><span class="pre">startPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_amount</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter.startPlot" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="liveplotter.LivePlotter.start_plot">
+<span class="sig-name descname"><span class="pre">start_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_amount</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter.start_plot" title="Link to this definition">#</a></dt>
+<dd><p>Starts the plotter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – simulation to plot</p></li>
+<li><p><strong>start_time</strong> (<em>int</em>) – start time of the simulation</p></li>
+<li><p><strong>step_amount</strong> (<em>int</em>) – amount of steps in the simulation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="liveplotter.LivePlotter.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#liveplotter.LivePlotter.step" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Steps the plotter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation.html#simulation.Simulation" title="simulation.Simulation"><em>Simulation</em></a>) – simulation to plot</p></li>
+<li><p><strong>tim</strong> (<em>int</em>) – current time</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -298,9 +343,9 @@
             <ul>
 <li><a class="reference internal" href="#">liveplotter module</a><ul>
 <li><a class="reference internal" href="#liveplotter.LivePlotter"><code class="docutils literal notranslate"><span class="pre">LivePlotter</span></code></a><ul>
-<li><a class="reference internal" href="#liveplotter.LivePlotter.addPoints"><code class="docutils literal notranslate"><span class="pre">LivePlotter.addPoints()</span></code></a></li>
+<li><a class="reference internal" href="#liveplotter.LivePlotter.add_points"><code class="docutils literal notranslate"><span class="pre">LivePlotter.add_points()</span></code></a></li>
 <li><a class="reference internal" href="#liveplotter.LivePlotter.set_line_data"><code class="docutils literal notranslate"><span class="pre">LivePlotter.set_line_data()</span></code></a></li>
-<li><a class="reference internal" href="#liveplotter.LivePlotter.startPlot"><code class="docutils literal notranslate"><span class="pre">LivePlotter.startPlot()</span></code></a></li>
+<li><a class="reference internal" href="#liveplotter.LivePlotter.start_plot"><code class="docutils literal notranslate"><span class="pre">LivePlotter.start_plot()</span></code></a></li>
 <li><a class="reference internal" href="#liveplotter.LivePlotter.step"><code class="docutils literal notranslate"><span class="pre">LivePlotter.step()</span></code></a></li>
 </ul>
 </li>

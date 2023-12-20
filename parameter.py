@@ -7,6 +7,12 @@ class Parameter(Enum):
     TAR_DSTR_TYPE = 3
 
     def case(self):
+        """
+        Returns the type of the parameter
+        
+        :return: type of the parameter
+        :rtype: int
+        """
         return 0
 
     def name(self):
@@ -23,9 +29,21 @@ class ElevatorParameter(Enum):
     CAPACITY = 3
 
     def case(self):
+        """
+        Returns the type of the parameter
+        
+        :return: type of the parameter
+        :rtype: int
+        """
         return 1
 
     def name(self):
+        """
+        Returns the name of the parameter
+        
+        :return: name of the parameter
+        :rtype: str
+        """
         if (self.value == 0):
             return "min floor"
         elif (self.value == 1):
@@ -45,6 +63,12 @@ class PolicyParameter(Enum):
     DIST_EXPONENT = 7
 
     def name(self):
+        """
+        Returns the name of the parameter
+
+        :return: name of the parameter
+        :rtype: str
+        """
         if (self.value == 1):
             return "elevator button weight"
         elif (self.value == 2):
@@ -61,6 +85,12 @@ class PolicyParameter(Enum):
             return "distance exponent"
 
     def short_name(self):
+        """
+        Returns the short name of the parameter
+
+        :return: short name of the parameter
+        :rtype: str
+        """
         if (self.value == 1):
             return "ebw"
         elif (self.value == 2):
@@ -77,6 +107,12 @@ class PolicyParameter(Enum):
             return "dexp"
 
     def case(self):
+        """
+        Returns the type of the parameter
+
+        :return: type of the parameter
+        :rtype: int
+        """
         return 2
 
 
@@ -86,4 +122,10 @@ class TimeDistrParameter(Enum):
     ADD_POINT = 3
 
     def case(self):
+        """
+        Returns the type of the parameter
+
+        :return: type of the parameter
+        :rtype: int
+        """
         return 3

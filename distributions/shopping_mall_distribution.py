@@ -3,14 +3,15 @@ from distributions.distribution import TimeSpaceDistribution, TimeDistribution, 
 
 class ShoppingMallDistribution(TimeSpaceDistribution):
     """
-    Shopping Mall Scenario
+    **Shopping Mall Scenario**
 
     Shopping mall is open from 08:00 to 21:00, most people come between 10:00 and 18:00, peak at 12:00
-    00:00 - 08:00: Distributed low usage of building
-    08:00 - 10:00: Distributed usage of building going up
-    10:00 - 12:00: Distributed usage gradient to peak
-    12:00 - 18:00: Distributed usage gradient to normal
-    18:00 - 24:00: Distributed usage of building going down
+    
+    * 00:00 - 08:00: Distributed low usage of building
+    * 08:00 - 10:00: Distributed usage of building going up
+    * 10:00 - 12:00: Distributed usage gradient to peak
+    * 12:00 - 18:00: Distributed usage gradient to normal
+    * 18:00 - 24:00: Distributed usage of building going down
     """
 
     def __init__(self):

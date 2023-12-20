@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="distributions package" href="distributions.html" /><link rel="prev" title="debug module" href="debug.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="distributions package" href="distributions.html" /><link rel="prev" title="color module" href="color.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>delegate module - Elevating Efficiency documentation</title>
@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -220,17 +220,38 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="delegate.Delegate.add_listener">
 <span class="sig-name descname"><span class="pre">add_listener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listener</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#delegate.Delegate.add_listener" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Add a listener to the delegate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listener</strong> (<em>function</em>) – The listener to add</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="delegate.Delegate.notify_all">
 <span class="sig-name descname"><span class="pre">notify_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#delegate.Delegate.notify_all" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Notify all listeners of the delegate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>list</em>) – The arguments to pass to the listeners</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – The keyword arguments to pass to the listeners</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="delegate.Delegate.remove_listener">
 <span class="sig-name descname"><span class="pre">remove_listener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listener</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#delegate.Delegate.remove_listener" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Remove a listener from the delegate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listener</strong> (<em>function</em>) – The listener to remove</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -250,14 +271,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="debug.html">
+          <a class="prev-page" href="color.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">debug module</div>
+                <div class="title">color module</div>
                 
               </div>
             </a>

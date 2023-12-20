@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -300,19 +299,20 @@ This is done to not plot None values, as they were replaced with negative values
 <dl class="py method">
 <dt class="sig sig-object py" id="plotter.plotter3D.Plotter3D.plot_normal">
 <span class="sig-name descname"><span class="pre">plot_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bilinear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plotter.plotter3D.Plotter3D.plot_normal" title="Link to this definition">#</a></dt>
-<dd><p>Shows the plot with the data stored in member variables:
-- name (str)           : sets the title of the plot
-- show_min (bool)      : if True, plots and computes minimum z-value and it’s corresponding x- and y-coordinate
-- show_max (bool)      : if True, plots and computes maximum z-value and it’s corresponding x- and y-coordinate
-- save  (bool)         : if True, saves plot directly in plots folder with  naming “name+HH_MM_SS.png”,</p>
-<blockquote>
-<div><p>where HH,MM,SS are hours, minutes and seconds respectively</p>
-</div></blockquote>
+<dd><p>Shows the plot with the data stored in member variables:</p>
 <ul class="simple">
+<li><p>name (str)           : sets the title of the plot</p></li>
+<li><p>show_min (bool)      : if True, plots and computes minimum z-value and it’s corresponding x- and y-coordinate</p></li>
+<li><p>show_max (bool)      : if True, plots and computes maximum z-value and it’s corresponding x- and y-coordinate</p></li>
 <li><dl class="simple">
-<dt>interpolation (str)<span class="classifier">chooses interpolation mode, options are:</span></dt><dd><p>‘none’, ‘nearest’, ‘bilinear’, ‘bicubic’, ‘spline16’,
-‘spline36’, ‘hanning’, ‘hamming’, ‘hermite’, ‘kaiser’, ‘quadric’,
-‘catrom’, ‘gaussian’, ‘bessel’, ‘mitchell’, ‘sinc’, ‘lanczos’</p>
+<dt>save  (bool)<span class="classifier">if True, saves plot directly in plots folder with  naming “name+HH_MM_SS.png”,</span></dt><dd><p>where <code class="docutils literal notranslate"><span class="pre">HH,MM,SS</span></code> are hours, minutes and seconds respectively</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>interpolation (str)<span class="classifier">chooses interpolation mode, options are:</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'none',</span> <span class="pre">'nearest',</span> <span class="pre">'bilinear',</span> <span class="pre">'bicubic',</span> <span class="pre">'spline16',</span>
+<span class="pre">'spline36',</span> <span class="pre">'hanning',</span> <span class="pre">'hamming',</span> <span class="pre">'hermite',</span> <span class="pre">'kaiser',</span> <span class="pre">'quadric',</span>
+<span class="pre">'catrom',</span> <span class="pre">'gaussian',</span> <span class="pre">'bessel',</span> <span class="pre">'mitchell',</span> <span class="pre">'sinc',</span> <span class="pre">'lanczos'</span></code></p>
 </dd>
 </dl>
 </li>

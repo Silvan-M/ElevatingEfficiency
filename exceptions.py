@@ -2,10 +2,34 @@ from color import Colors as C
 
 
 class Exceptions():
+    """
+    Handles exceptions
+
+    :param origin: The name of the function that called this function
+    :type origin: str
+    :param param: The parameters that should be checked
+    :type param: list
+    :param check: The types that the parameters should have
+    :type check: list
+    :param strict: If True, the types have to match exactly, if False, the types have to be subclasses of the given types, defaults to False
+    :type strict: bool, optional
+    """
     def __init__(self) -> None:
         pass
 
     def type_checker(origin: str, param: list, check: list, strict=False):
+        """
+        Checks if the types of the given parameters are correct
+
+        :param origin: The name of the function that called this function
+        :type origin: str
+        :param param: The parameters that should be checked
+        :type param: list
+        :param check: The types that the parameters should have
+        :type check: list
+        :param strict: If True, the types have to match exactly, if False, the types have to be subclasses of the given types, defaults to False
+        :type strict: bool, optional
+        """
         print(C.ok("checking" + str(param)))
         print(C.ok("cmmp" + str(check)))
 
