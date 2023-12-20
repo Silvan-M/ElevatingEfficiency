@@ -27,8 +27,10 @@ For more information about the project, please refer to the following documents:
 
 Installation
 ------------------------------------------------
+First, clone the repository to your local machine from our `GitHub repository <https://github.com/Silvan-M/ElevatingEfficiency>`_.
+Then navigate inside the directory of the project using the terminal.
 
-One can install the package by running the following command in the terminal (depending on the python installation, you might need to use pip3 instead of pip):
+Subsequently, one can install the package by running the following command in the terminal (depending on the python installation, you might need to use pip3 instead of pip):
 
 .. code-block:: bash
 

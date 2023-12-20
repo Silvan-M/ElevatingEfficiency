@@ -15,7 +15,10 @@ For more information about the project, please refer to the following documents:
 - [Project Report](downloads/Elevating-Efficiency-Report.pdf)
 
 ## Installation
-One can install the package by running the following command in the terminal (depending on the python installation, you might need to use pip3 instead of pip):
+First, clone the repository to your local machine.
+Then navigate inside the directory of the project using the terminal.
+
+Subsequently, one can install the package by running the following command in the terminal (depending on the python installation, you might need to use pip3 instead of pip):
 
 ```bash
 pip install -r requirements.txt
