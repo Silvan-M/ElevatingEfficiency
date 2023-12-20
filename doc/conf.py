@@ -10,6 +10,7 @@ import sys
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Elevating Efficiency'
+html_title = 'Elevating Efficiency Documentation'
 copyright = '2023, Brian Funk, Andrin Gasser and Silvan Metzker'
 author = 'Brian Funk, Andrin Gasser and Silvan Metzker'
 
