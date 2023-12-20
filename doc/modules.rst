@@ -6,7 +6,6 @@ ElevatingEfficiency
 
    building
    color
-   debug
    delegate
    distributions
    elevator

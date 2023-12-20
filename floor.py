@@ -2,6 +2,19 @@ from debug import Debug as DB
 
 
 class ButtonPressed():
+    """
+    Represents a class that contains information about the buttons pressed on a floor
+
+    :param move_up: Whether the move up button is pressed
+    :type move_up: bool
+    :param move_down: Whether the move down button is pressed
+    :type move_down: bool
+    :param last_pressed_up: The last time the move up button was pressed
+    :type last_pressed_up: int
+    :param last_pressed_down: The last time the move down button was pressed
+    :type last_pressed_down: int
+    """
+
     def __init__(self):
         self.move_up = False
         self.move_down = False
@@ -52,6 +65,18 @@ class ButtonPressed():
 
 
 class Floor():
+    """
+    Represents a floor in the building
+
+    :param number: The number of the floor
+    :type number: int
+    :param passenger_list: The list of passengers on the floor
+    :type passenger_list: list
+    :param button_pressed: The buttons pressed on the floor
+    :type button_pressed: ButtonPressed
+    """
+
+
     def __init__(self, number):
         self.passenger_list = []
         self.button_pressed = ButtonPressed()

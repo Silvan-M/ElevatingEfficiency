@@ -2,6 +2,14 @@ from color import Colors as C
 
 
 class Debug:
+    """
+    Represents a class that contains debug information
+
+    :param lvl: The debug level
+    :type lvl: int
+    """
+
+
     def __init__(self, lvl) -> None:
         self.lvl = lvl
 

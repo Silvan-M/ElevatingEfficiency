@@ -3,7 +3,7 @@ from distributions.distribution import TimeSpaceDistribution, TimeDistribution, 
 
 class CustomBuildingDistribution(TimeSpaceDistribution):
     """
-    Custom Building Scenario
+    **Custom Building Scenario**
 
     Choose your own distirbution and parameters for experiments.
     """

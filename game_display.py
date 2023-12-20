@@ -11,6 +11,9 @@ from matplotlib.cm import ScalarMappable
 
 
 class Sprite(pygame.sprite.Sprite):
+    """
+    A single image displayed on the live display
+    """
     cache = {}
 
     def __init__(
@@ -68,6 +71,9 @@ def lerp(v1, v2, a):
 
 
 def format_time(seconds):
+    """
+    Converts from seconds to a string of minutes and hours
+    """
     # Calculate days, hours, minutes, and seconds
     days, remainder = divmod(seconds, 86400)
     hours, remainder = divmod(remainder, 3600)
@@ -80,6 +86,12 @@ def format_time(seconds):
 
 
 def get_color_at_time(data, time):
+    """
+    Given a time of day, returns the skycolor
+
+    :data: Tuple of time in seconds, color
+    :time: Time of day in seconds
+    """
     # Ensure data is sorted by time
     sorted_data = sorted(data, key=lambda x: x[0])
 
@@ -109,6 +121,9 @@ def get_color_at_time(data, time):
 
 
 class SpriteEntity():
+    """
+    Wrapper class for two sprites, one in the foreground and one in the background.
+    """
     def __init__(
         self,
         front,
@@ -145,6 +160,10 @@ class PassengerInfo():
 
 
 class SimulationStepInfo():
+    """
+    Condenses the necessary information needed for the game display of a single simulation step.
+    """
+
     def __init__(self, building):
         self.passengers = {}
         self.elevator_heights = {}
@@ -162,6 +181,10 @@ class SimulationStepInfo():
 
 
 class GameDisplay():
+    """
+    Displays the game
+    """
+
     def __init__(self, simulation, scale, start_paused=False):
         simulation.on_step_end.add_listener(self.step)
         simulation.on_simulation_started.add_listener(self.start_simulation)
@@ -169,6 +192,14 @@ class GameDisplay():
         self.paused = start_paused
 
     def start_simulation(self, simulation, start_time, step_amount):
+        """
+        Initializes a new simulation
+        
+        :simulation: The simulation object to display
+        :start_time: Time in seconds of the time of day
+        :step_amount: Time in seconds of the duration
+        """
+
         building = simulation.building
         self.time_step_amount = start_time + step_amount
         self.tile_size = 32
@@ -182,12 +213,14 @@ class GameDisplay():
         self.screen_tile_amount = add(
             mul(self.building_margin, 2), (self.building_width, self.floor_amount))
 
+        # Initialize pygame
         pygame.init()
 
         self.screen = pygame.display.set_mode(
             mul(self.screen_tile_amount, self.tot_scale))
         pygame.display.set_caption("Elevating efficiency")
 
+        # Sprite paths
         self.passenger_clothes = './Sprites/Passenger_Clothes.png'
         self.passenger_skin = './Sprites/Passenger_Skin.png'
 
@@ -210,7 +243,7 @@ class GameDisplay():
 
         self.grey_color = (100, 100, 100)
 
-        # Building
+        # Set building sprites
         building_offset = mul(self.building_margin, self.tot_scale)
         for y in range(self.floor_amount):
             self.floor_colors.append(self.get_floor_color(y, self.floor_amount))
@@ -242,7 +275,7 @@ class GameDisplay():
                     Sprite(
                         sprite_front, loc, (self.tot_scale, self.tot_scale)))
 
-        # Elevators
+        # Set elevator sprites
         self.elevators = {}
         for e in building.elevators:
             ele = SpriteEntity(
@@ -251,7 +284,7 @@ class GameDisplay():
             self.all_sprites.add(ele.back)
             self.all_sprites.add(ele.front)
 
-        # Ground
+        # Set ground sprites
         for y in range(self.building_margin[1]):
             for x in range(self.screen_tile_amount[0]):
                 loc = (
@@ -269,28 +302,47 @@ class GameDisplay():
         self.step_info = None
 
     def get_floor_color(self, floor_index, floor_amount):
+        """
+        Returns the floor color of a given floor
+        """
+                
         cmap = plt.get_cmap('bone')
         colors = [cmap(i) for i in np.linspace(0, 1, floor_amount)]
         rgb_color = mcolors.to_rgb(colors[floor_amount - floor_index - 1])
         return tuple(int(val * 255) for val in rgb_color)
 
     def get_shaft_location(self, elevator_index):
+        """
+        Returns the x-tile-coordinate of an elevator shaft, given the index of an elevator
+        """
         return self.additional_building_width + elevator_index
 
     def get_passenger_y_coord(self, passenger_info):
+        """
+        Returns the absolute y-coordinate of a passenger.
+        """
+
+        # Moving inside an elevator
         if (passenger_info.in_elevator):
             return self.elevators[passenger_info.index].screen_loc[1] + \
                 (10 * self.scale)
+        # Staying on a floor
         else:
             return ((self.floor_amount - 1 - passenger_info.index) +
                     self.building_margin[1]) * self.tot_scale + (11 * self.scale)
 
     def get_random_passenger_location(self, passenger_info):
+        """
+        Returns the absolute coordinates of a passenger randomized in a floor or elevator.
+        """
+
+        # Moving inside an elevator
         if (passenger_info.in_elevator):
             return ((random.uniform(0.05, .65) +
                      self.get_shaft_location(passenger_info.index) +
                      self.building_margin[0]) *
                     self.tot_scale, self.get_passenger_y_coord(passenger_info))
+        # Staying on a floor
         else:
             return mul(
                 (random.uniform(
@@ -300,6 +352,10 @@ class GameDisplay():
                 self.tot_scale)
 
     def set_background(self, time):
+        """
+        Sets the background given the current time of day in seconds.
+        """
+
         colors = [(0, "midnightblue"), (5.5, "cornflowerblue"), (6, "lightsalmon"), (7, "skyblue"),
                   (12, "lightskyblue"), (18, "powderblue"), (18.5, "orangered"), (19, "navy"), (24, "midnightblue")]
         hour = (time / 60 / 60) % 24
@@ -314,6 +370,15 @@ class GameDisplay():
         self.screen.fill(interpolated_color)
 
     def apply_differences(self, step_info, last_step_info):
+        """
+        Given two simulation steps, calculate the differences between them:
+        - Change in elevator location and state
+        - Spawning of new passenger
+        - Removal of passenger
+        - Passenger switched from floor to elevator
+        """
+
+        # Elevator location and state
         for key in step_info.elevator_heights:
             val = step_info.elevator_heights[key]
             elevator = self.elevators[key]
@@ -328,7 +393,9 @@ class GameDisplay():
 
         for key in step_info.passengers:
             val = step_info.passengers[key]
-            if (key not in self.passengers):  # Spawn new passenger
+
+            # Spawn new passenger
+            if (key not in self.passengers):  
                 loc = self.get_random_passenger_location(val)
                 pas = SpriteEntity(self.passenger_clothes, self.passenger_skin, loc, vround(
                     mul((10, 19), self.scale)), self.floor_colors[self.floor_amount - 1 - val.target])
@@ -336,22 +403,32 @@ class GameDisplay():
                 self.all_sprites.add(pas.back)
                 self.all_sprites.add(pas.front)
 
-            elif not val.equal(last_step_info.passengers[key]):  # Switched floor
+            # Switched floor
+            elif not val.equal(last_step_info.passengers[key]):  
                 loc = self.get_random_passenger_location(val)
                 self.passengers[key].update_screen_loc(loc)
 
-            else:  # Height update
+            # Height update
+            else:  
                 p = self.passengers[key]
                 loc = (p.screen_loc[0], self.get_passenger_y_coord(val))
                 p.update_screen_loc(loc)
 
         for key in last_step_info.passengers:
-            if key not in step_info.passengers:  # Passenger removed
+            # Passenger removed
+            if key not in step_info.passengers:  
                 val = self.passengers[key]
                 self.all_sprites.remove(val.front)
                 self.all_sprites.remove(val.back)
 
     def render_text(self, txt, loc, alignment=0):
+        """
+        Renders text to screen
+        
+        :txt: String of content to display
+        :loc: Absolute display location to display
+        :alignement: {-1: Left, 0: Center, 1: Right} 
+        """
         font = pygame.font.Font(None, round(24 * self.scale))
         text_surface = font.render(txt, True, (255, 255, 255))
         text_rect = text_surface.get_rect()
@@ -368,6 +445,9 @@ class GameDisplay():
         self.screen.blit(text_surface, text_rect)
 
     def pause_button_pressed(self):
+        """
+        Check whether the pause button has been pressed
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -377,6 +457,11 @@ class GameDisplay():
         return False
 
     def step(self, simulation, time):
+        """
+        A single frame update of the game display
+        """
+
+        # Pause
         self.paused = self.paused or self.pause_button_pressed()
 
         if self.paused:
@@ -393,6 +478,7 @@ class GameDisplay():
                 self.paused = False
                 break
 
+        # Building step info
         building = simulation.building
         last_step_info = self.step_info
         self.step_info = SimulationStepInfo(building)

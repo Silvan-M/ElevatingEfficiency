@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="progress_bar module" href="progress_bar.html" /><link rel="prev" title="passenger module" href="passenger.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="progress_bar module" href="progress_bar.html" /><link rel="prev" title="plotter package" href="plotter.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>policies package - Elevating Efficiency documentation</title>
@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -335,13 +335,13 @@ Along the way, it will stop at each floor if someone wants to enter or exit the 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>elevator_button_weight</strong> – Award elevator button pressed on floor i.</p></li>
-<li><p><strong>elevator_button_time_weight</strong> – Award elevator buttons which were pressed a long time ago.</p></li>
-<li><p><strong>floor_button_weight</strong> – Award floor buttons which were pressed.</p></li>
-<li><p><strong>floor_button_time_weight</strong> – Award floor buttons which were pressed a long time ago.</p></li>
-<li><p><strong>competitor_weight</strong> – Penalize if other elevators are heading to floor i.</p></li>
-<li><p><strong>distance_weight</strong> – Penalize high distance to target.</p></li>
-<li><p><strong>distance_exponent</strong> – Exponent for distance penalty.</p></li>
+<li><p><strong>elevator_button_weight</strong> (<em>float</em>) – Award elevator button pressed on floor i.</p></li>
+<li><p><strong>elevator_button_time_weight</strong> (<em>float</em>) – Award elevator buttons which were pressed a long time ago.</p></li>
+<li><p><strong>floor_button_weight</strong> (<em>float</em>) – Award floor buttons which were pressed.</p></li>
+<li><p><strong>floor_button_time_weight</strong> (<em>float</em>) – Award floor buttons which were pressed a long time ago.</p></li>
+<li><p><strong>competitor_weight</strong> (<em>float</em>) – Penalize if other elevators are heading to floor i.</p></li>
+<li><p><strong>distance_weight</strong> (<em>float</em>) – Penalize high distance to target.</p></li>
+<li><p><strong>distance_exponent</strong> (<em>float</em>) – Exponent for distance penalty.</p></li>
 </ul>
 </dd>
 </dl>
@@ -382,13 +382,13 @@ Along the way, it will stop at each floor if someone wants to enter or exit the 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>people_in_elevator_button_weight</strong> – (changed) Award high amount of people that pressed elevator button for floor i</p></li>
-<li><p><strong>elevator_button_time_weight</strong> – Award elevator buttons which were pressed a long time ago</p></li>
-<li><p><strong>people_floor_weight</strong> – (changed) Award high amount of people waiting on floor i</p></li>
-<li><p><strong>floor_button_time_weight</strong> – Award floor buttons which were pressed a long time ago</p></li>
-<li><p><strong>competitor_weight</strong> – Penalize if other elevators are heading to floor i</p></li>
-<li><p><strong>distance_weight</strong> – Penalize high distance to target</p></li>
-<li><p><strong>distance_exponent</strong> – Exponent for distance penalty</p></li>
+<li><p><strong>people_in_elevator_button_weight</strong> (<em>float</em>) – (changed) Award high amount of people that pressed elevator button for floor i</p></li>
+<li><p><strong>elevator_button_time_weight</strong> (<em>float</em>) – Award elevator buttons which were pressed a long time ago</p></li>
+<li><p><strong>people_floor_weight</strong> (<em>float</em>) – (changed) Award high amount of people waiting on floor i</p></li>
+<li><p><strong>floor_button_time_weight</strong> (<em>float</em>) – Award floor buttons which were pressed a long time ago</p></li>
+<li><p><strong>competitor_weight</strong> (<em>float</em>) – Penalize if other elevators are heading to floor i</p></li>
+<li><p><strong>distance_weight</strong> (<em>float</em>) – Penalize high distance to target</p></li>
+<li><p><strong>distance_exponent</strong> (<em>float</em>) – Exponent for distance penalty</p></li>
 </ul>
 </dd>
 </dl>
@@ -426,15 +426,7 @@ Policy which evaluates each floor by giving it a score using input parameters (s
 Along the way, it will stop at each floor if someone wants to enter or exit the elevator on that floor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>elevator_button_weight</strong> – Award elevator button pressed on floor i.</p></li>
-<li><p><strong>elevator_button_time_weight</strong> – Award elevator buttons which were pressed a long time ago.</p></li>
-<li><p><strong>floor_button_weight</strong> – Award floor buttons which were pressed.</p></li>
-<li><p><strong>floor_button_time_weight</strong> – Award floor buttons which were pressed a long time ago.</p></li>
-<li><p><strong>competitor_weight</strong> – Penalize if other elevators are heading to floor i.</p></li>
-<li><p><strong>distance_weight</strong> – Penalize high distance to target.</p></li>
-<li><p><strong>distance_exponent</strong> – Exponent for distance penalty.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>loadPath</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to load parameters from.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -500,14 +492,14 @@ Change direction if reached top or bottom floor</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="passenger.html">
+          <a class="prev-page" href="plotter.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">passenger module</div>
+                <div class="title">plotter package</div>
                 
               </div>
             </a>

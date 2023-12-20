@@ -6,6 +6,20 @@ import random
 
 
 class Elevator:
+    """
+    Represents an elevator
+
+    :param min_floor: The minimum floor of the elevator
+    :type min_floor: int
+    :param max_floor: The maximum floor of the elevator
+    :type max_floor: int
+    :param policy: The policy of the elevator
+    :type policy: Policy
+    :param capacity: The capacity of the elevator
+    :type capacity: int
+    """
+
+
     def __init__(self, min_floor, max_floor, policy, capacity):
         self.on_passenger_entered = Delegate()
         self.on_passenger_exited = Delegate()

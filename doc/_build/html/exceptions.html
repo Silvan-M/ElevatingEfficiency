@@ -159,7 +159,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">ElevatingEfficiency</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of ElevatingEfficiency</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="building.html">building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">color module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="debug.html">debug module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="delegate.html">delegate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">distributions package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="elevator.html">elevator module</a></li>
@@ -170,6 +169,7 @@
 <li class="toctree-l2"><a class="reference internal" href="parameter.html">parameter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_optimizer.html">parameter_optimizer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="passenger.html">passenger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">plotter package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policies.html">policies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="progress_bar.html">progress_bar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation.html">simulation module</a></li>
@@ -225,7 +225,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="exceptions.Exceptions.type_checker">
 <span class="sig-name descname"><span class="pre">type_checker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.Exceptions.type_checker" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if the types of the given parameters are correct</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>str</em>) – The name of the function that called this function</p></li>
+<li><p><strong>param</strong> (<em>list</em>) – The parameters that should be checked</p></li>
+<li><p><strong>check</strong> (<em>list</em>) – The types that the parameters should have</p></li>
+<li><p><strong>strict</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the types have to match exactly, if False, the types have to be subclasses of the given types, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="exceptions.Exceptions.type_checker_rek">

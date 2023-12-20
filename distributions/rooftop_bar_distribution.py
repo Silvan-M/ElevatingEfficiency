@@ -3,15 +3,16 @@ from distributions.distribution import TimeSpaceDistribution, TimeDistribution, 
 
 class RooftopBarDistribution(TimeSpaceDistribution):
     """
-    Rooftop Bar Scenario
+    **Rooftop Bar Scenario**
 
     Building is open from 08:00 to 24:00, most people come between 20:00 and 22:00, when the rooftop bar is open.
-    00:00 - 07:00: Distributed low usage of building
-    07:00 - 08:00: Distributed increased usage of building
-    08:00 - 10:00: Distributed medium usage of building
-    10:00 - 11:00: Rooftop bar opens, people start coming in from the ground floor (3x more people than other floors)
-    20:00 - 22:00: Rooftop bar peak usage (20x more people than other floors)
-    23:00 - 24:00: Rooftop bar closes, people start leaving from the top floor
+    
+    * 00:00 - 07:00: Distributed low usage of building
+    * 07:00 - 08:00: Distributed increased usage of building
+    * 08:00 - 10:00: Distributed medium usage of building
+    * 10:00 - 11:00: Rooftop bar opens, people start coming in from the ground floor (3x more people than other floors)
+    * 20:00 - 22:00: Rooftop bar peak usage (20x more people than other floors)
+    * 23:00 - 24:00: Rooftop bar closes, people start leaving from the top floor
     """
 
     def __init__(self):
