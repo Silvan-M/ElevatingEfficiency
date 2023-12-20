@@ -114,28 +114,31 @@ class Plotter2D():
         if (show_max):
             max_values = [max(data) for data in self.objective_data]
             max_indices = [np.argmax(data) for data in self.objective_data]
-            for idx, max_val, max_idx in zip(
+
+            for idx, max_vals, max_idx in zip(
                     range(len(self.objective_data)), max_values, max_indices):
-                plt.scatter(
+                    print("max("+str(round(max_vals,2))+","+str(max_idx)+")")
+                    """                plt.scatter(
                     self.param_data[max_idx],
-                    max_val,
+                    max_vals,
                     color='red',
-                    marker='o',
-                    label="maximum")
+                    marker='o')"""
+                    #,label=(("max("+str(round(max_val,2))+","+str(max_idx)+")")))
 
         # Find and mark the minimum value, if show_min
 
         if (show_min):
             min_values = [min(data) for data in self.objective_data]
             min_indices = [np.argmin(data) for data in self.objective_data]
-            for idx, min_val, min_idx in zip(
+            for idx, min_vals, min_idx in zip(
                     range(len(self.objective_data)), min_values, min_indices):
                 plt.scatter(
                     self.param_data[min_idx],
-                    min_val,
+                    min_vals,
                     color='blue',
                     marker='o',
                     label="minimum")
+            
 
         # Plots special values, if special_values is non-empty
         if (len(self.special_values) == len(self.param_data)):
