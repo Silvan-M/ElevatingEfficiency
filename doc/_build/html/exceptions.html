@@ -231,7 +231,19 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="exceptions.Exceptions.bound_checker">
 <span class="sig-name descname"><span class="pre">bound_checker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.Exceptions.bound_checker" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if the given value is in the given range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>str</em>) – The name of the function that called this function</p></li>
+<li><p><strong>varname</strong> (<em>str</em>) – The name of the variable that should be checked</p></li>
+<li><p><strong>val</strong> (<em>float</em>) – The value that should be checked</p></li>
+<li><p><strong>lower</strong> (<em>float</em>) – The lower bound of the range</p></li>
+<li><p><strong>upper</strong> (<em>float</em>) – The upper bound of the range</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="exceptions.Exceptions.type_checker">
@@ -252,7 +264,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="exceptions.Exceptions.type_checker_rek">
 <span class="sig-name descname"><span class="pre">type_checker_rek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exceptions.Exceptions.type_checker_rek" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Recursively checks if the types of the given parameters are correct</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>str</em>) – The name of the function that called this function</p></li>
+<li><p><strong>param</strong> (<em>list</em>) – The parameters that should be checked</p></li>
+<li><p><strong>check</strong> (<em>list</em>) – The types that the parameters should have</p></li>
+<li><p><strong>strict</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the types have to match exactly, if False, the types have to be subclasses of the given types, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

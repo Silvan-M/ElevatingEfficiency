@@ -12,6 +12,7 @@ To access our project's documentation, please visit our dedicated [documentation
 ## Downloads
 For more information about the project, please refer to the following documents:
 - [Project Presentation](downloads/Elevating-Efficiency-Presentation.pdf)
+- [Project Report](downloads/Elevating-Efficiency-Report.pdf)
 
 ## Installation
 One can install the package by running the following command in the terminal (depending on the python installation, you might need to use pip3 instead of pip):

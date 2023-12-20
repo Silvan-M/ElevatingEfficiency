@@ -23,6 +23,7 @@ Downloads
 For more information about the project, please refer to the following documents:
 
 * :download:`Project Presentation <../downloads/Elevating-Efficiency-Presentation.pdf>`
+* :download:`Project Report <../downloads/Elevating-Efficiency-Report.pdf>`
 
 Installation
 ------------------------------------------------
