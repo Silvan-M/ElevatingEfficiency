@@ -197,7 +197,7 @@ class GameDisplay():
         
         :simulation: The simulation object to display
         :start_time: Time in seconds of the time of day
-        :start_time: Time in seconds of the duration
+        :step_amount: Time in seconds of the duration
         """
 
         building = simulation.building
