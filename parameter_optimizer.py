@@ -38,6 +38,13 @@ store_params = "param_optimizer/save_params.txt"
 def map_parameters(parameters, changed_parameter):
     """
     Maps the parameters of the minimizing function to the parameters of the model
+
+    :param parameters: parameters of the minimizing function
+    :type parameters: list
+    :param changed_parameter: changed parameter
+    :type changed_parameter: tuple
+    :return: parameters of the model
+    :rtype: list
     """
     ret = parameters + [1]
     if (changed_parameter[0] >= 0):
@@ -48,6 +55,11 @@ def map_parameters(parameters, changed_parameter):
 def create_simulation(args):
     """
     Initializes a new simulation
+
+    :param args: arguments for the simulation
+    :type args: tuple
+    :return: simulation
+    :rtype: Simulation
     """
     global current_params
     global distribution
@@ -89,6 +101,11 @@ def create_simulation(args):
 def run_simulation(args):
     """
     Run a single simulation
+
+    :param args: arguments for the simulation
+    :type args: tuple
+    :return: average waiting time
+    :rtype: float
     """
     (average_index, parameter_index, parameter_value), simulation = args
 
@@ -102,6 +119,9 @@ def run_simulation(args):
 def update_results(results):
     """
     Update the current model with new parameters if a performance increase has been detected
+
+    :param results: results of the simulations
+    :type results: list
     """
 
     global current_awt
@@ -134,6 +154,11 @@ def update_results(results):
 def write_result(awt, params):
     """
     Write the results to text
+
+    :param awt: average waiting time
+    :type awt: float
+    :param params: parameters
+    :type params: list
     """
     s = ','.join(map(str, [awt] + params))
     with open(store_params, "a") as file:

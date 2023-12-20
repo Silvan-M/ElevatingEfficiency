@@ -18,6 +18,9 @@ class Objective(Enum):
 class SimulationStatistics():
     """
     Tracks necessary information of the simulation for plots.
+
+    :param simulation: The simulation object to track
+    :type simulation: Simulation
     """
 
     def __init__(self, simulation):
@@ -31,9 +34,12 @@ class SimulationStatistics():
         """
         Initializes a new simulation
         
-        :simulation: The simulation object to track
-        :start_time: Time in seconds of the time of day
-        :step_amount: Time in seconds of the duration
+        :param simulation: The simulation object to track
+        :param start_time: Time in seconds of the time of day
+        :param step_amount: Time in seconds of the duration
+        :type simulation: Simulation
+        :type start_time: int
+        :type step_amount: int
         """
 
         # Add delegates
@@ -48,8 +54,10 @@ class SimulationStatistics():
         """
         Called once one simulation step finished
         
-        :simulation: The simulation object to track
-        :time: Current time in seconds
+        :param simulation: The simulation object to track
+        :param time: Current time in seconds
+        :type simulation: Simulation
+        :type time: int
         """
         building = simulation.building
         count = sum(len(e.passenger_list) for e in building.elevators)
@@ -59,7 +67,8 @@ class SimulationStatistics():
         """
         Called once entire simulation finished
         
-        :simulation: The simulation object to track
+        :param simulation: The simulation object to track
+        :type simulation: Simulation
         """
 
         time = simulation.time
@@ -77,8 +86,10 @@ class SimulationStatistics():
         """
         Called once one passenger created
         
-        :passenger: The passenger object created
-        :time: Current time in seconds
+        :param passenger: The passenger object created
+        :param time: Current time in seconds
+        :type passenger: Passenger
+        :type time: int
         """
 
         self.finished_tasks[passenger.id] = FinishInfo(
@@ -88,8 +99,10 @@ class SimulationStatistics():
         """
         Called once one passenger entered the elevator
         
-        :passenger: The passenger object created
-        :time: Current time in seconds
+        :param passenger: The passenger object created
+        :param time: Current time in seconds
+        :type passenger: Passenger
+        :type time: int
         """
         self.finished_tasks[passenger.id].waiting_time = time - \
             passenger.start_time
@@ -98,12 +111,20 @@ class SimulationStatistics():
         """
         Called once one passenger exited the elevator
         
-        :passenger: The passenger object created
-        :time: Current time in seconds
+        :param passenger: The passenger object created
+        :param time: Current time in seconds
+        :type passenger: Passenger
+        :type time: int
         """
         self.finished_tasks[passenger.id].total_time = time - passenger.start_time
 
     def write_to_file(self, filename):
+        """
+        Writes the statistics to a file
+        
+        :param filename: The filename to write to
+        :type filename: str
+        """
         with open(filename, 'w', newline='') as csvfile:
             fieldnames = [
                 'PassengerID',
@@ -126,8 +147,10 @@ class SimulationStatistics():
         """
         Get the average time the passengers have been waiting for an elevator to arrive
         
-        :from_time: start time in seconds
-        :to_time: end time in seconds
+        :param from_time: start time in seconds
+        :param to_time: end time in seconds
+        :type from_time: int
+        :type to_time: int
         """
         waiting_times = [task.waiting_time for task in self.finished_tasks.values(
         ) if task.start_time >= from_time and task.start_time <= to_time]
@@ -137,8 +160,10 @@ class SimulationStatistics():
         """
         Get the standard deviation time the passengers have been waiting for an elevator to arrive
         
-        :from_time: start time in seconds
-        :to_time: end time in seconds
+        :param from_time: start time in seconds
+        :param to_time: end time in seconds
+        :type from_time: int
+        :type to_time: int
         """
 
         waiting_times = [task.waiting_time for task in self.finished_tasks.values(
@@ -150,8 +175,10 @@ class SimulationStatistics():
         """
         Get the amount of passengers spawned
         
-        :from_time: start time in seconds
-        :to_time: end time in seconds
+        :param from_time: start time in seconds
+        :param to_time: end time in seconds
+        :type from_time: int
+        :type to_time: int
         """
         
         return len([task for task in self.finished_tasks.values()
@@ -161,8 +188,10 @@ class SimulationStatistics():
         """
         Get the average total time the passengers have been waiting to arrive at their destination
         
-        :from_time: start time in seconds
-        :to_time: end time in seconds
+        :param from_time: start time in seconds
+        :param to_time: end time in seconds
+        :type from_time: int
+        :type to_time: int
         """
 
         total_times = [task.total_time for task in self.finished_tasks.values(
@@ -173,8 +202,10 @@ class SimulationStatistics():
         """
         Get the average amount of people inside an elevator
         
-        :from_time: start time in seconds
-        :to_time: end time in seconds
+        :param from_time: start time in seconds
+        :param to_time: end time in seconds
+        :type from_time: int
+        :type to_time: int
         """
                 
         return statistics.mean(
@@ -183,6 +214,9 @@ class SimulationStatistics():
     def calculate_average_crowdedness_per_floor(self):
         """
         Get the average amount of people waiting on a floor
+
+        :return: A dictionary with the average amount of people waiting on a floor
+        :rtype: dict
         """
         sorted_finish_info = sorted(
             self.finished_tasks.values(),
@@ -204,6 +238,15 @@ class SimulationStatistics():
     def get_objective(self, obj: Objective, timestep=-1, timestep_amount=24):
         """
         Get some objective over an amount of time
+
+        :param obj: The objective to get
+        :param timestep: The amount of seconds per timestep
+        :param timestep_amount: The amount of timesteps to get
+        :type obj: Objective
+        :type timestep: int
+        :type timestep_amount: int
+        :return: The objective over an amount of time
+        :rtype: list
         """
                 
         max_time = max(
@@ -234,6 +277,13 @@ class SimulationStatistics():
     def get_objectives(self, objs: [Objective], timestep=-1):
         """
         Get multiple objectives over an amount of time
+
+        :param objs: The objectives to get
+        :param timestep: The amount of seconds per timestep
+        :type objs: [Objective]
+        :type timestep: int
+        :return: The objectives over an amount of time
+        :rtype: list
         """
         return [self.get_objective(obj, timestep) for obj in objs]
 
@@ -241,6 +291,15 @@ class SimulationStatistics():
 class FinishInfo():
     """
     All necessary statistics information of a single passenger
+
+    :param id: The id of the passenger
+    :param start: The starting floor of the passenger
+    :param target: The target floor of the passenger
+    :param start_time: The time the passenger was created
+    :type id: int
+    :type start: int
+    :type target: int
+    :type start_time: int
     """
     def __init__(self, id, start, target, start_time):
         self.id = id

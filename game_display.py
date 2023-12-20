@@ -13,6 +13,15 @@ from matplotlib.cm import ScalarMappable
 class Sprite(pygame.sprite.Sprite):
     """
     A single image displayed on the live display
+
+    :param image_path: Path to the image
+    :param initial_position: Initial position of the image
+    :param sprite_size: Size of the image
+    :param color: Color of the image
+    :type image_path: str
+    :type initial_position: tuple
+    :type sprite_size: tuple
+    :type color: tuple
     """
     cache = {}
 
@@ -55,24 +64,69 @@ class Sprite(pygame.sprite.Sprite):
 
 # Vector operations
 def add(v1, v2):
+    """
+    Adds two vectors
+
+    :param v1: First vector
+    :param v2: Second vector
+    :type v1: tuple
+    :type v2: tuple
+    :return: Sum of the two vectors
+    :rtype: tuple
+    """
     return tuple(a + r for a, r in zip(v1, v2))
 
 
 def mul(v1, c):
+    """
+    Multiplies a vector by a scalar
+
+    :param v1: Vector
+    :param c: Scalar
+    :type v1: tuple
+    :type c: float or int
+    :return: Resulting vector after multiplication
+    :rtype: tuple
+    """
     return tuple(e * c for e in v1)
 
 
 def vround(v1):
+    """
+    Rounds each component of a vector
+
+    :param v1: Vector
+    :type v1: tuple
+    :return: Vector with each component rounded
+    :rtype: tuple
+    """
     return tuple(round(e) for e in v1)
 
 
 def lerp(v1, v2, a):
+    """
+    Performs linear interpolation between two vectors
+
+    :param v1: First vector
+    :param v2: Second vector
+    :param a: The interpolation factor
+    :type v1: tuple
+    :type v2: tuple
+    :type a: float
+    :return: Resulting vector after interpolation
+    :rtype: tuple
+    """
     return tuple(v1 * (1 - a) + v2 * a for v1, v2 in zip(v1, v2))
 
 
 def format_time(seconds):
     """
     Converts from seconds to a string of minutes and hours
+
+    :param seconds: Time in seconds
+    :type seconds: int
+    :return: Formatted string of minutes and hours
+    :rtype: str
     """
     # Calculate days, hours, minutes, and seconds
     days, remainder = divmod(seconds, 86400)
@@ -89,8 +143,12 @@ def get_color_at_time(data, time):
     """
     Given a time of day, returns the skycolor
 
-    :data: Tuple of time in seconds, color
-    :time: Time of day in seconds
+    :param data: Tuple of time in seconds, color
+    :param time: Time of day in seconds
+    :type data: tuple
+    :type time: int
+    :return: Color of the sky
+    :rtype: tuple
     """
     # Ensure data is sorted by time
     sorted_data = sorted(data, key=lambda x: x[0])
@@ -123,6 +181,19 @@ def get_color_at_time(data, time):
 class SpriteEntity():
     """
     Wrapper class for two sprites, one in the foreground and one in the background.
+
+    :param front: Path to the front sprite
+    :param back: Path to the back sprite
+    :param screen_loc: Initial location of the sprite
+    :param sprite_size: Size of the sprite
+    :param front_color: Color of the front sprite
+    :param back_color: Color of the back sprite
+    :type front: str
+    :type back: str
+    :type screen_loc: tuple
+    :type sprite_size: tuple
+    :type front_color: tuple
+    :type back_color: tuple
     """
     def __init__(
         self,
@@ -144,24 +215,51 @@ class SpriteEntity():
         self.target_pos = screen_loc
 
     def update_screen_loc(self, screen_loc):
+        """
+        Updates the screen location of the sprite
+
+        :param screen_loc: New screen location
+        :type screen_loc: tuple
+        """
         self.screen_loc = screen_loc
         self.front.rect.topleft = screen_loc
         self.back.rect.topleft = screen_loc
 
 
 class PassengerInfo():
+    """
+    Condenses the necessary information needed for the game display of a single passenger.
+
+    :param in_elevator: Whether the passenger is in an elevator
+    :param index: Index of the elevator or floor
+    :param target: Target floor of the passenger
+    :type in_elevator: bool
+    :type index: int
+    :type target: int
+    """
     def __init__(self, in_elevator, index, target):
         self.in_elevator = in_elevator
         self.index = index
         self.target = target
 
     def equal(self, other):
+        """
+        Indicates whether two PassengerInfo objects are equal
+
+        :param other: Other PassengerInfo object
+        :type other: PassengerInfo
+        :return: Whether the two objects are equal
+        :rtype: bool
+        """
         return self.index == other.index and self.in_elevator == other.in_elevator
 
 
 class SimulationStepInfo():
     """
     Condenses the necessary information needed for the game display of a single simulation step.
+
+    :param building: Building of the simulation
+    :type building: Building
     """
 
     def __init__(self, building):
@@ -183,6 +281,13 @@ class SimulationStepInfo():
 class GameDisplay():
     """
     Displays the game
+
+    :param simulation: Simulation to display
+    :param scale: Scale of the display
+    :param start_paused: Whether the game should start paused
+    :type simulation: Simulation
+    :type scale: float
+    :type start_paused: bool
     """
 
     def __init__(self, simulation, scale, start_paused=False):
@@ -195,9 +300,12 @@ class GameDisplay():
         """
         Initializes a new simulation
         
-        :simulation: The simulation object to display
-        :start_time: Time in seconds of the time of day
-        :step_amount: Time in seconds of the duration
+        :param simulation: The simulation object to display
+        :param start_time: Time in seconds of the time of day
+        :param step_amount: Time in seconds of the duration
+        :type simulation: Simulation
+        :type start_time: int
+        :type step_amount: int
         """
 
         building = simulation.building
@@ -304,6 +412,13 @@ class GameDisplay():
     def get_floor_color(self, floor_index, floor_amount):
         """
         Returns the floor color of a given floor
+
+        :param floor_index: Index of the floor
+        :param floor_amount: Amount of floors
+        :type floor_index: int
+        :type floor_amount: int
+        :return: Color of the floor
+        :rtype: tuple
         """
                 
         cmap = plt.get_cmap('bone')
@@ -314,12 +429,22 @@ class GameDisplay():
     def get_shaft_location(self, elevator_index):
         """
         Returns the x-tile-coordinate of an elevator shaft, given the index of an elevator
+
+        :param elevator_index: Index of the elevator
+        :type elevator_index: int
+        :return: X-tile-coordinate of the elevator shaft
+        :rtype: int
         """
         return self.additional_building_width + elevator_index
 
     def get_passenger_y_coord(self, passenger_info):
         """
         Returns the absolute y-coordinate of a passenger.
+
+        :param passenger_info: Passenger information
+        :type passenger_info: PassengerInfo
+        :return: Absolute y-coordinate of the passenger
+        :rtype: int
         """
 
         # Moving inside an elevator
@@ -334,6 +459,11 @@ class GameDisplay():
     def get_random_passenger_location(self, passenger_info):
         """
         Returns the absolute coordinates of a passenger randomized in a floor or elevator.
+
+        :param passenger_info: Passenger information
+        :type passenger_info: PassengerInfo
+        :return: Absolute coordinates of the passenger
+        :rtype: tuple
         """
 
         # Moving inside an elevator
@@ -354,6 +484,9 @@ class GameDisplay():
     def set_background(self, time):
         """
         Sets the background given the current time of day in seconds.
+
+        :param time: Time of day in seconds
+        :type time: int
         """
 
         colors = [(0, "midnightblue"), (5.5, "cornflowerblue"), (6, "lightsalmon"), (7, "skyblue"),
@@ -372,10 +505,16 @@ class GameDisplay():
     def apply_differences(self, step_info, last_step_info):
         """
         Given two simulation steps, calculate the differences between them:
-        - Change in elevator location and state
-        - Spawning of new passenger
-        - Removal of passenger
-        - Passenger switched from floor to elevator
+        
+        * Change in elevator location and state
+        * Spawning of new passenger
+        * Removal of passenger
+        * Passenger switched from floor to elevator
+
+        :param step_info: Current simulation step
+        :param last_step_info: Previous simulation step
+        :type step_info: SimulationStepInfo
+        :type last_step_info: SimulationStepInfo
         """
 
         # Elevator location and state
@@ -425,9 +564,12 @@ class GameDisplay():
         """
         Renders text to screen
         
-        :txt: String of content to display
-        :loc: Absolute display location to display
-        :alignement: {-1: Left, 0: Center, 1: Right} 
+        :param txt: String of content to display
+        :param loc: Absolute display location to display
+        :param alignement: {-1: Left, 0: Center, 1: Right} 
+        :type txt: str
+        :type loc: tuple
+        :type alignment: int
         """
         font = pygame.font.Font(None, round(24 * self.scale))
         text_surface = font.render(txt, True, (255, 255, 255))
@@ -447,6 +589,9 @@ class GameDisplay():
     def pause_button_pressed(self):
         """
         Check whether the pause button has been pressed
+
+        :return: Whether the pause button has been pressed
+        :rtype: bool
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -459,6 +604,11 @@ class GameDisplay():
     def step(self, simulation, time):
         """
         A single frame update of the game display
+
+        :param simulation: Simulation to display
+        :param time: Current time of day in seconds
+        :type simulation: Simulation
+        :type time: int
         """
 
         # Pause
