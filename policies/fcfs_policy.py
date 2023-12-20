@@ -5,7 +5,7 @@ from color import Colors as C
 
 class FCFSPolicy(Policy):
     """
-    **First Come First Serve Policy**
+    **FCFS Policy (First Come First Serve Policy)**
     
     Elevator will (directly) go to the first floor that was requested,
     then then it will go to the closest destination in the same direction and carries out until done.
